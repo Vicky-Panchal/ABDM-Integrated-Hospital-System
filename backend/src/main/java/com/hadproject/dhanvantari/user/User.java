@@ -1,9 +1,12 @@
 package com.hadproject.dhanvantari.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.token.Token;
 import jakarta.persistence.*;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,12 +31,18 @@ public class User implements UserDetails {
   private String lastname;
   private String email;
   private String password;
+  private String gender;
+  private Date dob;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  @OneToOne(mappedBy = "user")
+  @JsonBackReference(value = "patientBackRef")
+  public Patient patient;
 
 
 

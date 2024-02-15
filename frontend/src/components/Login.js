@@ -1,10 +1,13 @@
+// Login.js
+
 import React, { useState } from 'react';
-//import axios from 'axios';
+import '../Styles/login.css'; // Import the CSS file
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
 
   //const handleLogin = async (e) => {
   //  e.preventDefault();
@@ -24,7 +27,6 @@ const Login = () => {
   //  }
   //};
 
-  
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -40,19 +42,19 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="login-container">
+      <h2 className="login-heading">Login</h2>
       <form onSubmit={handleLogin}>
-        <div>
-          <label>Username:</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+        <div className="form-group">
+          <label className="form-label">Username:</label>
+          <input type="text" className="form-input" value={username} onChange={(e) => setUsername(e.target.value)} required />
         </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <div className="form-group">
+          <label className="form-label">Password:</label>
+          <input type="password" className="form-input" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit">Login</button>
-        {error && <div style={{ color: 'red' }}>{error}</div>}
+        <button type="submit" className="login-button">Login</button>
+        {error && <div className="error-message">{error}</div>}
       </form>
     </div>
   );

@@ -1,5 +1,8 @@
+// SelectOptionPage.js
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../Styles/selectOptionPage.css'; // Import the CSS file
 
 const SelectOptionPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -9,11 +12,13 @@ const SelectOptionPage = () => {
   };
 
   return (
-    <div>
-      <h1>Register as a:</h1>
-      <button onClick={() => handleOptionSelect('Option 1')}>Option 1</button>
-      <button onClick={() => handleOptionSelect('Option 2')}>Option 2</button>
-      <Link to={`/register/${selectedOption}`}><button disabled={!selectedOption}>Register</button></Link>
+    <div className="option-container">
+      <h1 className="option-heading">Register as a:</h1>
+      <button className="option-button" onClick={() => handleOptionSelect('Patient')}>Patient</button>
+      <button className="option-button" onClick={() => handleOptionSelect('Clinic')}>Clinic</button>
+      <Link to={`/register/${selectedOption}`}>
+        <button className="register-button" disabled={!selectedOption}>Register</button>
+      </Link>
     </div>
   );
 };

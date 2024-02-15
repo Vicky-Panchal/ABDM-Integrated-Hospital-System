@@ -1,5 +1,8 @@
+// RegisterPage.js
+
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import '../Styles/registerPage.css'; // Import the CSS file
 
 const RegisterPage = () => {
   const { option } = useParams();
@@ -17,18 +20,18 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <h1>Register as a {option}</h1>
+    <div className="register-container">
+      <h1 className="register-heading">Register as a {option}</h1>
       <form onSubmit={handleRegister}>
-        <div>
-          <label>Name:</label>
-          <input type="text" name="name" value={formData.name} onChange={handleFormChange} required />
+        <div className="form-group">
+          <label className="form-label">Name:</label>
+          <input type="text" name="name" className="form-input" value={formData.name} onChange={handleFormChange} required />
         </div>
-        <div>
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleFormChange} required />
+        <div className="form-group">
+          <label className="form-label">Email:</label>
+          <input type="email" name="email" className="form-input" value={formData.email} onChange={handleFormChange} required />
         </div>
-        <Link to="/dashboard"><button type="submit">Register</button></Link>
+        <Link to="/dashboard"><button type="submit" className="register-button">Register</button></Link>
       </form>
     </div>
   );

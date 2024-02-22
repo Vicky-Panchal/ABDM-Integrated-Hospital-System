@@ -14,10 +14,10 @@ public enum Permission {
     ADMIN_UPDATE("admin:update"),
     ADMIN_CREATE("admin:create"),
     ADMIN_DELETE("admin:delete"),
-    MEMBERS_READ("members:read"),
-    MEMBERS_UPDATE("members:update"),
-    MEMBERS_CREATE("members:create"),
-    MEMBERS_DELETE("members:delete")
+    DOCTOR_READ("doctor:read"),
+    DOCTOR_UPDATE("doctor:update"),
+    DOCTOR_CREATE("doctor:create"),
+    DOCTOR_DELETE("doctor:delete")
 
     ;
 

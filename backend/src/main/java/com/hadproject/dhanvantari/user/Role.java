@@ -32,12 +32,12 @@ public enum Role {
           )
   ),
 
-  MEMBERS(
+  DOCTOR(
           Set.of(
-                  MEMBERS_READ,
-                  MEMBERS_UPDATE,
-                  MEMBERS_DELETE,
-                  MEMBERS_CREATE
+                  DOCTOR_READ,
+                  DOCTOR_UPDATE,
+                  DOCTOR_DELETE,
+                  DOCTOR_CREATE
           )
   ),
 

@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.patient;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hadproject.dhanvantari.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,12 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(
-        uniqueConstraints = @UniqueConstraint(
-                name = "healthId_unique",
-                columnNames = "healthId"
-        )
-)
+@Table()
 public class Patient {
     @Id
     @SequenceGenerator(
@@ -30,7 +26,15 @@ public class Patient {
             generator = "patient_sequence"
     )
     public int patientId;
-    public String healthId;
-    public String healthIdNumber;
-    public String mobile;
+
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            optional = false
+    )
+    @JoinColumn(
+            name = "user_id_fk",
+            referencedColumnName = "userId"
+    )
+    @JsonManagedReference(value = "patientBackRef")
+    public User user;
 }

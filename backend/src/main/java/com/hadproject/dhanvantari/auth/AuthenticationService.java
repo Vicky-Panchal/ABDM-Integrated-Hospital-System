@@ -34,12 +34,16 @@ public class AuthenticationService {
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
         .role(request.getRole())
+            .dob(request.getDob())
+            .mobile(request.getMobile())
         .build();
     var savedUser = repository.save(user);
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
+            .firstName(savedUser.getFirstname())
+            .lastName(savedUser.getLastname())
         .accessToken(jwtToken)
             .refreshToken(refreshToken)
         .build();
@@ -64,7 +68,7 @@ public class AuthenticationService {
             .refreshToken(refreshToken)
             .firstName(user.getFirstname())
             .lastName(user.getLastname())
-            .userId(user.getId())
+            .userId(user.getUserId())
         .build();
   }
 
@@ -80,7 +84,7 @@ public class AuthenticationService {
   }
 
   private void revokeAllUserTokens(User user) {
-    var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+    var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserId());
     if (validUserTokens.isEmpty())
       return;
     validUserTokens.forEach(token -> {

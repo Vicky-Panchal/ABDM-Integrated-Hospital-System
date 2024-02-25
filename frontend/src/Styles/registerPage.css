@@ -1,6 +1,79 @@
-/* registerPage.css */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #ddffff;
+}
+
+.heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
 
 .register-container {
+  width: 800px;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #0099ff;
+  border-radius: 8px;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.personal-info {
+  padding: 20px;
+  width: 100%;
+}
+
+.account-info {
+  padding: 20px;
+  width: 100%;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.submit-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-button {
+  align-items: center;
+  background-color: #0000ff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 20px;
+}
+
+.register-button:hover {
+  box-shadow: 0 0 8px #000000;
+}
+
+/* .register-container {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -45,4 +118,4 @@
   .register-button:hover {
     background-color: #0056b3;
   }
-  
+   */

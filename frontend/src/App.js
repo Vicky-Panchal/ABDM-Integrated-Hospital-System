@@ -18,17 +18,17 @@ const App = () => {
   const [userState, setUserState] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    // Fetch user state from backend
-    axios.get('/api/user/state')
-      .then(response => {
-        setUserState(response.data.state);
-        setIsLoggedIn(response.data.isLoggedIn);
-      })
-      .catch(error => {
-        console.error('Error fetching user state:', error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   // Fetch user state from backend
+  //   axios.get('/api/user/state')
+  //     .then(response => {
+  //       setUserState(response.data.state);
+  //       setIsLoggedIn(response.data.isLoggedIn);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching user state:', error);
+  //     });
+  // }, []);
 
   return (
     <Router>

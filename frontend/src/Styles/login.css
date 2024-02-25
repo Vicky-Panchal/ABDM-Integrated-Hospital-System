@@ -1,4 +1,137 @@
-/* login.css */
+/* Update your existing CSS file or create a new one */
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #ddffff;
+}
+
+.login-container {
+  width: 800px;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #0099ff;
+  border-radius: 8px;
+}
+
+.divisions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.description {
+  width: 100%;
+}
+
+.description img {
+  text-align: left;
+  max-width: 170px;
+  margin-bottom: -60px;
+}
+
+.description h1 {
+  font-size: 3em;
+  color: #303030;
+  margin-bottom: 5px;
+}
+
+.description h3 {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 18px;
+  margin-top: -13px;
+}
+
+.forgotpass {
+  text-align: left;
+  width: 50%;
+  font-size: 0.8em;
+}
+
+.newuser {
+  text-align: right;
+  width: 50%;
+  font-size: 0.8em;
+}
+
+.login-button {
+  background-color: #0000ff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 20px;
+}
+
+.login-button:hover {
+  box-shadow: 0 0 8px #000000;
+}
+
+.error-message {
+  color: #ff4d4d;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+
+/* Update your existing CSS file or create a new one */
+
+/* .login-container {
+  background-color: aqua;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.divisions {
+  background-color: aquamarine;
+  display: flex; 
+}
+.description {
+  background-color: blue;
+  flex: 1; 
+}
+.form {
+  background-color: aliceblue;
+  flex: 1; 
+  margin-left: 20px; 
+} */
+
+
+
+/* login.css
 
 .login-container {
     max-width: 400px;
@@ -51,4 +184,4 @@
     color: red;
     margin-top: 10px;
   }
-  
+   */

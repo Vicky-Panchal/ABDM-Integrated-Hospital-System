@@ -22,5 +22,9 @@ application:
       refresh-token:
         expiration: 604800000 # 7 days
 
+  secrets:
+    clientId: SBX_004950
+    clientSecret: b625b82c-8163-4ef7-a6c7-84479b7df216
+
 server:
   port: 8081

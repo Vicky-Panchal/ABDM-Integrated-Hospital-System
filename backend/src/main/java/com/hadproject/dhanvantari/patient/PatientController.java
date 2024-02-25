@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PatientController {
 
     private final PatientService patientService;
-    private final ABDMService abdmService;
+
 
     @GetMapping
-    public String generateOtp() throws Exception {
+    public String generateOtp(String aadhaarId) throws Exception {
 
-        return abdmService.getToken();
+        return patientService.generateOtp(aadhaarId);
     }
 }

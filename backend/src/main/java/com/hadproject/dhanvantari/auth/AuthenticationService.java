@@ -62,9 +62,9 @@ public class AuthenticationService {
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
 
-    if(!user.getRole().equals(request.getRole())) {
-      throw new AccessDeniedException("Not Authorised");
-    }
+//    if(!user.getRole().equals(request.getRole())) {
+//      throw new AccessDeniedException("Not Authorised");
+//    }
 
 
     var jwtToken = jwtService.generateToken(user);
@@ -77,6 +77,7 @@ public class AuthenticationService {
             .firstName(user.getFirstname())
             .lastName(user.getLastname())
             .userId(user.getUserId())
+            .role(user.getRole())
         .build();
   }
 

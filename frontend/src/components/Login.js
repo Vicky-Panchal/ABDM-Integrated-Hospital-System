@@ -1,59 +1,47 @@
 import React, { useState } from "react";
-
-import "../Styles/login.css"; // Import the CSS file
+import { Link, useNavigate } from "react-router-dom"; // Import Link and useNavigate
+import "../Styles/login.css";
 import axios from "axios";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // useNavigate hook
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8081/api/v1/auth/authenticate",
-        { username, password }
+        { email, password }
       );
-      if (response.data.success) {
-        // Store user login info in localStorage
-        localStorage.setItem("isLoggedIn", true);
-        // Redirect to dashboard upon successful login
-        window.location.href = "/dashboard";
-      } else {
-        setError("Invalid username or password");
+
+      console.log('Response from backend:', response.data);
+
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", response.data.role);
+
+      switch (response.data.role) {
+        case "PATIENT":
+          navigate("/patient-dashboard"); // Use navigate to redirect
+          break;
+        case "CLINIC":
+          navigate("/clinic-dashboard");
+          break;
+        case "ADMIN":
+          navigate("/admin-dashboard");
+          break;
+        default:
+          setError("Invalid role");
       }
     } catch (error) {
       console.error("Error logging in:", error);
-      setError("An unexpected error occurred");
+      setError("Invalid username or password");
     }
   };
 
-  const handleRegister = () => {
-    // Redirect to registration page
-    window.location.href = "/selectoption";
-  };
-
   return (
-    // <div className="login-container">
-    //   <h2 className="login-heading">Login</h2>
-    //   <form onSubmit={handleLogin}>
-    //     <div className="form-group">
-    //       <label className="form-label">Username:</label>
-    //       <input type="text" className="form-input" value={username} onChange={(e) => setUsername(e.target.value)} required />
-    //     </div>
-    //     <div className="form-group">
-    //       <label className="form-label">Password:</label>
-    //       <input type="password" className="form-input" value={password} onChange={(e) => setPassword(e.target.value)} required />
-    //     </div>
-    //     <button type="submit" className="login-button">Login</button>
-    //     {error && <div className="error-message">{error}</div>}
-    //   </form>
-    //   <div className="new-user-option">
-    //     <p>New User? <button onClick={handleRegister} className="register-button">Register</button></p>
-    //   </div>
-    // </div>
-
     <div className="login-container">
       <div className="divisions">
         <div className="description">
@@ -64,17 +52,17 @@ const Login = () => {
         <div className="form">
           <form onSubmit={handleLogin}>
             <div className="form-group">
-              <label className="form-label">Username:</label>
+              <label className="form-label">Email :</label>
               <input
                 type="text"
                 className="form-input"
-                value={username}
+                value={email}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Password:</label>
+              <label className="form-label">Password :</label>
               <input
                 type="password"
                 className="form-input"
@@ -85,13 +73,15 @@ const Login = () => {
             </div>
             <div className="links">
               <div className="forgotpass">
-                <a href="google.com">Forgot Password?</a>
+                <a href="https://google.com">Forgot Password?</a>
               </div>
               <div className="newuser">
-                <a href="/selectoption">New User?</a>
+                <Link to="/selectoption">New User?</Link>
               </div>
             </div>
-            <button type="submit" className="login-button">Sign In</button>
+            <button type="submit" className="login-button">
+              Sign In
+            </button>
             {error && <div className="error-message">{error}</div>}
           </form>
         </div>

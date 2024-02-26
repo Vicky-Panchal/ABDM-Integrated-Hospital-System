@@ -38,7 +38,7 @@ const App = () => {
         <Route path="/selectoption" element={<SelectOptionPage />} />
         <Route path="/register/:option" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/patient-dashboard" element={<PatientDashboard />} />
       </Routes>
     </Router>
   );

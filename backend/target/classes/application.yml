@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/abdm_app
-    username: vicky
-    password: 7701ATMmmp#
+    username: keshav
+    password: Agarwal@77
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

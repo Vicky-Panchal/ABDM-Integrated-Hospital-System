@@ -76,6 +76,7 @@ public class AadhaarValidationService {
 
     // Validates Aadhaar
     public boolean validateAadhaar(String aadhaarString) {
+        System.out.println(aadhaarString.length());
         if (aadhaarString.length() != 12) {
             throw new IllegalArgumentException("Aadhaar numbers should be 12 digits in length");
         }

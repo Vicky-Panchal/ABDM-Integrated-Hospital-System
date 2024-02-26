@@ -1,16 +1,19 @@
 // PatientDashboard.js
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../Styles/patientDashboard.css";
 import Navbar from "../navbar";
 
 const PatientDashboard = () => {
+  
+  const navigate = useNavigate();
+
   return (
     <div>
       <Navbar />
       <div className="dashboard-container">
         <div className="row1">
-          <button className="component">ABDM Registration</button>
+          <button className="component" onClick={() => {navigate("/ABDMRegistration");}}>ABDM Registration</button>
           <button className="component">Lab Tests</button>
           <button className="component">Requests</button>
         </div>

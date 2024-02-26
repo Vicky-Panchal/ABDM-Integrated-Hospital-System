@@ -48,6 +48,8 @@ public class AuthenticationService {
             .lastName(savedUser.getLastname())
         .accessToken(jwtToken)
             .refreshToken(refreshToken)
+            .role(savedUser.getRole())
+            .userId(savedUser.getUserId())
         .build();
   }
 

@@ -1,6 +1,7 @@
 package com.hadproject.dhanvantari.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hadproject.dhanvantari.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +26,7 @@ public class AuthenticationResponse {
 
   @JsonProperty("user_id")
   private Integer userId;
+
+  @JsonProperty("role")
+  private Role role;
 }

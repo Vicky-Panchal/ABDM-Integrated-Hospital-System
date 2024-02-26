@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.auth;
 
+import com.hadproject.dhanvantari.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class AuthenticationRequest {
 
   private String email;
-  String password;
+  private String password;
 }

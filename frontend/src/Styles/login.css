@@ -1,54 +1,106 @@
-/* login.css */
+/* Update your existing CSS file or create a new one */
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #ddffff;
+}
 
 .login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-heading {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .login-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
-  }
-  
+  width: 800px;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #0099ff;
+  border-radius: 8px;
+}
+
+.divisions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.description {
+  width: 100%;
+}
+
+.description img {
+  text-align: left;
+  max-width: 170px;
+  margin-bottom: -20px;
+}
+
+.description h1 {
+  font-size: 3em;
+  color: #303030;
+  margin-bottom: -10px;
+}
+
+.description h3 {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 18px;
+  margin-top: -13px;
+}
+
+.forgotpass {
+  text-align: left;
+  width: 50%;
+  font-size: 0.8em;
+}
+
+.newuser {
+  text-align: right;
+  width: 50%;
+  font-size: 0.8em;
+}
+
+.login-button {
+  background-color: #0000ff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 20px;
+}
+
+.login-button:hover {
+  box-shadow: 0 0 8px #000000;
+}
+
+.error-message {
+  color: #ff0000;
+  margin-top: 10px;
+  font-size: 0.9em;
+}

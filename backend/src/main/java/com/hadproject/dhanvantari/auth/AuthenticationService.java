@@ -54,13 +54,13 @@ public class AuthenticationService {
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
-
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             request.getEmail(),
             request.getPassword()
         )
     );
+
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
 
@@ -68,11 +68,11 @@ public class AuthenticationService {
 //      throw new AccessDeniedException("Not Authorised");
 //    }
 
-
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
+
     return AuthenticationResponse.builder()
         .accessToken(jwtToken)
             .refreshToken(refreshToken)

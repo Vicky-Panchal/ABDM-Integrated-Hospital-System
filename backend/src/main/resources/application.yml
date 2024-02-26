@@ -1,8 +1,13 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/abdm_app
+<<<<<<< HEAD
     username: parag
     password: 12345678
+=======
+    username: vicky
+    password: 7701ATMmmp#
+>>>>>>> 5c20b9aee95d10b3975236259741ee53d28696b5
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -21,6 +26,10 @@ application:
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
+
+  secrets:
+    clientId: SBX_004950
+    clientSecret: b625b82c-8163-4ef7-a6c7-84479b7df216
 
 server:
   port: 8081

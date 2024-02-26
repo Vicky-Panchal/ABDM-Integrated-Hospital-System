@@ -73,7 +73,7 @@ public class ABDMService {
         return token;
     }
 
-    private String encryptData(String data) throws Exception {
+    public String encryptData(String data) throws Exception {
         byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);

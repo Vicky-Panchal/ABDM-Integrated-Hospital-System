@@ -19,11 +19,10 @@ public class PatientController {
 
     @PostMapping("/generateOtp")
     public GenerateOtpResponse generateOtp(@RequestBody GenerateOtpRequest data) throws Exception {
-        System.out.println(data.aadhaar);
         return patientService.generateOtp(data.aadhaar);
     }
 
-    public void verifyOtp(@RequestBody ) {
-
+    public void verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception {
+        
     }
 }

@@ -19,4 +19,10 @@ public class PatientService {
         System.out.println("After aadhaar validation");
         return abdmService.generateOtp(aadhaarId);
     }
+
+//    public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) {
+//        String otp = abdmService.encryptData(data.getOtp());
+//        return abdmService.verifyOtp(otp, data.getTxnId());
+//
+//    }
 }

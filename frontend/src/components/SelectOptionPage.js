@@ -12,7 +12,7 @@ const SelectOptionPage = () => {
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    navigate(`/register/${option}`);
+    navigate(`/RegisterPage/${option}`);
   };
 
   // const SelectOptionPage = () => {

@@ -35,11 +35,11 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/selectoption" element={<SelectOptionPage />} />
-        <Route path="/register/:option" element={<RegisterPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/patient-dashboard" element={<PatientDashboard />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/SelectOptionPage" element={<SelectOptionPage />} />
+        <Route path="/RegisterPage/:option" element={<RegisterPage />} />
+        <Route path="/DashboardPage" element={<DashboardPage />} />
+        <Route path="/PatientDashboard" element={<PatientDashboard />} />
         <Route path="/ABDMRegistration" element={<ABDMRegistration />} />
       </Routes>
     </Router>

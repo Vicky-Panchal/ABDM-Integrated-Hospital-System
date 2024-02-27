@@ -82,7 +82,7 @@ const ABDMRegistration = () => {
             <h3>Provide your Mobile Number</h3>
           </div>
           <div className="form">
-            <form onSubmit={handleAadharSubmit}>
+            <form onSubmit={handlePhoneSubmit}>
               <div className="form-group">
                 <label className="form-label">Mobile Number :</label>
                 <input

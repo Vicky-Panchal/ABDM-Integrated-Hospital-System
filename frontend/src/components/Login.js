@@ -24,13 +24,13 @@ const Login = () => {
 
       switch (response.data.role) {
         case "PATIENT":
-          navigate("/patient-dashboard"); // Use navigate to redirect
+          navigate("/PatientDashboard"); // Use navigate to redirect
           break;
         case "CLINIC":
-          navigate("/clinic-dashboard");
+          navigate("/ClinicDashboard");
           break;
         case "ADMIN":
-          navigate("/admin-dashboard");
+          navigate("/AdminDashboard");
           break;
         default:
           setError("Invalid role");
@@ -76,7 +76,7 @@ const Login = () => {
                 <a href="https://google.com">Forgot Password?</a>
               </div>
               <div className="newuser">
-                <Link to="/selectoption">New User?</Link>
+                <Link to="/SelectOptionPage">New User?</Link>
               </div>
             </div>
             <button type="submit" className="login-button">

@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/v1/patient")
@@ -14,9 +17,13 @@ public class PatientController {
     private final PatientService patientService;
 
 
-    @GetMapping
-    public String generateOtp(String aadhaarId) throws Exception {
-
-        return patientService.generateOtp(aadhaarId);
+    @PostMapping("/generateOtp")
+    public GenerateOtpResponse generateOtp(@RequestBody GenerateOtpRequest data) throws Exception {
+        return patientService.generateOtp(data.aadhaar);
     }
+
+//    @PostMapping("/verifyOtp")
+//    public VerifyOtpResponse verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception {
+//        return patientService.verifyOtp(data);
+//    }
 }

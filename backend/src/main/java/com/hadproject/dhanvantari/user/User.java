@@ -29,6 +29,7 @@ public class User implements UserDetails {
   private Integer userId;
 
   private String firstname;
+  private String middlename;
   private String lastname;
   @Column(unique = true)
   private String email;

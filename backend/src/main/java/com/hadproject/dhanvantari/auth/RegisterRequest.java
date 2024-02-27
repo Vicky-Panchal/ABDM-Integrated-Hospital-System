@@ -15,6 +15,7 @@ import java.util.Date;
 public class RegisterRequest {
 
   private String firstname;
+  private String middlename;
   private String lastname;
   private String email;
   private String password;

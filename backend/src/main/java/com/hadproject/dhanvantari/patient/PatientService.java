@@ -11,10 +11,18 @@ public class PatientService {
 
     private final ABDMService abdmService;
     private final AadhaarValidationService aadhaarValidationService;
-    String generateOtp(String aadhaarId) throws Exception{
+    GenerateOtpResponse generateOtp(String aadhaarId) throws Exception{
         if(aadhaarValidationService.validateAadhaar(aadhaarId)) {
             throw new Exception("Invalid aadhaar id");
         }
+
+        System.out.println("After aadhaar validation");
         return abdmService.generateOtp(aadhaarId);
     }
+
+//    public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) {
+//        String otp = abdmService.encryptData(data.getOtp());
+//        return abdmService.verifyOtp(otp, data.getTxnId());
+//
+//    }
 }

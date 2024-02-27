@@ -7,6 +7,7 @@ const RegisterPage = () => {
   const { option } = useParams();
   const [formData, setFormData] = useState({
     firstName: "",
+    middleName: "",
     lastName: "",
     email: "",
     dob: "",
@@ -31,7 +32,7 @@ const RegisterPage = () => {
       );
       console.log("Registration successful!", response.data);
       // Redirect to login page after successful registration
-      // window.location.href = '/login';
+      window.location.href = '/Login';
     } catch (error) {
       console.error("Registration failed:", error);
     }
@@ -55,6 +56,14 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
+            <label className="form-label">Middle Name : </label>
+            <input
+              type="text"
+              name="middleName"
+              className="form-input"
+              value={formData.middleName}
+              onChange={handleFormChange}
+            />
             <label className="form-label">Last Name : </label>
             <input
               type="text"
@@ -64,7 +73,18 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
-            <label className="form-label">Phone Number : </label>
+            <label className="form-label">Date of Birth : </label>
+            <input
+              type="date"
+              name="dob"
+              className="form-input"
+              value={formData.dob}
+              onChange={handleFormChange}
+              required
+            />
+          </div>
+          <div className="account-info">
+          <label className="form-label">Phone Number : </label>
             <input
               type="tel"
               name="phoneNumber"
@@ -82,18 +102,7 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
-          </div>
-          <div className="account-info">
-            <label className="form-label">Date of Birth : </label>
-            <input
-              type="date"
-              name="dob"
-              className="form-input"
-              value={formData.dob}
-              onChange={handleFormChange}
-              required
-            />
-            <label className="form-label">Role : </label>
+            {/* <label className="form-label">Role : </label>
             <input
               type="text"
               name="role"
@@ -101,7 +110,7 @@ const RegisterPage = () => {
               value={formData.role}
               onChange={handleFormChange}
               required
-            />
+            /> */}
             <label className="form-label">Password : </label>
             <input
               type="password"

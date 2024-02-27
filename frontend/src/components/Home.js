@@ -10,7 +10,7 @@ const Home = () => {
       <h2 className="home-heading">Welcome to the Home Page</h2>
       <p className="home-text">This is a simple home page for our application.</p>
       <p className="home-text">Please log in to access the dashboard.</p>
-      <Link to="/login" className="login-link">Login</Link>
+      <Link to="/Login" className="login-link">Login</Link>
     </div>
   );
 };

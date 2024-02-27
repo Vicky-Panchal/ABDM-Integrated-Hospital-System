@@ -10,13 +10,13 @@ const DashboardPage = () => {
       <h1 className="dashboard-heading">Dashboard</h1>
       <ul className="dashboard-list">
         <li className="dashboard-item">
-          <Link to="/abdm-registration" className="dashboard-link">ABDM Registration</Link>
+          <Link to="/ABDMRegistration" className="dashboard-link">ABDM Registration</Link>
         </li>
         <li className="dashboard-item">
-          <Link to="/doc-upload" className="dashboard-link">Doc Upload</Link>
+          <Link to="/DocUpload" className="dashboard-link">Doc Upload</Link>
         </li>
         <li className="dashboard-item">
-          <Link to="/doc-download" className="dashboard-link">Doc Download</Link>
+          <Link to="/DocDownload" className="dashboard-link">Doc Download</Link>
         </li>
       </ul>
     </div>

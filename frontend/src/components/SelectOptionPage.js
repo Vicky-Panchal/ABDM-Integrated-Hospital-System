@@ -12,7 +12,7 @@ const SelectOptionPage = () => {
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    navigate(`/register/${option}`);
+    navigate(`/RegisterPage/${option}`);
   };
 
   // const SelectOptionPage = () => {
@@ -34,10 +34,10 @@ const SelectOptionPage = () => {
         </div>
         <div className="options">
           <div className="buttons">
-            <button className="option-button" onClick={() => handleOptionSelect("Patient")}>Patient</button>
+            <button className="option-button" onClick={() => handleOptionSelect("PATIENT")}>Patient</button>
           </div>
           <div className="buttons">
-            <button className="option-button" onClick={() => handleOptionSelect("Clinic")}>Clinic</button>
+            <button className="option-button" onClick={() => handleOptionSelect("CLINIC")}>Clinic</button>
           </div>
         </div>
       </div>

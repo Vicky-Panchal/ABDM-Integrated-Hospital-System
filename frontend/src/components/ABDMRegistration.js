@@ -28,6 +28,7 @@ const ABDMRegistration = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer ",
         },
         body: JSON.stringify({ aadharNumber }),
       });

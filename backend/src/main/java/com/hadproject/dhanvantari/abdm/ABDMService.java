@@ -3,10 +3,7 @@ package com.hadproject.dhanvantari.abdm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hadproject.dhanvantari.patient.CheckAndGenerateMobileOtpRequest;
-import com.hadproject.dhanvantari.patient.CheckAndGenerateMobileOtpResponse;
-import com.hadproject.dhanvantari.patient.GenerateOtpResponse;
-import com.hadproject.dhanvantari.patient.VerifyOtpResponse;
+import com.hadproject.dhanvantari.patient.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -167,4 +164,34 @@ public class ABDMService {
                 .mobileLinked(rootNode.get("mobileLinked").asBoolean())
                 .build();
     }
+
+    public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
+        setToken();
+        var values = new HashMap<String, Object>() {{
+            put("consent", data.isConsent());
+            put("consentVersion", data.getConsentVersion());
+            put("txnId", data.getTxnId());
+        }};
+
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(values);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/createHealthIdByAdhaar"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+        JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
+
+        return CreateHealthIdByAadhaarResponse.builder()
+                .token(rootNode.get("token").asText())
+                .build();
+    }
+
+    
 }

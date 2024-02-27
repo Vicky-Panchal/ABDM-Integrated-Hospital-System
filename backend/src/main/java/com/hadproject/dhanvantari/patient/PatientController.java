@@ -28,7 +28,15 @@ public class PatientController {
         return patientService.verifyOtp(data);
     }
 
+    @PostMapping("/checkAndGenerateMobileOTP")
     public CheckAndGenerateMobileOtpResponse CheckAndGenerateMobileOtp(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
         return patientService.CheckAndGenerateMobileOtp(data);
     }
+
+    @PostMapping("/createHealthIdByAdhaar")
+    public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
+        return patientService.createHealthIdByAadhaar(data);
+    }
+
+
 }

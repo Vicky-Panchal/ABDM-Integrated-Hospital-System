@@ -21,11 +21,15 @@ public class PatientService {
         return abdmService.generateOtp(aadhaarId);
     }
 
-        public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) throws Exception, JsonProcessingException {
-            return abdmService.verifyOtp(data.getOtp(), data.getTxnId());
-        }
+    public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) throws Exception, JsonProcessingException {
+        return abdmService.verifyOtp(data.getOtp(), data.getTxnId());
+    }
 
-        public CheckAndGenerateMobileOtpResponse CheckAndGenerateMobileOtp(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
-            return abdmService.checkAndGenerateMobileOTP(data);
-        }
+    public CheckAndGenerateMobileOtpResponse CheckAndGenerateMobileOtp(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+        return abdmService.checkAndGenerateMobileOTP(data);
+    }
+
+    public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
+        return abdmService.createHealthIdByAadhaar(data);
+    }
 }

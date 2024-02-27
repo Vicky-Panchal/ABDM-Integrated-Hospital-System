@@ -1,7 +1,10 @@
 package com.hadproject.dhanvantari.abdm;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hadproject.dhanvantari.patient.CheckAndGenerateMobileOtpRequest;
+import com.hadproject.dhanvantari.patient.CheckAndGenerateMobileOtpResponse;
 import com.hadproject.dhanvantari.patient.GenerateOtpResponse;
 import com.hadproject.dhanvantari.patient.VerifyOtpResponse;
 import lombok.Getter;
@@ -111,16 +114,16 @@ public class ABDMService {
                 .build();
     }
 
-    public VerifyOtpResponse verifyOtp(String otp, String txn) throws Exception {
+    public VerifyOtpResponse verifyOtp(String otp, String txn) throws Exception, JsonProcessingException {
         setToken();
         var values = new HashMap<String, String>() {{
             put("otp", encryptData(otp));
             put("txnId", txn);
         }};
-        System.out.println(values);
         var objectMapper = new ObjectMapper();
         String requestBody = objectMapper
                 .writeValueAsString(values);
+
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/verifyOTP"))
@@ -132,9 +135,36 @@ public class ABDMService {
                 HttpResponse.BodyHandlers.ofString());
         JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
 
-        System.out.println(rootNode);
         return VerifyOtpResponse.builder()
                 .txnId(rootNode.get("txnId").asText())
+                .build();
+    }
+
+    public CheckAndGenerateMobileOtpResponse checkAndGenerateMobileOTP(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+        setToken();
+        var values = new HashMap<String, String>() {{
+            put("mobile", data.getMobile());
+            put("txnId", data.getTxnId());
+        }};
+
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(values);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/checkAndGenerateMobileOTP"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+        JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
+
+        return CheckAndGenerateMobileOtpResponse.builder()
+                .txnId(rootNode.get("txnId").asText())
+                .mobileLinked(rootNode.get("mobileLinked").asBoolean())
                 .build();
     }
 }

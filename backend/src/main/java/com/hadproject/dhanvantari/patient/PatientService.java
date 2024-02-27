@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.patient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.abdm.AadhaarValidationService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,11 @@ public class PatientService {
         return abdmService.generateOtp(aadhaarId);
     }
 
-        public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) throws Exception {
-        return abdmService.verifyOtp(data.getOtp(), data.getTxnId());
-    }
+        public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) throws Exception, JsonProcessingException {
+            return abdmService.verifyOtp(data.getOtp(), data.getTxnId());
+        }
+
+        public CheckAndGenerateMobileOtpResponse CheckAndGenerateMobileOtp(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+            return abdmService.checkAndGenerateMobileOTP(data);
+        }
 }

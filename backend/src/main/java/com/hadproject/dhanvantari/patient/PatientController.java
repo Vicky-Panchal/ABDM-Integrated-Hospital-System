@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.patient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,11 @@ public class PatientController {
     }
 
     @PostMapping("/verifyOtp")
-    public VerifyOtpResponse verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception {
+    public VerifyOtpResponse verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception, JsonProcessingException {
         return patientService.verifyOtp(data);
+    }
+
+    public CheckAndGenerateMobileOtpResponse CheckAndGenerateMobileOtp(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+        return patientService.CheckAndGenerateMobileOtp(data);
     }
 }

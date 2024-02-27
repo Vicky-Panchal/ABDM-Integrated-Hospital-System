@@ -20,9 +20,7 @@ public class PatientService {
         return abdmService.generateOtp(aadhaarId);
     }
 
-//    public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) {
-//        String otp = abdmService.encryptData(data.getOtp());
-//        return abdmService.verifyOtp(otp, data.getTxnId());
-//
-//    }
+        public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) throws Exception {
+        return abdmService.verifyOtp(data.getOtp(), data.getTxnId());
+    }
 }

@@ -3,6 +3,7 @@ package com.hadproject.dhanvantari.abdm;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hadproject.dhanvantari.patient.GenerateOtpResponse;
+import com.hadproject.dhanvantari.patient.VerifyOtpResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,11 +111,13 @@ public class ABDMService {
                 .build();
     }
 
-    public String verifyOtp(String otp, String txn) throws Exception {
+    public VerifyOtpResponse verifyOtp(String otp, String txn) throws Exception {
+        setToken();
         var values = new HashMap<String, String>() {{
             put("otp", encryptData(otp));
-            put("txn", encryptData(txn));
+            put("txnId", txn);
         }};
+        System.out.println(values);
         var objectMapper = new ObjectMapper();
         String requestBody = objectMapper
                 .writeValueAsString(values);
@@ -123,11 +126,15 @@ public class ABDMService {
                 .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/verifyOTP"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
                 .build();
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
 
-        return rootNode.get("txn").asText();
+        System.out.println(rootNode);
+        return VerifyOtpResponse.builder()
+                .txnId(rootNode.get("txnId").asText())
+                .build();
     }
 }

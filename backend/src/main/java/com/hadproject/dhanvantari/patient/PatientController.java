@@ -22,8 +22,8 @@ public class PatientController {
         return patientService.generateOtp(data.aadhaar);
     }
 
-//    @PostMapping("/verifyOtp")
-//    public VerifyOtpResponse verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception {
-//        return patientService.verifyOtp(data);
-//    }
+    @PostMapping("/verifyOtp")
+    public VerifyOtpResponse verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception {
+        return patientService.verifyOtp(data);
+    }
 }

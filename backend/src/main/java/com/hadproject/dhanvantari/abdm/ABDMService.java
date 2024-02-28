@@ -4,10 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hadproject.dhanvantari.patient.*;
+import io.jsonwebtoken.io.IOException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -131,7 +136,7 @@ public class ABDMService {
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
-
+        System.out.println(rootNode);
         return VerifyOtpResponse.builder()
                 .txnId(rootNode.get("txnId").asText())
                 .build();
@@ -139,11 +144,12 @@ public class ABDMService {
 
     public CheckAndGenerateMobileOtpResponse checkAndGenerateMobileOTP(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
         setToken();
-        var values = new HashMap<String, String>() {{
+        System.out.println(data);
+        var values = new HashMap<String, Object>() {{
             put("mobile", data.getMobile());
             put("txnId", data.getTxnId());
         }};
-
+        System.out.println(values);
         var objectMapper = new ObjectMapper();
         String requestBody = objectMapper
                 .writeValueAsString(values);
@@ -158,7 +164,7 @@ public class ABDMService {
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
-
+        System.out.println(rootNode);
         return CheckAndGenerateMobileOtpResponse.builder()
                 .txnId(rootNode.get("txnId").asText())
                 .mobileLinked(rootNode.get("mobileLinked").asBoolean())
@@ -193,5 +199,26 @@ public class ABDMService {
                 .build();
     }
 
+    public byte[] getCard(String token) throws Exception, IOException, RestClientException {
+        setToken();
 
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v1/account/getCard"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .header("X-Token", "Bearer " + token)
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+
+        HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+
+        // Handle status code here if needed
+        if (response.statusCode() != 200) {
+            throw new IOException("Failed to fetch card: " + response.statusCode());
+        }
+
+        return response.body();
+    }
 }

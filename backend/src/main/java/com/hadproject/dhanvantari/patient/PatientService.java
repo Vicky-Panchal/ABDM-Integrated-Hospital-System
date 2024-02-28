@@ -3,8 +3,10 @@ package com.hadproject.dhanvantari.patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.abdm.AadhaarValidationService;
+import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +33,9 @@ public class PatientService {
 
     public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
         return abdmService.createHealthIdByAadhaar(data);
+    }
+
+    public byte[] getCard(String token) throws RestClientException, IOException, Exception {
+        return abdmService.getCard(token);
     }
 }

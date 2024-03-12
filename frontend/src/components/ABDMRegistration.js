@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../Styles/abdmRegistration.css";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ABDMRegistration = () => {
   const [aadharNumber, setAadharNumber] = useState("");
@@ -24,13 +25,17 @@ const ABDMRegistration = () => {
     e.preventDefault();
     try {
       // Make API call to send Aadhar number and get OTP
-      const response = await fetch("http://localhost:8081/api/v1/patient/generateOtp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ aadharNumber }),
-      });
+      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      console.log("token ", token)
+      const response = await axios.post("http://localhost:8081/api/v1/patient/generateOtp",
+        { "aadhaar": aadharNumber },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            }
+        }
+      );
       const data = await response.json();
       console.log("OTP sent, txnId:", data.txnId);
       setTxnId(data.txnId);
@@ -40,7 +45,7 @@ const ABDMRegistration = () => {
       // Enable OTP field after sending OTP
       setOtpFieldDisabled(false);
     } catch (error) {
-      console.error("Error sending Aadhar number:", error);
+      console.error("Error sending Aadhaar number:", error);
     }
   };
 
@@ -48,10 +53,13 @@ const ABDMRegistration = () => {
     e.preventDefault();
     try {
       // Make API call to verify OTP
-      const response = await fetch("your-backend-url", {
+      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      console.log("token ", token)
+      const response = await axios.post("your-backend-url", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ txnId, otp }),
       });

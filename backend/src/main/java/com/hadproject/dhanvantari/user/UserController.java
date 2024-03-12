@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.user;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,7 +17,8 @@ public class UserController {
 
     private final UserService service;
 
-    @PatchMapping
+    @Operation(summary = "Change Password for the user")
+    @PatchMapping("/changePassword")
     public ResponseEntity<?> changePassword(
           @RequestBody ChangePasswordRequest request,
           Principal connectedUser

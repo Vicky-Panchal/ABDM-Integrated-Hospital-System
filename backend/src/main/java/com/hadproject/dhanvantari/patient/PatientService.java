@@ -1,9 +1,12 @@
 package com.hadproject.dhanvantari.patient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.abdm.AadhaarValidationService;
+import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +23,19 @@ public class PatientService {
         return abdmService.generateOtp(aadhaarId);
     }
 
-//    public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) {
-//        String otp = abdmService.encryptData(data.getOtp());
-//        return abdmService.verifyOtp(otp, data.getTxnId());
-//
-//    }
+    public VerifyOtpResponse verifyOtp(VerifyOtpRequest data) throws Exception, JsonProcessingException {
+        return abdmService.verifyOtp(data.getOtp(), data.getTxnId());
+    }
+
+    public CheckAndGenerateMobileOtpResponse CheckAndGenerateMobileOtp(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+        return abdmService.checkAndGenerateMobileOTP(data);
+    }
+
+    public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
+        return abdmService.createHealthIdByAadhaar(data);
+    }
+
+    public byte[] getCard(String token) throws RestClientException, IOException, Exception {
+        return abdmService.getCard(token);
+    }
 }

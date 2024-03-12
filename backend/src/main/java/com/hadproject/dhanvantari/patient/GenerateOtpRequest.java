@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GenerateOtpRequest {
 
-    public String aadhaar;
+    String aadhaar;
 }

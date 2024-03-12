@@ -27,15 +27,15 @@ const ABDMRegistration = () => {
       // Make API call to send Aadhar number and get OTP
       const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
       console.log("token ", token)
-      const response = await axios.post("http://localhost:8081/api/v1/patient/generateOtp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': '*',
-          "Authorization": `Bearer ${token}`,
-        },
-        body: { "aadhaar": aadharNumber },
-      });
+      const response = await axios.post("http://localhost:8081/api/v1/patient/generateOtp",
+        { "aadhaar": aadharNumber },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            }
+        }
+      );
       const data = await response.json();
       console.log("OTP sent, txnId:", data.txnId);
       setTxnId(data.txnId);

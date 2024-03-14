@@ -24,20 +24,19 @@ const ABDMRegistration = () => {
   const handleAadharSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = JSON.parse(localStorage.getItem('loggedInUser')).access_token;
-      console.log("token: " + token);
-      
-      const response = await axios({
-        method: 'post',
-        url: `http://localhost:8081/api/v1/patient/generateOtp`,
-        data: aadharNumber,
-        headers: {
-            "Content-Type":"application/json",
-            "Access-Control-Allow-Origin": "*",
-            Authorization: `Bearer ${token}`,
-        },
-    });
-      const data = response.data;
+      // Make API call to send Aadhar number and get OTP
+      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      console.log("token ", token)
+      const response = await axios.post("http://localhost:8081/api/v1/patient/generateOtp",
+        { "aadhaar": aadharNumber },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            }
+        }
+      );
+      const data = await response.json();
       console.log("OTP sent, txnId:", data.txnId);
       setTxnId(data.txnId);
       setOtpSentMessage(`OTP sent to ${phoneNumber.slice(-4)}`);
@@ -46,7 +45,7 @@ const ABDMRegistration = () => {
       // Enable OTP field after sending OTP
       setOtpFieldDisabled(false);
     } catch (error) {
-      console.error("Error sending Aadhar number:", error);
+      console.error("Error sending Aadhaar number:", error);
     }
   };
 
@@ -54,10 +53,13 @@ const ABDMRegistration = () => {
     e.preventDefault();
     try {
       // Make API call to verify OTP
-      const response = await fetch("your-backend-url", {
+      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      console.log("token ", token)
+      const response = await axios.post("your-backend-url", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ txnId, otp }),
       });

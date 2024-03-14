@@ -1,12 +1,18 @@
 package com.hadproject.dhanvantari.abdm;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hadproject.dhanvantari.patient.GenerateOtpResponse;
+import com.hadproject.dhanvantari.patient.*;
+import io.jsonwebtoken.io.IOException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -110,24 +116,109 @@ public class ABDMService {
                 .build();
     }
 
-    public String verifyOtp(String otp, String txn) throws Exception {
+    public VerifyOtpResponse verifyOtp(String otp, String txn) throws Exception, JsonProcessingException {
+        setToken();
         var values = new HashMap<String, String>() {{
             put("otp", encryptData(otp));
-            put("txn", encryptData(txn));
+            put("txnId", txn);
         }};
         var objectMapper = new ObjectMapper();
         String requestBody = objectMapper
                 .writeValueAsString(values);
+
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/verifyOTP"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+        JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
+        System.out.println(rootNode);
+        return VerifyOtpResponse.builder()
+                .txnId(rootNode.get("txnId").asText())
+                .build();
+    }
+
+    public CheckAndGenerateMobileOtpResponse checkAndGenerateMobileOTP(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+        setToken();
+        System.out.println(data);
+        var values = new HashMap<String, Object>() {{
+            put("mobile", data.getMobile());
+            put("txnId", data.getTxnId());
+        }};
+        System.out.println(values);
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(values);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/checkAndGenerateMobileOTP"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+        JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
+        System.out.println(rootNode);
+        return CheckAndGenerateMobileOtpResponse.builder()
+                .txnId(rootNode.get("txnId").asText())
+                .mobileLinked(rootNode.get("mobileLinked").asBoolean())
+                .build();
+    }
+
+    public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
+        setToken();
+        var values = new HashMap<String, Object>() {{
+            put("consent", data.isConsent());
+            put("consentVersion", data.getConsentVersion());
+            put("txnId", data.getTxnId());
+        }};
+
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(values);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/createHealthIdByAdhaar"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
                 .build();
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
         JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
 
-        return rootNode.get("txn").asText();
+        return CreateHealthIdByAadhaarResponse.builder()
+                .token(rootNode.get("token").asText())
+                .build();
+    }
+
+    public byte[] getCard(String token) throws Exception, IOException, RestClientException {
+        setToken();
+
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v1/account/getCard"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .header("X-Token", "Bearer " + token)
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+
+        HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+
+        // Handle status code here if needed
+        if (response.statusCode() != 200) {
+            throw new IOException("Failed to fetch card: " + response.statusCode());
+        }
+
+        return response.body();
     }
 }

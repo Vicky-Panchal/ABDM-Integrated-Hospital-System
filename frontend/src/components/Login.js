@@ -17,12 +17,13 @@ const Login = () => {
         { email, password }
       );
 
-      console.log('Response from backend:', response.data);
+      // console.log('Response from backend:', response.data);
 
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", response.data.role);
-      window.localStorage.setItem('loggedInUser', JSON.stringify(response.data))
-
+      console.log("loggedInUser: " + JSON.stringify(response.data))
+      window.localStorage.setItem("loggedInUser", JSON.stringify(response.data));
+      
       switch (response.data.role) {
         case "PATIENT":
           navigate("/PatientDashboard"); // Use navigate to redirect

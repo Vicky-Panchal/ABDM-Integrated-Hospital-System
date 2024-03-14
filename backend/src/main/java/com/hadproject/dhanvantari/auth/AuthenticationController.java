@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.auth;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class AuthenticationController {
 
   private final AuthenticationService service;
 
+  @Operation(summary = "Register a new user")
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
       @RequestBody RegisterRequest request
@@ -22,6 +24,7 @@ public class AuthenticationController {
     return ResponseEntity.ok(service.register(request));
   }
 
+  @Operation(summary = "Authenticate user for logging")
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
@@ -30,6 +33,7 @@ public class AuthenticationController {
     return ResponseEntity.ok(service.authenticate(request));
   }
 
+  @Operation(summary = "To refresh the access token")
   @PostMapping("/refresh-token")
   public void refreshToken(
       HttpServletRequest request,

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../Styles/abdmRegistration.css";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ABDMRegistration = () => {
   const [aadharNumber, setAadharNumber] = useState("");
@@ -23,15 +24,20 @@ const ABDMRegistration = () => {
   const handleAadharSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Make API call to send Aadhar number and get OTP
-      const response = await fetch("http://localhost:8081/api/v1/patient/generateOtp", {
-        method: "POST",
+      const token = JSON.parse(localStorage.getItem('loggedInUser')).access_token;
+      console.log("token: " + token);
+      
+      const response = await axios({
+        method: 'post',
+        url: `http://localhost:8081/api/v1/patient/generateOtp`,
+        data: aadharNumber,
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type":"application/json",
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ aadharNumber }),
-      });
-      const data = await response.json();
+    });
+      const data = response.data;
       console.log("OTP sent, txnId:", data.txnId);
       setTxnId(data.txnId);
       setOtpSentMessage(`OTP sent to ${phoneNumber.slice(-4)}`);
@@ -109,7 +115,7 @@ const ABDMRegistration = () => {
       </div>
 
       <div className={`slide ${currentSlide === 2 ? "active" : ""}`}>
-      <div className="divisions">
+        <div className="divisions">
           <div className="description">
             <img src="/hadlogo.png" alt="logo"></img>
             <h1>ABDM User</h1>
@@ -139,7 +145,6 @@ const ABDMRegistration = () => {
         </div>
       </div>
     </div>
-
   );
 };
 

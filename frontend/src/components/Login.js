@@ -21,6 +21,7 @@ const Login = () => {
 
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", response.data.role);
+      window.localStorage.setItem('loggedInUser', JSON.stringify(response.data))
 
       switch (response.data.role) {
         case "PATIENT":

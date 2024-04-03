@@ -40,6 +40,7 @@ public class User implements UserDetails {
 
   @Column(unique = true, nullable = true)
   public String healthId;
+
   @Column(nullable = true)
   public String healthIdNumber;
 

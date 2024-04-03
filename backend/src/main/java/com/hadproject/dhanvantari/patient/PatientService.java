@@ -38,4 +38,6 @@ public class PatientService {
     public byte[] getCard(String token) throws RestClientException, IOException, Exception {
         return abdmService.getCard(token);
     }
+
+    
 }

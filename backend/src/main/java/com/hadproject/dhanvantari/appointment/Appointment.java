@@ -1,6 +1,7 @@
 package com.hadproject.dhanvantari.appointment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.patient.Patient;
 import jakarta.persistence.*;
@@ -45,4 +46,12 @@ public class Appointment {
     )
     @JsonIgnore
     public Doctor doctor;
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(
+            name = "care_context_id_fk",
+            referencedColumnName = "careContextId"
+    )
+    public CareContext careContext;
 }

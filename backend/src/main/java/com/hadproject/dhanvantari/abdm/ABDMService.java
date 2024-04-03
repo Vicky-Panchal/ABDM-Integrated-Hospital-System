@@ -1,29 +1,41 @@
 package com.hadproject.dhanvantari.abdm;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hadproject.dhanvantari.patient.GenerateOtpResponse;
+import com.hadproject.dhanvantari.patient.*;
+import io.jsonwebtoken.io.IOException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
+import javax.crypto.Cipher;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-import javax.crypto.Cipher;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.HashMap;
+
+import static com.hadproject.dhanvantari.abdm.ABDMServiceHelper.*;
 
 @Getter
 @Service
 @RequiredArgsConstructor
 public class ABDMService {
-
+    Logger logger = LoggerFactory.getLogger(ABDMService.class);
     private String token;
     private static final String RSA_ALGORITHM = "RSA";
     private static final String RSA_PADDING = "RSA/ECB/PKCS1Padding";
@@ -51,26 +63,34 @@ public class ABDMService {
 
     public String setToken() throws Exception {
 
-        var values = new HashMap<String, String>() {{
-            put("clientId", clientId);
-            put ("clientSecret", clientSecret);
-        }};
+        try {
+            var values = new HashMap<String, String>() {{
+                put("clientId", clientId);
+                put("clientSecret", clientSecret);
+            }};
 
-        var objectMapper = new ObjectMapper();
-        String requestBody = objectMapper
-                .writeValueAsString(values);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://dev.abdm.gov.in/gateway/v0.5/sessions"))
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .header("Content-Type", "application/json")
-                .build();
-        HttpResponse<String> response = client.send(request,
-                HttpResponse.BodyHandlers.ofString());
-        JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
-        this.token = rootNode.get("accessToken").asText();
+            var objectMapper = new ObjectMapper();
+            String requestBody = objectMapper.writeValueAsString(values);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://dev.abdm.gov.in/gateway/v0.5/sessions"))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .header("Content-Type", "application/json")
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        return token;
+            // Check if response is successful
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed to obtain token: " + response.body());
+            }
+
+            JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
+            this.token = rootNode.get("accessToken").asText();
+
+            return token;
+        } catch (Exception e) {
+            throw new Exception("Failed to set token: " + e.getMessage(), e);
+        }
     }
 
     public String encryptData(String data) throws Exception {
@@ -102,6 +122,10 @@ public class ABDMService {
                 .build();
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to obtain token: " + response.body());
+        }
+
         JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
         System.out.println(rootNode);
         return GenerateOtpResponse.builder()
@@ -110,24 +134,177 @@ public class ABDMService {
                 .build();
     }
 
-    public String verifyOtp(String otp, String txn) throws Exception {
+    public VerifyOtpResponse verifyOtp(String otp, String txn) throws Exception, JsonProcessingException {
+        setToken();
         var values = new HashMap<String, String>() {{
             put("otp", encryptData(otp));
-            put("txn", encryptData(txn));
+            put("txnId", txn);
         }};
         var objectMapper = new ObjectMapper();
         String requestBody = objectMapper
                 .writeValueAsString(values);
+
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/verifyOTP"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
                 .build();
         HttpResponse<String> response = client.send(request,
                 HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to obtain token: " + response.body());
+        }
+        JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
+        System.out.println(rootNode);
+        return VerifyOtpResponse.builder()
+                .txnId(rootNode.get("txnId").asText())
+                .build();
+    }
+
+    public CheckAndGenerateMobileOtpResponse checkAndGenerateMobileOTP(CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+        setToken();
+        System.out.println(data);
+        var values = new HashMap<String, Object>() {{
+            put("mobile", data.getMobile());
+            put("txnId", data.getTxnId());
+        }};
+        System.out.println(values);
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(values);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/checkAndGenerateMobileOTP"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to obtain token: " + response.body());
+        }
+        JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
+        System.out.println(rootNode);
+        return CheckAndGenerateMobileOtpResponse.builder()
+                .txnId(rootNode.get("txnId").asText())
+                .mobileLinked(rootNode.get("mobileLinked").asBoolean())
+                .build();
+    }
+
+    public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
+        setToken();
+        var values = new HashMap<String, Object>() {{
+            put("consent", data.isConsent());
+            put("consentVersion", data.getConsentVersion());
+            put("txnId", data.getTxnId());
+        }};
+
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(values);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/createHealthIdByAdhaar"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to obtain token: " + response.body());
+        }
         JsonNode rootNode = objectMapper.readValue(response.body(), JsonNode.class);
 
-        return rootNode.get("txn").asText();
+        return CreateHealthIdByAadhaarResponse.builder()
+                .token(rootNode.get("token").asText())
+                .build();
+    }
+
+    public byte[] getCard(String token) throws Exception, IOException, RestClientException {
+        setToken();
+
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://healthidsbx.abdm.gov.in/api/v1/account/getCard"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .header("X-Token", "Bearer " + token)
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+
+        HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+
+        // Handle status code here if needed
+        if (response.statusCode() != 200) {
+            throw new IOException("Failed to fetch card: " + response.statusCode());
+        }
+
+        return response.body();
+    }
+
+
+    //------------------------PATIENT REGISSTRATION FLOW---------------------
+    public String patientInitUsingMobile(String abhaId) throws Exception {
+        logger.info("enteing fireABDM with data: " + abhaId);
+        setToken();
+        if (token.equals("-1")) return null;
+
+        RestTemplate restTemplate = new RestTemplate();
+        JSONObject request = prepareGenerateOTPEntity(abhaId);
+        HttpHeaders headers = prepareHeader(token);
+
+        HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
+        restTemplate.postForObject("https://dev.abdm.gov.in/gateway/v0.5/users/auth/init", entity, String.class);
+        return request.get("requestId").toString();
+    }
+
+    public String[] prepareOnGenerateResponse(String response) {
+        logger.info("entering prepareOnGenerateResponse with data: " + response);
+        String[] ans = new String[2];
+
+        JSONObject obj = new JSONObject(response);
+        JSONObject respond = new JSONObject();
+
+        if (!obj.isNull("error")) {
+            respond.put("status", HttpStatus.BAD_REQUEST);
+            respond.put("message", obj.getJSONObject("error").get("message").toString());
+        }
+        else {
+            JSONObject auth = obj.getJSONObject("auth");
+            respond.put("status", HttpStatus.ACCEPTED);
+            respond.put("message", "OTP sent Successfully");
+            respond.put("data", new JSONObject().put("transactionId", auth.getString("transactionId")));
+        }
+
+        ans[1] = respond.toString();
+        ans[0] = obj.getJSONObject("resp").get("requestId").toString();
+        logger.info("Entering prepareOnGenerateResponse with data: " + ans.toString() );
+        return ans;
+    }
+
+    public String patientConfirmOTP(String transactionId, String OTP) throws Exception {
+        logger.info("entering fireABDMConfirmOTP with data: transactionId: " + transactionId + " OTP: " + OTP);
+        setToken();
+        if (token.equals("-1")) return null;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        JSONObject request = prepareConfirmOTPRequest(transactionId, OTP);
+        HttpHeaders headers = prepareHeader(token);
+
+        HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
+        restTemplate.postForObject("https://dev.abdm.gov.in/gateway/v0.5/users/auth/confirm", entity, String.class);
+        logger.info("returning requestID: " + request.get("requestId").toString());
+        return request.get("requestId").toString();
     }
 }

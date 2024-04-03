@@ -1,14 +1,17 @@
-// SlideForm.js
-
 import React, { useState } from "react";
 import "../Styles/abdmRegistration.css";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ABDMRegistration = () => {
   const [aadharNumber, setAadharNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [txnId, setTxnId] = useState("");
+  const [otpSentMessage, setOtpSentMessage] = useState("");
+  const [otpFieldDisabled, setOtpFieldDisabled] = useState(true); // Initially disable OTP field
   const [currentSlide, setCurrentSlide] = useState(1);
+  const navigate = useNavigate(); // Initialize navigate for programmatic navigation
 
   const handleNext = () => {
     setCurrentSlide(currentSlide + 1);
@@ -18,18 +21,56 @@ const ABDMRegistration = () => {
     setCurrentSlide(currentSlide - 1);
   };
 
-  const handleAadharSubmit = (e) => {
+  const handleAadharSubmit = async (e) => {
     e.preventDefault();
-    // Add Aadhar number validation logic and OTP verification here
-    // For simplicity, just transition to the next slide
-    setCurrentSlide(2);
+    try {
+      // Make API call to send Aadhar number and get OTP
+      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      console.log("token ", token)
+      const response = await axios.post("http://localhost:8081/api/v1/patient/generateOtp",
+        { "aadhaar": aadharNumber },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            }
+        }
+      );
+      const data = await response.json();
+      console.log("OTP sent, txnId:", data.txnId);
+      setTxnId(data.txnId);
+      setOtpSentMessage(`OTP sent to ${phoneNumber.slice(-4)}`);
+      // For simplicity, just transition to the next slide
+      setCurrentSlide(2);
+      // Enable OTP field after sending OTP
+      setOtpFieldDisabled(false);
+    } catch (error) {
+      console.error("Error sending Aadhaar number:", error);
+    }
   };
 
-  const handlePhoneSubmit = (e) => {
+  const handlePhoneSubmit = async (e) => {
     e.preventDefault();
-    // Add phone number submission logic here
-    console.log("Phone number submitted:", phoneNumber);
-    // You can perform additional actions here like sending data to a server
+    try {
+      // Make API call to verify OTP
+      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      console.log("token ", token)
+      const response = await axios.post("your-backend-url", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ txnId, otp }),
+      });
+      const data = await response.json();
+      console.log("OTP verified:", data);
+      // You can perform additional actions here based on the response
+      // For example, navigate to the next page if OTP is verified successfully
+      navigate("/next-page");
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+    }
   };
 
   return (
@@ -52,7 +93,7 @@ const ABDMRegistration = () => {
                   onChange={(e) => setAadharNumber(e.target.value)}
                   required
                 />
-                <div className="verify"><label>Send OTP</label></div>
+                <div className="verify"><button type="submit">Send OTP</button></div>
               </div>
               <div className="form-group">
                 <label className="form-label">OTP :</label>
@@ -61,11 +102,12 @@ const ABDMRegistration = () => {
                   className="form-input"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  required
+                  required={!otpFieldDisabled} // Make OTP field required only if it's enabled
+                  disabled={otpFieldDisabled} // Disable OTP field initially
                 />
               </div>
               <div className="buttons">
-                <button type="submit" className="button" onClick={handleNext}>
+                <button type="button" className="button" onClick={handleNext}>
                   Next
                 </button>
               </div>
@@ -92,20 +134,10 @@ const ABDMRegistration = () => {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   required
                 />
-                {/* <div className="verify"><label>Send OTP</label></div> */}
+                <div className="otp-sent-message">{otpSentMessage}</div>
               </div>
-              {/* <div className="form-group">
-                <label className="form-label">OTP :</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  required
-                />
-              </div> */}
               <div className="buttons">
-                <button type="submit" className="button" onClick={handlePrevious}>
+                <button type="button" className="button" onClick={handlePrevious}>
                   Previous
                 </button>
                 <button type="submit" className="button">Submit</button>
@@ -116,61 +148,6 @@ const ABDMRegistration = () => {
       </div>
     </div>
 
-    // <div className="abdm-container">
-    //   <div className="slides">
-    //     <div className={`slide ${currentSlide === 1 ? 'active' : ''}`}>
-    //       <h2>Slide 1: Aadhar Verification</h2>
-    //       <form onSubmit={handleAadharSubmit}>
-    //         {/* ... Aadhar form fields ... */}
-    //         <label>
-    //           Aadhar Number:
-    //           <input
-    //             type="text"
-    //             value={aadharNumber}
-    //             onChange={(e) => setAadharNumber(e.target.value)}
-    //             required
-    //           />
-    //         </label>
-    //         <label>
-    //           OTP:
-    //           <input
-    //             type="text"
-    //             value={otp}
-    //             onChange={(e) => setOtp(e.target.value)}
-    //             required
-    //           />
-    //         </label>
-    //         <div className="buttons">
-    //           <button type="button" onClick={handleNext}>
-    //             Next
-    //           </button>
-    //         </div>
-    //       </form>
-    //     </div>
-
-    //     <div className={`slide ${currentSlide === 2 ? 'active' : ''}`}>
-    //       <h2>Slide 2: Phone Number Submission</h2>
-    //       <form onSubmit={handlePhoneSubmit}>
-    //         {/* ... Phone number form fields ... */}
-    //         <label>
-    //           Phone Number:
-    //           <input
-    //             type="text"
-    //             value={phoneNumber}
-    //             onChange={(e) => setPhoneNumber(e.target.value)}
-    //             required
-    //           />
-    //         </label>
-    //         <div className="buttons">
-    //           <button type="button" onClick={handlePrevious}>
-    //             Previous
-    //           </button>
-    //           <button type="submit">Submit</button>
-    //         </div>
-    //       </form>
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 

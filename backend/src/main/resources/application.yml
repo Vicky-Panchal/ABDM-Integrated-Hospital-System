@@ -28,3 +28,9 @@ application:
 
 server:
   port: 8081
+
+amazonProperties:
+  endpointUrl: https://s3.us-east-2.amazonaws.com
+  accessKey: AKIA5FTZCG3ACIXHYVFU
+  secretKey: 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
+  bucketName: dhanvantari

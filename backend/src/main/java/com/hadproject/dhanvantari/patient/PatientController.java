@@ -1,29 +1,88 @@
 package com.hadproject.dhanvantari.patient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
+import io.jsonwebtoken.io.IOException;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
 
 
 @RestController
 @RequestMapping("/api/v1/patient")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PatientController {
-
+    Logger logger = LoggerFactory.getLogger(PatientController.class);
     private final PatientService patientService;
+    private final ABDMService abdmService;
 
+    private static final HashMap<String, SseEmitter> emittersMap = new HashMap<>();
 
+    @Operation(summary = "Sends OTP to the aadhaar linked mobile")
     @PostMapping("/generateOtp")
     public GenerateOtpResponse generateOtp(@RequestBody GenerateOtpRequest data) throws Exception {
         return patientService.generateOtp(data.aadhaar);
     }
 
-//    @PostMapping("/verifyOtp")
-//    public VerifyOtpResponse verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception {
-//        return patientService.verifyOtp(data);
-//    }
+    @Operation(summary = "Verifies OTP for the aadhaar linked mobile")
+    @PostMapping("/verifyOtp")
+    public VerifyOtpResponse verifyOtp(@RequestBody VerifyOtpRequest data) throws Exception, JsonProcessingException {
+        return patientService.verifyOtp(data);
+    }
+
+    @Operation(summary = "Checks if aadhaar is linked with mobile number")
+    @PostMapping("/checkAndGenerateMobileOTP")
+    public CheckAndGenerateMobileOtpResponse CheckAndGenerateMobileOtp(@RequestBody CheckAndGenerateMobileOtpRequest data) throws Exception, JsonProcessingException {
+        System.out.println(data);
+        return patientService.CheckAndGenerateMobileOtp(data);
+    }
+
+    @Operation(summary = "Creates Health Id for the aadhaar verified user")
+    @PostMapping("/createHealthIdByAdhaar")
+    public CreateHealthIdByAadhaarResponse createHealthIdByAadhaar(@RequestBody CreateHealthIdByAadhaarRequest data) throws Exception, JsonProcessingException {
+        return patientService.createHealthIdByAadhaar(data);
+    }
+
+    @Operation(summary = "Download ABHA card in PDF format")
+    @GetMapping("/getCard")
+    public byte[] getCard(@RequestParam String token) throws RestClientException, IOException, Exception {
+        return patientService.getCard(token);
+    }
+
+    @Operation(summary = "Abha Verification Using Mobile")
+    @GetMapping("/verifyAbhaUsingMobile")
+    SseEmitter generateOTP(@RequestParam("abha_id") String abhaId) throws Exception {
+        logger.info("Entering generateOTP with request param abhaId as " + abhaId);
+        logger.info("currently map is " + emittersMap);
+        SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+
+        String reqId = abdmService.patientInitUsingMobile(abhaId);
+
+        if (reqId == null) {
+            throw new RuntimeException();
+        }
+
+        try {
+            sseEmitter.send(SseEmitter.event().name("generate-otp"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        /*
+            TODO:
+                Do something about this.
+                if session token not received, code do not know what to do.
+         */
+        emittersMap.put(reqId, sseEmitter);
+        return sseEmitter;
+    }
+
+
 }

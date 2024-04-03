@@ -14,6 +14,8 @@ import SelectOptionPage from './components/SelectOptionPage';
 import RegisterPage from './components/RegisterPage';
 import DashboardPage from './components/DashboardPage';
 import ABDMRegistration from './components/ABDMRegistration';
+import ProfilePage from './components/ProfilePage';
+
 
 const App = () => {
   const [userState, setUserState] = useState('');
@@ -41,6 +43,7 @@ const App = () => {
         <Route path="/DashboardPage" element={<DashboardPage />} />
         <Route path="/PatientDashboard" element={<PatientDashboard />} />
         <Route path="/ABDMRegistration" element={<ABDMRegistration />} />
+        <Route path="/ProfilePage" element={<ProfilePage />} />
       </Routes>
     </Router>
   );

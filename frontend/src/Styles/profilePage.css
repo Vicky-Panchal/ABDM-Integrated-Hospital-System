@@ -1,0 +1,74 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ddffff;
+  }
+
+  .profile-container {
+    width: 800px;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 0 10px #0099ff;
+    border-radius: 8px;
+    margin-top: 70px;
+  }
+
+  .info1-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .profile-pic {
+    width: 40%;
+    padding: auto;
+  }
+
+  .profile-pic img {
+    max-width: 70%;
+    height: auto;
+  }
+
+  .info {
+    width: 100%;
+    text-align: left;
+  }
+
+  .gender-dob {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .gender {
+    width: 100%;
+  }
+
+  .dob {
+    width: 100%;
+  }
+
+  .info2-container {
+
+  }
+
+  .button-container {
+    text-align: center;
+  }
+
+  .download-button {
+    background-color: #0000ff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 20px;
+  }
+  
+  .download-button:hover {
+    box-shadow: 0 0 8px #000000;
+  }

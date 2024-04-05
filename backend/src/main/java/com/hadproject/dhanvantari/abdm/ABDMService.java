@@ -252,10 +252,9 @@ public class ABDMService {
         return response.body();
     }
 
-
     //------------------------PATIENT REGISSTRATION FLOW---------------------
     public String patientInitUsingMobile(String abhaId) throws Exception {
-        logger.info("enteing fireABDM with data: " + abhaId);
+        logger.info("entering fireABDM with data: " + abhaId);
         setToken();
         if (token.equals("-1")) return null;
 
@@ -265,6 +264,7 @@ public class ABDMService {
 
         HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
         restTemplate.postForObject("https://dev.abdm.gov.in/gateway/v0.5/users/auth/init", entity, String.class);
+        System.out.println(request);
         return request.get("requestId").toString();
     }
 

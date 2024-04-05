@@ -37,4 +37,5 @@ public class Patient {
     )
     @JsonManagedReference(value = "patientBackRef")
     public User user;
+
 }

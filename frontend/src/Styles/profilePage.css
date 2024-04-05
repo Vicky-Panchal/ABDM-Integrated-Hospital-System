@@ -7,44 +7,68 @@ body {
     background-color: #ddffff;
   }
 
-  .dashboard-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
+  .profile-container {
+    width: 800px;
     padding: 30px;
     background-color: #fff;
     box-shadow: 0 0 10px #0099ff;
     border-radius: 8px;
+    margin-top: 70px;
   }
 
-  .row1 {
+  .info1-container {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
 
-  .row2 {
+  .profile-pic {
+    width: 40%;
+    padding: auto;
+  }
+
+  .profile-pic img {
+    max-width: 70%;
+    height: auto;
+  }
+
+  .info {
+    width: 100%;
+    text-align: left;
+  }
+
+  .gender-dob {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
 
-  .component {
-    width: 200px;
-    height: 120px;
-    margin: 30px;
+  .gender {
+    width: 100%;
+  }
+
+  .dob {
+    width: 100%;
+  }
+
+  .info2-container {
+
+  }
+
+  .button-container {
+    text-align: center;
+  }
+
+  .download-button {
     background-color: #0000ff;
     color: white;
     padding: 10px 15px;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 20px;
     border-radius: 20px;
-    font-size: 1.5em;
-    font-family: 'Times New Roman', Times, serif;
   }
-
-  .component:hover {
+  
+  .download-button:hover {
     box-shadow: 0 0 8px #000000;
   }

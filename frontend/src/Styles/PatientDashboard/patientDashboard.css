@@ -1,0 +1,50 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ddffff;
+  }
+
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 0 10px #0099ff;
+    border-radius: 8px;
+  }
+
+  .row1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .row2 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .component {
+    min-width: 150px;
+    min-height: 120px;
+    margin: 30px;
+    margin-right: 20px;
+    background-color: #0000ff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 1.5em;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  .component:hover {
+    box-shadow: 0 0 8px #000000;
+  }

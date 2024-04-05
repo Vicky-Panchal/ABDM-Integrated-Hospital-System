@@ -6,7 +6,7 @@ import axios from 'axios';
 // Components
 import Home from './components/Home';
 import PatientDashboard from './components/PatientDashboard/PatientDashboard';
-import ClinicDashboard from './components/ClinicDashboard/ClinicDashboard';
+import DoctorDashboard from './components/DoctorDashboard/DoctorDashboard';
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 import Login from './components/Login';
 import NotFound from './components/NotFound/NotFound';
@@ -14,6 +14,9 @@ import SelectOptionPage from './components/SelectOptionPage';
 import RegisterPage from './components/RegisterPage';
 import DashboardPage from './components/DashboardPage';
 import ABDMRegistration from './components/ABDMRegistration';
+import ConsentList from './components/DoctorDashboard/ConsentList';
+import ConsentRequestForm from './components/DoctorDashboard/ConsentRequestForm'; // ConsentRequestForm
+import ConsentRequests from './components/PatientDashboard/ConsentRequests'; // ConsentRequests
 import ProfilePage from './components/ProfilePage';
 
 
@@ -42,7 +45,11 @@ const App = () => {
         <Route path="/RegisterPage/:option" element={<RegisterPage />} />
         <Route path="/DashboardPage" element={<DashboardPage />} />
         <Route path="/PatientDashboard" element={<PatientDashboard />} />
+        <Route path="/DoctorDashboard" element={<DoctorDashboard />} />
         <Route path="/ABDMRegistration" element={<ABDMRegistration />} />
+        <Route path="/ConsentList" element={<ConsentList />} />
+        <Route path="/ConsentRequestForm" element={<ConsentRequestForm />} />
+        <Route path="/ConsentRequests" element={<ConsentRequests />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
       </Routes>
     </Router>
@@ -59,8 +66,8 @@ const Dashboard = ({ userState, isLoggedIn }) => {
   switch (userState) {
     case 'patient':
       return <PatientDashboard />;
-    case 'clinic':
-      return <ClinicDashboard />;
+    case 'doctor':
+      return <DoctorDashboard />;
     case 'admin':
       return <AdminDashboard />;
     default:

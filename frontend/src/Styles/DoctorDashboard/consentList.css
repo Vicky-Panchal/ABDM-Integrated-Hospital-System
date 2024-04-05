@@ -1,0 +1,77 @@
+body {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ddffff;
+  }
+
+  .request-button {
+    width: fit-content;
+    height: fit-content;
+    margin-top: -100px;
+    margin-bottom: 30px;
+    background-color: #0000ff;
+    color: white;
+    padding: 9px 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 1.3em;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  .request-button:hover  {
+    box-shadow: 0 0 8px #000000;
+  }
+
+  .consentlist-container {
+    /* display: flex;
+    flex-direction: column; */
+    /* justify-content: center; */
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px #0099ff;
+    border-radius: 8px;
+  }
+  
+  /* Style for the consent list heading */
+  h2 {
+    margin-bottom: 20px;
+    margin-top: 0px;
+  }
+  
+  /* Style for the consent list table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* Style for the table header */
+  thead th {
+    background-color: #aaffff;
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  /* Style for the table rows */
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Style for the table cells */
+  td {
+    padding: 8px;
+    text-align: center;
+  }
+  
+  /* Hover effect for table rows */
+  tbody tr:hover {
+    background-color: #ddd;
+  }
+  

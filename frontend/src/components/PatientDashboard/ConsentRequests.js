@@ -109,7 +109,7 @@ const ConsentRequests = () => {
                   <button onClick={() => setShowDenyConsentPopup(true)}>Deny Consent</button>
                 </div>
                 <div className="view-more">
-                  <p>View More</p>
+                  <p onClick={() => {navigate("/ConsentInfo");}}>View More</p>
                 </div>
               </div>
             </div>

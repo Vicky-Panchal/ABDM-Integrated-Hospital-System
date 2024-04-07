@@ -17,6 +17,7 @@ import ABDMRegistration from './components/ABDMRegistration';
 import ConsentList from './components/DoctorDashboard/ConsentList';
 import ConsentRequestForm from './components/DoctorDashboard/ConsentRequestForm'; // ConsentRequestForm
 import ConsentRequests from './components/PatientDashboard/ConsentRequests'; // ConsentRequests
+import ConsentInfo from './components/PatientDashboard/ConsentInfo'; // ConsentInfo
 import ProfilePage from './components/ProfilePage';
 
 
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/ConsentList" element={<ConsentList />} />
         <Route path="/ConsentRequestForm" element={<ConsentRequestForm />} />
         <Route path="/ConsentRequests" element={<ConsentRequests />} />
+        <Route path="/ConsentInfo" element={<ConsentInfo />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
       </Routes>
     </Router>

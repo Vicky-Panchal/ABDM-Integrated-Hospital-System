@@ -46,7 +46,6 @@ public class UserService {
     public void uploadProfilePicture(MultipartFile file, String userId, Principal connectedUser) throws IOException {
         try {
             var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
-            System.out.println(user);
             if (!user.getUserId().toString().equals(userId)) {
                 throw new NotFoundException("User not found");
             }
@@ -57,20 +56,24 @@ public class UserService {
             s3Service.uploadFile(fileName, fileContent, contentType);
 
             String url = s3Service.generatePresignedUrl(fileName);
-            user.profile = fileName;
 
+            user.setProfile(fileName);
             userRepository.save(user);
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
         }
-
     }
 
-    public String getProfilePicture(String userId) {
-        User user = userRepository.findById(Integer.valueOf(userId)).orElseThrow(() -> new NotFoundException("User not found"));
-
-        return s3Service.generatePresignedUrl(user.profile);
+    public String getProfilePicture(String userId, Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+        if (!user.getUserId().toString().equals(userId)) {
+            throw new NotFoundException("User not found");
+        }
+        if(user.getProfile() == null) {
+            throw new NotFoundException("Profile picture not found");
+        }
+        return s3Service.generatePresignedUrl(user.getProfile());
     }
 
     public ResponseEntity<GetUserResponse> getUser(String userId) {

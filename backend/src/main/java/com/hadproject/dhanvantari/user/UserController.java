@@ -42,8 +42,8 @@ public class UserController {
     }
 
     @GetMapping("/getProfilePicture")
-    public ResponseEntity<String> getProfilePicture(@RequestParam("userId") String userId) {
-        String url = userService.getProfilePicture(userId);
+    public ResponseEntity<String> getProfilePicture(@RequestParam("userId") String userId, Principal connectedUser) {
+        String url = userService.getProfilePicture(userId, connectedUser);
         return ResponseEntity.ok(url);
     }
 

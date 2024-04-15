@@ -2,7 +2,10 @@ package com.hadproject.dhanvantari.user;
 
 import com.hadproject.dhanvantari.aws.S3Service;
 import com.hadproject.dhanvantari.error_handling.NotFoundException;
+import com.hadproject.dhanvantari.user.dto.ChangePasswordRequest;
+import com.hadproject.dhanvantari.user.dto.GetUserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -68,5 +71,23 @@ public class UserService {
         User user = userRepository.findById(Integer.valueOf(userId)).orElseThrow(() -> new NotFoundException("User not found"));
 
         return s3Service.generatePresignedUrl(user.profile);
+    }
+
+    public ResponseEntity<GetUserResponse> getUser(String userId) {
+        User user = userRepository.findById(Integer.valueOf(userId)).orElseThrow(() -> new NotFoundException("User not found"));
+
+        return ResponseEntity.ok(GetUserResponse.builder()
+                .id(String.valueOf(user.getUserId()))
+                .firstname(user.getFirstname())
+                .middlename(user.getMiddlename())
+                .lastname(user.getLastname())
+                .email(user.getEmail())
+                .dob(user.getDob())
+                .gender(user.getGender())
+                .mobile(user.getMobile())
+                .healthId(user.healthId)
+                .healthIdNumber(user.healthIdNumber)
+                .build()
+        );
     }
 }

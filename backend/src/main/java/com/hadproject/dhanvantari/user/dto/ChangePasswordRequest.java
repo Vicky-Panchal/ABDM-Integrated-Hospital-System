@@ -1,4 +1,4 @@
-package com.hadproject.dhanvantari.user;
+package com.hadproject.dhanvantari.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;

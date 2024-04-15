@@ -1,4 +1,4 @@
-package com.hadproject.dhanvantari.patient;
+package com.hadproject.dhanvantari.patient.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenerateOtpResponse {
+public class CreateHealthIdByAadhaarRequest {
+    private boolean consent;
+    private String consentVersion;
     private String txnId;
-    private String mobileNumber;
 }

@@ -1,5 +1,7 @@
 package com.hadproject.dhanvantari.user;
 
+import com.hadproject.dhanvantari.user.dto.ChangePasswordRequest;
+import com.hadproject.dhanvantari.user.dto.GetUserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,9 +31,10 @@ public class UserController {
 
     @PostMapping("/uploadProfile")
     public ResponseEntity<String> uploadProfilePicture(@RequestParam("file") MultipartFile file,
-                                                       @RequestParam("userId") String userId) {
+                                                       @RequestParam("userId") String userId,
+                                                       Principal connectedUser) {
         try {
-            userService.uploadProfilePicture(file, userId);
+            userService.uploadProfilePicture(file, userId, connectedUser);
             return ResponseEntity.ok("Profile picture uploaded successfully!");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload profile picture: " + e.getMessage());
@@ -42,5 +45,10 @@ public class UserController {
     public ResponseEntity<String> getProfilePicture(@RequestParam("userId") String userId) {
         String url = userService.getProfilePicture(userId);
         return ResponseEntity.ok(url);
+    }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<GetUserResponse> getUser(@RequestParam("userId") String userId) {
+        return userService.getUser(userId);
     }
 }

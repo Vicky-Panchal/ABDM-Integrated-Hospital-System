@@ -39,8 +39,6 @@ public class S3Service {
 
     @PostConstruct
     private void initializeAmazon() {
-//        ClientConfiguration clientConfiguration = new ClientConfiguration();
-//        clientConfiguration.setSignerOverride("AWSS3V4SignerType");
         BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
         this.s3client = AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))

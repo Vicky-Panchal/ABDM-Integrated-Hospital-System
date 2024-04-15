@@ -1,5 +1,7 @@
 package com.hadproject.dhanvantari.user;
 
+import com.hadproject.dhanvantari.user.dto.ChangePasswordRequest;
+import com.hadproject.dhanvantari.user.dto.GetUserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,5 +44,10 @@ public class UserController {
     public ResponseEntity<String> getProfilePicture(@RequestParam("userId") String userId) {
         String url = userService.getProfilePicture(userId);
         return ResponseEntity.ok(url);
+    }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<GetUserResponse> getUser(@RequestParam("userId") String userId) {
+        return userService.getUser(userId);
     }
 }

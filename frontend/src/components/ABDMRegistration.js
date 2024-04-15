@@ -38,6 +38,10 @@ const ABDMRegistration = () => {
   const [pdfData, setPdfData] = useState(null);
   
 
+  const handleSendOTPClick = () => {
+    setOtpFieldDisabled(false);
+  };
+  
   const handleNext = () => {
     setCurrentSlide(currentSlide + 1);
   };
@@ -178,9 +182,7 @@ const ABDMRegistration = () => {
                   onChange={(e) => setAadharNumber(e.target.value)}
                   required
                 />
-                <div className="verify">
-                  <button type="submit">Send OTP</button>
-                </div>
+                <div className="verify"><button type="submit" onClick={handleSendOTPClick}>Send OTP</button></div>
               </div>
               <div className="form-group">
                 <label className="form-label">OTP :</label>

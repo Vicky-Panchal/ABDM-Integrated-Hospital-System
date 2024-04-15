@@ -22,7 +22,7 @@ const SelectOptionPage = () => {
   //     setSelectedOption(option);
   //   };
 
-  //   const options = ["Patient", "Clinic"];
+  //   const options = ["Patient", "Doctor"];
 
   return (
     <div className="option-container">
@@ -37,7 +37,7 @@ const SelectOptionPage = () => {
             <button className="option-button" onClick={() => handleOptionSelect("PATIENT")}>Patient</button>
           </div>
           <div className="buttons">
-            <button className="option-button" onClick={() => handleOptionSelect("CLINIC")}>Clinic</button>
+            <button className="option-button" onClick={() => handleOptionSelect("DOCTOR")}>Doctor</button>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ const SelectOptionPage = () => {
     // <div className="option-container">
     //   <h1 className="option-heading">Register as a:</h1>
     //   <button className="option-button" onClick={() => handleOptionSelect('Patient')}>Patient</button>
-    //   <button className="option-button" onClick={() => handleOptionSelect('Clinic')}>Clinic</button>
+    //   <button className="option-button" onClick={() => handleOptionSelect('Doctor')}>Doctor</button>
     //   <Link to={`/register/${selectedOption}`}>
     //     <button className="register-button" disabled={!selectedOption}>Register</button>
     //   </Link>

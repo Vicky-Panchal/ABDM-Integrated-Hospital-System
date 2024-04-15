@@ -28,8 +28,8 @@ const Login = () => {
         case "PATIENT":
           navigate("/PatientDashboard"); // Use navigate to redirect
           break;
-        case "CLINIC":
-          navigate("/ClinicDashboard");
+        case "DOCTOR":
+          navigate("/DoctorDashboard");
           break;
         case "ADMIN":
           navigate("/AdminDashboard");

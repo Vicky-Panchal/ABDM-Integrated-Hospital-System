@@ -1,11 +1,16 @@
 package com.hadproject.dhanvantari.user;
 
+import com.hadproject.dhanvantari.aws.S3Service;
+import com.hadproject.dhanvantari.error_handling.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,6 +18,9 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
+    private final S3Service s3Service;
+    private final UserRepository userRepository;
+
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
 
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
@@ -31,5 +39,34 @@ public class UserService {
 
         // save the new password
         repository.save(user);
+    }
+
+    public void uploadProfilePicture(MultipartFile file, String userId) throws IOException {
+        try {
+            Optional<User> user = userRepository.findById(Integer.valueOf(userId));
+            if (user.isEmpty()) {
+                throw new NotFoundException("User not found");
+            }
+            byte[] fileContent = file.getBytes();
+            String fileName = userId + "/" + file.getOriginalFilename();
+            String contentType = file.getContentType();
+
+            s3Service.uploadFile(fileName, fileContent, contentType);
+
+            String url = s3Service.generatePresignedUrl(fileName);
+            user.get().profile = fileName;
+
+            userRepository.save(user.get());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+    public String getProfilePicture(String userId) {
+        User user = userRepository.findById(Integer.valueOf(userId)).orElseThrow(() -> new NotFoundException("User not found"));
+
+        return s3Service.generatePresignedUrl(user.profile);
     }
 }

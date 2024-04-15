@@ -1,7 +1,7 @@
 // PatientDashboard.js
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../Styles/patientDashboard.css";
+import "../../Styles/PatientDashboard/patientDashboard.css";
 import Navbar from "../navbar";
 
 const PatientDashboard = () => {
@@ -15,10 +15,10 @@ const PatientDashboard = () => {
         <div className="row1">
           <button className="component" onClick={() => {navigate("/ABDMRegistration");}}>ABDM Registration</button>
           <button className="component">Lab Tests</button>
-          <button className="component">Requests</button>
+          <button className="component" onClick={() => {navigate("/ConsentRequests");}}>Consent Requests</button>
         </div>
         <div className="row2">
-          <button className="component">Documents</button>
+          <button className="component">View Documents</button>
           <button className="component">Upload Documents</button>
           <button className="component">Appointment Scheduling</button>
         </div>

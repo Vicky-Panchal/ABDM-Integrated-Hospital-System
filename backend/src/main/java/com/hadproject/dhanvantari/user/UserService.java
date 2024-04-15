@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,10 +43,11 @@ public class UserService {
         repository.save(user);
     }
 
-    public void uploadProfilePicture(MultipartFile file, String userId) throws IOException {
+    public void uploadProfilePicture(MultipartFile file, String userId, Principal connectedUser) throws IOException {
         try {
-            Optional<User> user = userRepository.findById(Integer.valueOf(userId));
-            if (user.isEmpty()) {
+            var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+            System.out.println(user);
+            if (!user.getUserId().toString().equals(userId)) {
                 throw new NotFoundException("User not found");
             }
             byte[] fileContent = file.getBytes();
@@ -57,9 +57,9 @@ public class UserService {
             s3Service.uploadFile(fileName, fileContent, contentType);
 
             String url = s3Service.generatePresignedUrl(fileName);
-            user.get().profile = fileName;
+            user.profile = fileName;
 
-            userRepository.save(user.get());
+            userRepository.save(user);
         } catch (IOException e) {
             e.printStackTrace();
             throw e;

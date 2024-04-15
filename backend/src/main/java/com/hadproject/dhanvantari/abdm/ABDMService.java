@@ -3,7 +3,7 @@ package com.hadproject.dhanvantari.abdm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hadproject.dhanvantari.patient.*;
+import com.hadproject.dhanvantari.patient.dto.*;
 import io.jsonwebtoken.io.IOException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

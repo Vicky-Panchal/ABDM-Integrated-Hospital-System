@@ -1,5 +1,8 @@
 package com.hadproject.dhanvantari.auth;
 
+import com.hadproject.dhanvantari.auth.dto.AuthenticationRequest;
+import com.hadproject.dhanvantari.auth.dto.AuthenticationResponse;
+import com.hadproject.dhanvantari.auth.dto.RegisterRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

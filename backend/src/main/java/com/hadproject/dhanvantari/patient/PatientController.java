@@ -2,6 +2,7 @@ package com.hadproject.dhanvantari.patient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
+import com.hadproject.dhanvantari.patient.dto.*;
 import io.jsonwebtoken.io.IOException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

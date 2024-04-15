@@ -39,12 +39,12 @@ public class ABDMServiceHelper {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
         headers.set("X-CM-ID", "sbx");
-        logger.info("Exiting prepareHeader() with headers: " + headers.toString());
+        logger.info("Exiting prepareHeader() with headers: {}", headers.toString());
         return headers;
     }
 
     public static JSONObject prepareConfirmOTPRequest (String txnId, String otp) {
-        logger.info("Entering prepareConfirmOTPRequest with data txnId: " + txnId + " otp: " + otp);
+        logger.info("Entering prepareConfirmOTPRequest with data txnId: {} otp: {}", txnId, otp);
         JSONObject request = new JSONObject();
         request.put("requestId", randomUUID());
         request.put("timestamp", ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT ));

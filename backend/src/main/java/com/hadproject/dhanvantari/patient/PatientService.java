@@ -39,7 +39,8 @@ public class PatientService {
         return abdmService.createHealthIdByAadhaar(data);
     }
 
-    public byte[] getCard(String token) throws RestClientException, IOException, Exception {
+    public byte[] getCard(String token, String authorizationHeader) throws RestClientException, IOException, Exception {
+
         return abdmService.getCard(token);
     }
 

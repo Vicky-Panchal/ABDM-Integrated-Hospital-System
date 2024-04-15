@@ -1,7 +1,7 @@
 package com.hadproject.dhanvantari.care_context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hadproject.dhanvantari.appointment.Appointment;
+import com.hadproject.dhanvantari.visit.Visit;
 import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.patient.Patient;
 import jakarta.persistence.*;
@@ -45,5 +45,5 @@ public class CareContext {
     public Doctor doctor;
 
     @OneToMany(mappedBy = "careContext",cascade = CascadeType.ALL)
-    List<Appointment> appointmentlist;
+    List<Visit> appointmentlist;
 }

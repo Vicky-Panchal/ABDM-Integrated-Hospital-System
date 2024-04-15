@@ -18,7 +18,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/v1/patient")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PatientController {
     Logger logger = LoggerFactory.getLogger(PatientController.class);
     private final PatientService patientService;
@@ -53,8 +53,9 @@ public class PatientController {
 
     @Operation(summary = "Download ABHA card in PDF format")
     @GetMapping("/getCard")
-    public byte[] getCard(@RequestParam String token) throws RestClientException, IOException, Exception {
-        return patientService.getCard(token);
+    public byte[] getCard(@RequestParam String token, @RequestHeader("Authorization") String authorizationHeader) throws RestClientException, IOException, Exception {
+        authorizationHeader = authorizationHeader.substring(7);
+        return patientService.getCard(token, authorizationHeader);
     }
 
     @Operation(summary = "Abha Verification Using Mobile")
@@ -142,8 +143,11 @@ public class PatientController {
         }
     }
 
+//    @CrossOrigin
     @PostMapping("/v0.5/users/auth/on-fetch-modes")
     public void onFetchModes(@RequestBody String response) {
-        logger.info("Entering Fetch Modes with data: " + response);
+        logger.info("Entering Fetch Modes with data: {}", response);
     }
+
+
 }

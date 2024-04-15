@@ -5,16 +5,16 @@ import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.token.Token;
 import jakarta.persistence.*;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -43,6 +43,9 @@ public class User implements UserDetails {
 
   @Column(nullable = true)
   public String healthIdNumber;
+
+  @Column(nullable = true)
+  public String profile;
 
   @Enumerated(EnumType.STRING)
   private Role role;

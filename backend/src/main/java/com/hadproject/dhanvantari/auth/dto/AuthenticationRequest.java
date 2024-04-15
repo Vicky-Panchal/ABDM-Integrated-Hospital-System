@@ -1,4 +1,4 @@
-package com.hadproject.dhanvantari.patient;
+package com.hadproject.dhanvantari.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckAndGenerateMobileOtpResponse {
-    private String txnId;
-    private boolean mobileLinked;
+public class AuthenticationRequest {
+
+  private String email;
+  private String password;
 }

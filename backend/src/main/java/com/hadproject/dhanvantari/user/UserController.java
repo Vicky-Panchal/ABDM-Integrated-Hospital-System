@@ -31,9 +31,10 @@ public class UserController {
 
     @PostMapping("/uploadProfile")
     public ResponseEntity<String> uploadProfilePicture(@RequestParam("file") MultipartFile file,
-                                                       @RequestParam("userId") String userId) {
+                                                       @RequestParam("userId") String userId,
+                                                       Principal connectedUser) {
         try {
-            userService.uploadProfilePicture(file, userId);
+            userService.uploadProfilePicture(file, userId, connectedUser);
             return ResponseEntity.ok("Profile picture uploaded successfully!");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload profile picture: " + e.getMessage());

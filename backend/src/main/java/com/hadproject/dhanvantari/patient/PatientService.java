@@ -3,6 +3,7 @@ package com.hadproject.dhanvantari.patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.abdm.AadhaarValidationService;
+import com.hadproject.dhanvantari.patient.dto.*;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;

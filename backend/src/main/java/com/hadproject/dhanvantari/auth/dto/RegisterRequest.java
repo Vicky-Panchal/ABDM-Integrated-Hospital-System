@@ -1,4 +1,4 @@
-package com.hadproject.dhanvantari.auth;
+package com.hadproject.dhanvantari.auth.dto;
 
 import com.hadproject.dhanvantari.user.Role;
 import lombok.AllArgsConstructor;

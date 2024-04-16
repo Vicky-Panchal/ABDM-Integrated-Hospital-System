@@ -19,6 +19,7 @@ public class PatientService {
     private final ABDMService abdmService;
     private final AadhaarValidationService aadhaarValidationService;
     private final PatientRepository patientRepository;
+
     GenerateOtpResponse generateOtp(String aadhaarId) throws Exception{
         if(aadhaarValidationService.validateAadhaar(aadhaarId)) {
             throw new Exception("Invalid aadhaar id");

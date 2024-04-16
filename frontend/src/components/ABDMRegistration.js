@@ -142,6 +142,12 @@ const ABDMRegistration = () => {
           params: {
             token: consentToken,
           },
+        
+            headers: {
+              
+              Authorization: `Bearer ${token}`
+            },
+          
           responseType: 'arraybuffer' // Set response type to arraybuffer to get binary data
         });
 
@@ -184,17 +190,7 @@ const ABDMRegistration = () => {
                 />
                 <div className="verify"><button type="submit" onClick={handleSendOTPClick}>Send OTP</button></div>
               </div>
-              <div className="form-group">
-                <label className="form-label">OTP :</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  required={!otpFieldDisabled}
-                  disabled={otpFieldDisabled}
-                />
-              </div>
+              
               <div className="buttons">
                 <button type="button" className="button" onClick={handleNext}>
                   Next
@@ -214,14 +210,15 @@ const ABDMRegistration = () => {
           </div>
           <div className="form">
             <form onSubmit={handleVerifyOTP}>
-              <div className="form-group">
+            <div className="form-group">
                 <label className="form-label">OTP :</label>
                 <input
                   type="text"
                   className="form-input"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  required
+                  required={!otpFieldDisabled}
+                  disabled={otpFieldDisabled}
                 />
               </div>
               <div className="buttons">

@@ -1,17 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/abdmRegistration.css";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+function PDFViewer({ pdfData }) {
+  const [pdfUrl, setPdfUrl] = useState(null);
+
+  useEffect(() => {
+    if (pdfData) {
+      // Convert bytes data to a Blob object
+      const blob = new Blob([pdfData], { type: 'application/pdf' });
+      // Create URL for the Blob object
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+    }
+  }, [pdfData]);
+
+  return (
+    <div style={{ width: '100%', height: '100vh' }}>
+      {pdfUrl ? (
+        <iframe src={pdfUrl} title="PDF Viewer" style={{ width: '100%', height: '100%' }} />
+      ) : (
+        <div>Loading PDF...</div>
+      )}
+    </div>
+  );
+}
 
 const ABDMRegistration = () => {
   const [aadharNumber, setAadharNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [txnId, setTxnId] = useState("");
-  const [otpSentMessage, setOtpSentMessage] = useState("");
-  const [otpFieldDisabled, setOtpFieldDisabled] = useState(true); // Initially disable OTP field
+  const [otpFieldDisabled, setOtpFieldDisabled] = useState(true);
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [verificationError, setVerificationError] = useState("");
   const [currentSlide, setCurrentSlide] = useState(1);
-  const navigate = useNavigate(); // Initialize navigate for programmatic navigation
+  const [pdfData, setPdfData] = useState(null);
+  
 
   const handleSendOTPClick = () => {
     setOtpFieldDisabled(false);
@@ -28,52 +53,119 @@ const ABDMRegistration = () => {
   const handleAadharSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Make API call to send Aadhar number and get OTP
       const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
-      console.log("token ", token)
-      const response = await axios.post("http://localhost:8081/api/v1/patient/generateOtp",
-        { "aadhaar": aadharNumber },
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/patient/generateOtp",
+        { aadhaar: aadharNumber },
         {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-            }
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      const data = await response.json();
-      console.log("OTP sent, txnId:", data.txnId);
+      const data = response.data;
       setTxnId(data.txnId);
-      setOtpSentMessage(`OTP sent to ${phoneNumber.slice(-4)}`);
-      // For simplicity, just transition to the next slide
-      setCurrentSlide(2);
-      // Enable OTP field after sending OTP
       setOtpFieldDisabled(false);
+      handleNext(); // Move to the next slide after successful OTP generation
     } catch (error) {
       console.error("Error sending Aadhaar number:", error);
+      if (error.response) {
+        console.error("Server response:", error.response.data);
+      }
+    }
+  };
+
+  const handleVerifyOTP = async (e) => {
+    e.preventDefault();
+    try {
+      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/patient/verifyOtp",
+        { txnId, otp },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      // If OTP is verified successfully, move to the next slide
+      handleNext();
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      setVerificationError("Incorrect OTP. Please try again.");
     }
   };
 
   const handlePhoneSubmit = async (e) => {
+    
     e.preventDefault();
     try {
-      // Make API call to verify OTP
       const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
-      console.log("token ", token)
-      const response = await axios.post("your-backend-url", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/patient/checkAndGenerateMobileOTP",
+        {
+          txnId,
+          "mobile":phoneNumber,
         },
-        body: JSON.stringify({ txnId, otp }),
-      });
-      const data = await response.json();
-      console.log("OTP verified:", data);
-      // You can perform additional actions here based on the response
-      // For example, navigate to the next page if OTP is verified successfully
-      navigate("/next-page");
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data);
+      if (true) {
+        const consentData = {
+          consent: true,
+          consentVersion: "v1.0",
+          txnId,
+        };
+        const consentResponse = await axios.post(
+          "http://localhost:8081/api/v1/patient/createHealthIdByAdhaar",
+          consentData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const consentToken = consentResponse.data.token;
+
+        console.log(consentData)
+        
+        const pdfResponse = await axios.get("http://localhost:8081/api/v1/patient/getCard", {
+          params: {
+            token: consentToken,
+          },
+        
+            headers: {
+              
+              Authorization: `Bearer ${token}`
+            },
+          
+          responseType: 'arraybuffer' // Set response type to arraybuffer to get binary data
+        });
+
+        console.log(pdfResponse);
+        const blob = new Blob([pdfResponse.data], { type: 'application/pdf' });
+      // Create URL for the Blob object
+        const url = URL.createObjectURL(blob);
+        setPdfUrl(url);
+        setCurrentSlide(4); // Move to the slide to display the PDF
+      } else {
+        setVerificationError("Mobile number not verified. Please enter a verified mobile number.");
+      }
     } catch (error) {
-      console.error("Error verifying OTP:", error);
+      console.error("Error verifying mobile number:", error);
+      if (error.response) {
+        console.error("Server response:", error.response.data);
+      }
     }
   };
 
@@ -82,7 +174,7 @@ const ABDMRegistration = () => {
       <div className={`slide ${currentSlide === 1 ? "active" : ""}`}>
         <div className="divisions">
           <div className="description">
-            <img src="/hadlogo.png" alt="logo"></img>
+            <img src="/hadlogo.png" alt="logo" />
             <h1>ABDM User</h1>
             <h3>Verify your Aadhar</h3>
           </div>
@@ -99,17 +191,7 @@ const ABDMRegistration = () => {
                 />
                 <div className="verify"><button type="submit" onClick={handleSendOTPClick}>Send OTP</button></div>
               </div>
-              <div className="form-group">
-                <label className="form-label">OTP :</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  required={!otpFieldDisabled} // Make OTP field required only if it's enabled
-                  disabled={otpFieldDisabled} // Disable OTP field initially
-                />
-              </div>
+              
               <div className="buttons">
                 <button type="button" className="button" onClick={handleNext}>
                   Next
@@ -121,9 +203,43 @@ const ABDMRegistration = () => {
       </div>
 
       <div className={`slide ${currentSlide === 2 ? "active" : ""}`}>
-      <div className="divisions">
+        <div className="divisions">
           <div className="description">
-            <img src="/hadlogo.png" alt="logo"></img>
+            <img src="/hadlogo.png" alt="logo" />
+            <h1>ABDM User</h1>
+            <h3>Provide OTP</h3>
+          </div>
+          <div className="form">
+            <form onSubmit={handleVerifyOTP}>
+            <div className="form-group">
+                <label className="form-label">OTP :</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required={!otpFieldDisabled}
+                  disabled={otpFieldDisabled}
+                />
+              </div>
+              <div className="buttons">
+                <button type="button" className="button" onClick={handlePrevious}>
+                  Previous
+                </button>
+                <button type="submit" className="button">
+                  Submit
+                </button>
+              </div>
+              {verificationError && <div className="error-message">{verificationError}</div>}
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div className={`slide ${currentSlide === 3 ? "active" : ""}`}>
+        <div className="divisions">
+          <div className="description">
+            <img src="/hadlogo.png" alt="logo" />
             <h1>ABDM User</h1>
             <h3>Provide your Mobile Number</h3>
           </div>
@@ -138,20 +254,38 @@ const ABDMRegistration = () => {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   required
                 />
-                <div className="otp-sent-message">{otpSentMessage}</div>
               </div>
               <div className="buttons">
                 <button type="button" className="button" onClick={handlePrevious}>
                   Previous
                 </button>
-                <button type="submit" className="button">Submit</button>
+                <button type="submit" className="button">
+                  Submit
+                </button>
               </div>
+              {verificationError && <div className="error-message">{verificationError}</div>}
             </form>
           </div>
         </div>
       </div>
-    </div>
 
+      <div className={`slide ${currentSlide === 4 ? "active" : ""}`}>
+        <div className="pdf-display">
+          {pdfUrl ? (
+            <iframe src={pdfUrl} title="PDF Document" width="100%" height="500px"></iframe>
+          ) : (
+            <p>No PDF available</p>
+          )}
+          {pdfUrl && (
+            <div className="pdf-actions">
+              <a href={pdfUrl} download="document.pdf">
+                Download PDF
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

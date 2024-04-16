@@ -8,20 +8,25 @@ const RegisterPage = () => {
   const navigate = useNavigate(); // Initializing navigate
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
+    firstname: "",
+    middlename: "",
+    lastname: "",
     email: "",
     dob: "",
     password: "",
     role: option.toUpperCase(), // Convert to uppercase
-    phoneNumber: "",
+    mobile: "",
+    gender:"",
   });
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
+  
 
   const handleRegister = async (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -29,6 +34,7 @@ const RegisterPage = () => {
       //console.log("I am in API");
       //console.log(option);
       // Make API call to register user
+      console.log(formData);
       const response = await axios.post(
         "http://localhost:8081/api/v1/auth/register",
         formData
@@ -53,26 +59,35 @@ const RegisterPage = () => {
             <label className="form-label">First Name : </label>
             <input
               type="text"
-              name="firstName"
+              name="firstname"
               className="form-input"
-              value={formData.firstName}
+              value={formData.firstname}
               onChange={handleFormChange}
               required
             />
             <label className="form-label">Middle Name : </label>
             <input
               type="text"
-              name="middleName"
+              name="middlename"
               className="form-input"
-              value={formData.middleName}
+              value={formData.middlename}
               onChange={handleFormChange}
             />
             <label className="form-label">Last Name : </label>
             <input
               type="text"
-              name="lastName"
+              name="lastname"
               className="form-input"
-              value={formData.lastName}
+              value={formData.lastname}
+              onChange={handleFormChange}
+              required
+            />
+            <label className="form-label">Gender : </label>
+            <input
+              type="text"
+              name="gender"
+              className="form-input"
+              value={formData.gender}
               onChange={handleFormChange}
               required
             />
@@ -90,9 +105,9 @@ const RegisterPage = () => {
           <label className="form-label">Phone Number : </label>
             <input
               type="tel"
-              name="phoneNumber"
+              name="mobile"
               className="form-input"
-              value={formData.phoneNumber}
+              value={formData.mobile}
               onChange={handleFormChange}
               required
             />

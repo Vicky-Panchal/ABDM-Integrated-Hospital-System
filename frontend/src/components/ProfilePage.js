@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styles/profilePage.css";
@@ -15,119 +14,129 @@ const ProfilePage = () => {
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
   const [mobile, setPhone] = useState("");
-//   const [address, setAddress] = useState("");
+  //   const [address, setAddress] = useState("");
   const [healthId, setHealthId] = useState("");
   const [healthIdNumber, setHealthIdNumber] = useState("");
   const userId = JSON.parse(localStorage.getItem("loggedInUser")).user_id;
   const token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
   const fileInputRef = useRef(null); // Create a ref for the file input
 
-//   const updateProfilePic = (imageUrl) => {
-//     setProfilePic(imageUrl);
-//   };
+  //   const updateProfilePic = (imageUrl) => {
+  //     setProfilePic(imageUrl);
+  //   };
 
   useEffect(() => {
+    console.log("fetch profile data useffect");
     fetchProfileData();
-    
-  }, []); // Fetch profile data on component mount
-
-  useEffect(() => {
-    if (image !== null) {
-      handleUpload();
-    }
-  }, [image]);
+    // if (image !== null) {
+    //     console.log("handle upload data useffect");
+    //   handleUpload();
+    // }
+  }, []); // Fetch profile data on component mount[]
 
   const fetchProfileData = async () => {
     try {
       const userId = JSON.parse(localStorage.getItem("loggedInUser")).user_id;
       // Fetch profile picture
+      console.log("user id " + userId);
       const imageUrlResponse = await axios.get(
-        `http://localhost:8081/api/v1/users/getProfilePicture?userId=${userId}`,{
-            headers: {
-          
-                Authorization: `Bearer ${token}`
-              },
+        `http://localhost:8081/api/v1/users/getProfilePicture?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      if (imageUrlResponse.status === 200) {
-        setProfilePic(imageUrlResponse.data);
-      }
+
+      setProfilePic(imageUrlResponse.data);
+
       // Fetch user information
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+
+    try {
       const userInfoResponse = await axios.get(
-        `http://localhost:8081/api/v1/users/getUser?userId=${userId}`,{
-            headers: {
-          
-                Authorization: `Bearer ${token}`
-              },
+        `http://localhost:8081/api/v1/users/getUser?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-        console.log(userInfoResponse)
-        const userData = userInfoResponse.data;
-        setfirstName(userData.firstname);
-        setmiddleName(userData.middlename);
-        setlastName(userData.lastname);
-        setGender(userData.gender);
-        setDob(userData.dob);
-        setPhone(userData.mobile);
-        // setAddress(userData.address);
-        setHealthId(userData.healthId);
-        setHealthIdNumber(userData.healthIdNumber);
-      
+      console.log(userInfoResponse);
+      const userData = userInfoResponse.data;
+      setfirstName(userData.firstname);
+      setmiddleName(userData.middlename);
+      setlastName(userData.lastname);
+      setGender(userData.gender);
+      setDob(userData.dob);
+      setPhone(userData.mobile);
+      // setAddress(userData.address);
+      setHealthId(userData.healthId);
+      setHealthIdNumber(userData.healthIdNumber);
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
   };
 
   const handleFileChange = (e) => {
-    setImageFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    console.log("Selected File:", selectedFile);
+    if (selectedFile) {
+      setImageFile(selectedFile);
+      handleUpload(selectedFile);
+    } else {
+      console.error("No file selected.");
+    }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (selectedFile) => {
     try {
-        console.log("User Id: ", userId);
-        console.log("image : ", image);
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("userId", userId);
-    
-        // Make POST request to upload image
-        const response = await axios.post(
-          "http://localhost:8081/api/v1/users/uploadProfile",
-          formData,
+      console.log("User Id: ", userId);
+      console.log("image : ", selectedFile);
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("userId", userId);
+
+      // Make POST request to upload image
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/users/uploadProfile",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Check if the upload was successful
+      if (response.status === 200) {
+        console.log("Profile picture uploaded successfully.");
+
+        // Fetch updated profile picture URL
+        const imageUrlResponse = await axios.get(
+          `http://localhost:8081/api/v1/users/getProfilePicture?userId=${userId}`,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${token}`,
             },
           }
         );
-    
-        // Check if the upload was successful
-        if (response.status === 200) {
-          console.log("Profile picture uploaded successfully.");
-    
-          // Fetch updated profile picture URL
-          const imageUrlResponse = await axios.get(
-            `http://localhost:8081/api/v1/users/getProfilePicture?userId=${userId}`,{
-                headers: {
-              
-                    Authorization: `Bearer ${token}`
-                  },
-            }
-          );
-          
-          console.log(imageUrlResponse.data);
-          // Update profile picture URL based on the response of the GET request
-          if (imageUrlResponse.status === 200) {
-            setProfilePic(imageUrlResponse.data);
-            console.log("Profile picture URL updated successfully.");
-          } else {
-            console.error("Failed to fetch updated profile picture URL.");
-          }
+
+        console.log(imageUrlResponse.data);
+        // Update profile picture URL based on the response of the GET request
+        if (imageUrlResponse.status === 200) {
+          setProfilePic(imageUrlResponse.data);
+          console.log("Profile picture URL updated successfully.");
         } else {
-          console.error("Failed to upload profile picture.");
+          console.error("Failed to fetch updated profile picture URL.");
         }
-      } catch (error) {
+      } else {
+        console.error("Failed to upload profile picture.");
+      }
+    } catch (error) {
       console.error("Error uploading profile picture:", error);
     }
   };
@@ -161,8 +170,9 @@ const ProfilePage = () => {
           </div>
           <div className="info">
             <div className="name">
-              <h3>Name : {firstname} {middlename} {lastname}</h3>
-              
+              <h3>
+                Name : {firstname} {middlename} {lastname}
+              </h3>
             </div>
             <div className="gender-dob">
               <div className="gender">
@@ -175,9 +185,8 @@ const ProfilePage = () => {
           </div>
         </div>
         <div className="info2-container">
-         
           <h4>Phone : {mobile}</h4>
-          
+
           <h4>Health ID : {healthId}</h4>
           <h4>Health ID No. : {healthIdNumber}</h4>
         </div>

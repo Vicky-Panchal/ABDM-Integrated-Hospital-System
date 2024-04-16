@@ -137,6 +137,7 @@ const ABDMRegistration = () => {
         );
         const consentToken = consentResponse.data.token;
 
+        console.log(consentData)
         
         const pdfResponse = await axios.get("http://localhost:8081/api/v1/patient/getCard", {
           params: {

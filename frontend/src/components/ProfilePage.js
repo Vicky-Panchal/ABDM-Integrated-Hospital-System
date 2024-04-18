@@ -70,7 +70,7 @@ const ProfilePage = () => {
       setmiddleName(userData.middlename);
       setlastName(userData.lastname);
       setGender(userData.gender);
-      setDob(userData.dob);
+      setDob(userData.dob.toString().slice(0,10));
       setPhone(userData.mobile);
       // setAddress(userData.address);
       setHealthId(userData.healthId);

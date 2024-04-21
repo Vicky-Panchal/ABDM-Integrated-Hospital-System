@@ -5,6 +5,7 @@ import com.hadproject.dhanvantari.error_handling.NotFoundException;
 import com.hadproject.dhanvantari.postmark.PostmarkService;
 import com.hadproject.dhanvantari.user.dto.ChangePasswordRequest;
 import com.hadproject.dhanvantari.user.dto.GetUserResponse;
+import com.hadproject.dhanvantari.user.dto.ProfileUpdate;
 import com.hadproject.dhanvantari.user.dto.ResetPasswordRequest;
 import com.postmarkapp.postmark.client.exception.PostmarkException;
 import lombok.RequiredArgsConstructor;
@@ -146,6 +147,24 @@ public class UserService {
 
         user.setPassword(password);
 
+        userRepository.save(user);
+    }
+    public void updateUserProfileByEmail(ProfileUpdate profileUpdate, Principal connectedUser) {
+        // Find user by email and update the profile fields
+        // Assuming UserRepository has a method to find user by email
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+
+        // Update user profile fields
+        user.setFirstname(profileUpdate.getFirstname() != null ? profileUpdate.getFirstname() : user.getFirstname());
+        user.setMiddlename(profileUpdate.getMiddlename() != null ? profileUpdate.getMiddlename() : user.getMiddlename());
+        user.setLastname(profileUpdate.getLastname() != null ? profileUpdate.getLastname() : user.getLastname());
+        user.setGender(profileUpdate.getGender() != null ? profileUpdate.getGender() : user.getGender());
+        user.setDob(profileUpdate.getDob() != null ? profileUpdate.getDob() : user.getDob());
+        user.setMobile(profileUpdate.getMobile() != null ? profileUpdate.getMobile() : user.getMobile());
+
+        // Update other fields as needed
+
+        // Save the updated user
         userRepository.save(user);
     }
 

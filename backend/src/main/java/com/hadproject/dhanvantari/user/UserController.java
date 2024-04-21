@@ -1,9 +1,6 @@
 package com.hadproject.dhanvantari.user;
 
-import com.hadproject.dhanvantari.user.dto.ChangePasswordRequest;
-import com.hadproject.dhanvantari.user.dto.ForgotPasswordRequest;
-import com.hadproject.dhanvantari.user.dto.GetUserResponse;
-import com.hadproject.dhanvantari.user.dto.ResetPasswordRequest;
+import com.hadproject.dhanvantari.user.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -64,6 +61,11 @@ public class UserController {
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
         userService.resetPassword(resetPasswordRequest);
         return ResponseEntity.ok("Password reset successful");
+    }
+    @PutMapping("/update-profile")
+    public ResponseEntity<String> updateUserProfileByEmail(@RequestBody ProfileUpdate profileUpdate, Principal connectedUser) {
+        userService.updateUserProfileByEmail(profileUpdate, connectedUser);
+        return ResponseEntity.ok("Profile Updated Successfully");
     }
 
 }

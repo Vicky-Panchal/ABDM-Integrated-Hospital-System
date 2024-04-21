@@ -1,7 +1,9 @@
 package com.hadproject.dhanvantari.user;
 
 import com.hadproject.dhanvantari.user.dto.ChangePasswordRequest;
+import com.hadproject.dhanvantari.user.dto.ForgotPasswordRequest;
 import com.hadproject.dhanvantari.user.dto.GetUserResponse;
+import com.hadproject.dhanvantari.user.dto.ResetPasswordRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,4 +53,17 @@ public class UserController {
     public ResponseEntity<GetUserResponse> getUser(@RequestParam("userId") String userId) {
         return userService.getUser(userId);
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        userService.forgotPassword(request.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        userService.resetPassword(resetPasswordRequest);
+        return ResponseEntity.ok("Password reset successful");
+    }
+
 }

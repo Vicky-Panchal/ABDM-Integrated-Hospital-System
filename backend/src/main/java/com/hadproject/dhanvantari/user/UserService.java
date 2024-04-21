@@ -2,14 +2,21 @@ package com.hadproject.dhanvantari.user;
 
 import com.hadproject.dhanvantari.aws.S3Service;
 import com.hadproject.dhanvantari.error_handling.NotFoundException;
+import com.hadproject.dhanvantari.postmark.PostmarkService;
 import com.hadproject.dhanvantari.user.dto.ChangePasswordRequest;
 import com.hadproject.dhanvantari.user.dto.GetUserResponse;
+import com.hadproject.dhanvantari.user.dto.ResetPasswordRequest;
+import com.postmarkapp.postmark.client.exception.PostmarkException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.time.OffsetDateTime;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -22,6 +29,8 @@ public class UserService {
     private final UserRepository repository;
     private final S3Service s3Service;
     private final UserRepository userRepository;
+    private final OtpRepository otpRepository;
+    private final PostmarkService postmarkService;
 
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
 
@@ -43,7 +52,7 @@ public class UserService {
         repository.save(user);
     }
 
-    public void uploadProfilePicture(MultipartFile file, String userId, Principal connectedUser) throws IOException {
+   public void uploadProfilePicture(MultipartFile file, String userId, Principal connectedUser) throws IOException {
         try {
             var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
             if (!user.getUserId().toString().equals(userId)) {
@@ -93,4 +102,52 @@ public class UserService {
                 .build()
         );
     }
+
+    public void forgotPassword(String email) {
+        try {
+            // Create a new Postmark message
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found"));
+            Random random = new Random();
+
+            // Generate a random integer between 100000 (inclusive) and 999999 (exclusive)
+            String randomId = String.valueOf(random.nextInt(900000) + 100000);
+
+            Otp otp = otpRepository.findByUser(user).orElse(new Otp()); // Create new OTP entity if none exists
+
+            // Update OTP value and associate it with the user
+            otp.setOtp(randomId);
+            otp.setUser(user);
+
+            // Save the updated or new OTP entity
+            otpRepository.save(otp);
+
+
+            postmarkService.sendMail(email, "Forgot Password Otp", "Your Otp is " + randomId);
+
+
+            // Send the message using PostmarkClient
+        } catch (PostmarkException | IOException e) {
+            // Handle exceptions
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send password reset email");
+        }
+    }
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+
+        User user = userRepository.findByEmail(resetPasswordRequest.getEmail()).orElseThrow(() -> new NotFoundException("User not found"));
+
+        Otp otp = otpRepository.findOtpByUserEmail(user.getEmail());
+
+        if(!Objects.equals(otp.getOtp(), resetPasswordRequest.getOtp())) {
+            throw new RuntimeException("Otp is incorrect");
+        }
+
+        String password = passwordEncoder.encode(resetPasswordRequest.getNewPassword());
+
+        user.setPassword(password);
+
+        userRepository.save(user);
+    }
+
+
 }

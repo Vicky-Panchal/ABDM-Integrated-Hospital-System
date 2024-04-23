@@ -62,14 +62,14 @@ public class PatientController {
     @Operation(summary = "Abha Verification Using Mobile")
     @GetMapping("/verifyAbhaUsingMobile")
     SseEmitter generateOTP(@RequestParam("abha_id") String abhaId) throws Exception {
-        logger.info("Entering generateOTP with request param abhaId as " + abhaId);
-        logger.info("currently map is " + emittersMap);
+        logger.info("Entering generateOTP with request param abhaId as {}", abhaId);
+        logger.info("currently map is {}", emittersMap);
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
 
         String reqId = abdmService.patientInitUsingMobile(abhaId);
 
         if (reqId == null) {
-            throw new RuntimeException();
+            throw new RuntimeException("Please try again");
         }
 
         try {

@@ -254,22 +254,33 @@ public class ABDMService {
 
     //------------------------PATIENT REGISSTRATION FLOW---------------------
     public String patientInitUsingMobile(String abhaId) throws Exception {
-        logger.info("entering fireABDM with data: " + abhaId);
+        logger.info("entering fireABDM with data: {}", abhaId);
         setToken();
         if (token.equals("-1")) return null;
 
-        RestTemplate restTemplate = new RestTemplate();
-        JSONObject request = prepareGenerateOTPEntity(abhaId);
-        HttpHeaders headers = prepareHeader(token);
+        JSONObject requestBody = prepareGenerateOTPEntity(abhaId);
 
-        HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
-        restTemplate.postForObject("https://dev.abdm.gov.in/gateway/v0.5/users/auth/init", entity, String.class);
-        System.out.println(request);
-        return request.get("requestId").toString();
+        HttpClient client = HttpClient.newHttpClient();
+        System.out.println(requestBody);
+        // Prepare request body
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://dev.abdm.gov.in/gateway/v0.5/users/auth/init"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
+                .header("Content-Type", "application/json")
+                .header("X-CM-ID", "sbx")
+                .header("Authorization", "Bearer "+ token)
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Print response body
+        System.out.println(response);
+
+        return requestBody.get("requestId").toString();
     }
 
     public String[] prepareOnGenerateResponse(String response) {
-        logger.info("entering prepareOnGenerateResponse with data: " + response);
+        logger.info("entering prepareOnGenerateResponse with data: {}", response);
         String[] ans = new String[2];
 
         JSONObject obj = new JSONObject(response);

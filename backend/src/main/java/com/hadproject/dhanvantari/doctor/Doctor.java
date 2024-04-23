@@ -34,7 +34,7 @@ public class Doctor {
             strategy = GenerationType.SEQUENCE,
             generator = "doctor_sequence"
     )
-    private int doctorId;
+    private Long doctorId;
 
     public String registrationNumber;
 

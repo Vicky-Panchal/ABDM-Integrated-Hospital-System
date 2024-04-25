@@ -1,5 +1,8 @@
 package com.hadproject.dhanvantari.auth;
 
+import com.hadproject.dhanvantari.auth.dto.AuthenticationRequest;
+import com.hadproject.dhanvantari.auth.dto.AuthenticationResponse;
+import com.hadproject.dhanvantari.auth.dto.RegisterRequest;
 import com.hadproject.dhanvantari.config.JwtService;
 import com.hadproject.dhanvantari.token.Token;
 import com.hadproject.dhanvantari.token.TokenRepository;
@@ -10,9 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.expression.AccessException;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +36,7 @@ public class AuthenticationService {
             .middlename(request.getMiddlename())
         .lastname(request.getLastname())
         .email(request.getEmail())
+        .gender(request.getGender())
         .password(passwordEncoder.encode(request.getPassword()))
         .role(request.getRole())
             .dob(request.getDob())

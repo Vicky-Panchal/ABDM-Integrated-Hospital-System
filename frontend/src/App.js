@@ -19,6 +19,7 @@ import ConsentRequestForm from './components/DoctorDashboard/ConsentRequestForm'
 import ConsentRequests from './components/PatientDashboard/ConsentRequests'; // ConsentRequests
 import ConsentInfo from './components/PatientDashboard/ConsentInfo'; // ConsentInfo
 import ProfilePage from './components/ProfilePage';
+import ChangePasswordPage from "./components/ChangePasswordPage";
 
 
 const App = () => {
@@ -53,6 +54,7 @@ const App = () => {
         <Route path="/ConsentRequests" element={<ConsentRequests />} />
         <Route path="/ConsentInfo" element={<ConsentInfo />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
       </Routes>
     </Router>
   );

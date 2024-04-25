@@ -1,21 +1,24 @@
 package com.hadproject.dhanvantari.aws;
 
-import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.HttpMethod;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.*;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Date;
+
 
 @Getter
 @Service
@@ -31,11 +34,26 @@ public class S3Service {
     private String accessKey;
     @Value("${amazonProperties.secretKey}")
     private String secretKey;
+    @Value("${amazonProperties.region}")
+    private String awsRegion;
 
     @PostConstruct
     private void initializeAmazon() {
-        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-        this.s3client = new AmazonS3Client(credentials);
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        this.s3client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpointUrl, awsRegion))
+                .build();
+    }
+
+    public String generatePresignedUrl(String fileName) {
+        Date expiration = new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)); // URL expiration time (24 hours)
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, fileName)
+                .withMethod(HttpMethod.GET)
+                .withExpiration(expiration);
+
+        URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
+        return url.toString();
     }
 
     public void uploadFile(String fileName, byte[] fileContent, String contentType) {

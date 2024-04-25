@@ -2,11 +2,15 @@ package com.hadproject.dhanvantari.patient;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hadproject.dhanvantari.user.User;
+import com.hadproject.dhanvantari.visit.Visit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -37,4 +41,16 @@ public class Patient {
     )
     @JsonManagedReference(value = "patientBackRef")
     public User user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient", cascade = CascadeType.DETACH)
+    private List<Visit> visits = new ArrayList<>();
+
+    public String getPatientJSONObject() {
+        return null;
+    }
+
+    public void addVisits(Visit visit) {
+        this.visits.add(visit);
+        visit.setPatient(this);
+    }
 }

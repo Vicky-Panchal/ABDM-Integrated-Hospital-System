@@ -75,7 +75,7 @@ const Login = () => {
             </div>
             <div className="links">
               <div className="forgotpass">
-                <a href="https://google.com">Forgot Password?</a>
+              <Link to="/forgetPassword">Forgot Password?</Link> {/* Link to ForgetPasswordPage */}
               </div>
               <div className="newuser">
                 <Link to="/SelectOptionPage">New User?</Link>

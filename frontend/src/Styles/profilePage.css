@@ -59,7 +59,7 @@ body {
     text-align: center;
   }
 
-  .download-button {
+  .download-button , .change-password-button {
     background-color: #0000ff;
     color: white;
     padding: 10px 15px;
@@ -69,6 +69,6 @@ body {
     border-radius: 20px;
   }
   
-  .download-button:hover {
+  .download-button:hover , .change-password-button:hover {
     box-shadow: 0 0 8px #000000;
   }

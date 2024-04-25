@@ -67,14 +67,14 @@
   } */
   
   /* Style for checkbox container */
-  .checkbox-container {
+  .healthType-container {
     display: flex;
     flex-wrap: wrap;
     margin-top: -5px;
   }
   
   /* Style for checkbox rows */
-  .checkbox-row {
+  .healthType-row {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -84,7 +84,7 @@
   }
   
   /* Style for individual checkbox items */
-  .checkbox-item1, .checkbox-item2 {
+  .healthType-item1, .healthType-item2 {
     width: auto;
     margin-right: 10px;
     align-items: left;

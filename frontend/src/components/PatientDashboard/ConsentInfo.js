@@ -81,7 +81,7 @@ const ConsentInfo = () => {
     setInfo(dummy_info);
   }, []);
 
-  const checkboxes = [
+  const healthType = [
     "OP Consultation",
     "Discharge Summary",
     "Immunization Record",
@@ -91,18 +91,18 @@ const ConsentInfo = () => {
     // Add more checkboxes here if needed
   ];
 
-  const renderCheckboxes = () => {
+  const renderHealthType = () => {
     const rows = [];
-    for (let i = 0; i < checkboxes.length; i += 2) {
+    for (let i = 0; i < healthType.length; i += 2) {
       rows.push(
-        <div className="checkbox-container">
-          <div className="checkbox-row" key={i}>
-            <div className="checkbox-item1">
-              <label>{checkboxes[i]}</label>
+        <div className="healthType-container">
+          <div className="healthType-row" key={i}>
+            <div className="healthType-item1">
+              <label>{healthType[i]}</label>
             </div>
-            {i + 1 < checkboxes.length && (
-              <div className="checkbox-item2">
-                <label>{checkboxes[i + 1]}</label>
+            {i + 1 < healthType.length && (
+              <div className="healthType-item2">
+                <label>{healthType[i + 1]}</label>
               </div>
             )}
           </div>
@@ -172,7 +172,7 @@ const ConsentInfo = () => {
             </div>
           </div>
           <div className="grid-item">
-            <div className="fields">{renderCheckboxes()}</div>
+            <div className="fields">{renderHealthType()}</div>
           </div>
 
           <div className="grid-item">

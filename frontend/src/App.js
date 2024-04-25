@@ -54,7 +54,7 @@ const App = () => {
         <Route path="/ConsentRequests" element={<ConsentRequests />} />
         <Route path="/ConsentInfo" element={<ConsentInfo />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
-        <Route path="/change-password" element={<ChangePasswordPage />} />
+        <Route path="/ChangePasswordPage" element={<ChangePasswordPage />} />
       </Routes>
     </Router>
   );

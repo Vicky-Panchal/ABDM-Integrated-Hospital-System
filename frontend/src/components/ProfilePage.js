@@ -143,7 +143,7 @@ const ProfilePage = () => {
   };
 
   const handleChangePassword = () => {
-    navigate("/change-password");
+    navigate("/ChangePasswordPage");
   };
 
   return (

@@ -207,7 +207,7 @@ const ABDMRegistration = () => {
           <div className="description">
             <img src="/hadlogo.png" alt="logo" />
             <h1>ABDM User</h1>
-            <h3>Provide OTP</h3>
+            <h3>Enter OTP</h3>
           </div>
           <div className="form">
             <form onSubmit={handleVerifyOTP}>
@@ -241,7 +241,7 @@ const ABDMRegistration = () => {
           <div className="description">
             <img src="/hadlogo.png" alt="logo" />
             <h1>ABDM User</h1>
-            <h3>Provide your Mobile Number</h3>
+            <h3>Enter your Mobile Number</h3>
           </div>
           <div className="form">
             <form onSubmit={handlePhoneSubmit}>

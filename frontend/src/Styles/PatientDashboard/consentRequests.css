@@ -60,7 +60,7 @@ body {
     margin-top: 30px;
   }
 
-  .buttons {
+  .consent-buttons {
     display: flex;
     flex-direction: column;
     /* justify-content: space-between; */

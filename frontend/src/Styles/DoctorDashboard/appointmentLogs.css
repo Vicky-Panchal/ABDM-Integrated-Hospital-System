@@ -1,91 +1,93 @@
 body {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
+    margin: 0;
     background-color: #ddffff;
   }
 
-  .requests-container {
+  .appointment-logs-container {
+    position: fixed;
+    top: 40px;
+    left: 12%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: auto;
-    min-width: 150%;
+    width: 70%;
+    height: fit-content;
     padding: 30px;
-    margin-left: -150px;
-    margin-top: 250px;
-    margin-bottom: 20px;
-    /* background-color: #ffffff;
+    /* background-color: #fff;
     box-shadow: 0 0 10px #0099ff; */
     border-radius: 8px;
   }
 
-  .requests-container h2 {
-    align-self: center;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: xx-large;
+  .image {
+    width: 100px;
+    margin-right: 70px;
+    align-content: center;
   }
 
-  .notification-list {
+  .logs-list {
     margin: 10px;
+    /* width: 100%; */
   }
 
-  .notification-item {
+  .logs-item {
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
-    min-width: 500px;
-    padding: 30px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    justify-content:space-around;
+    width: 80%;
+    padding: 20px;
+    padding-right: 80px;
+    padding-left: 40px;
     margin: 25px;
     background-color: #ffffff;
     box-shadow: 0 0 4px #000000;
     border-radius: 8px;
   }
 
-  .notification-info {
+  .logs-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: left;
     width: 100%;
-    margin-bottom: -20px;
+    padding-right: 20px;
+  }
+
+  .logs-date-time {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
   }
 
   p {
     margin: 9px;
   }
 
-  .date-time {
-    font-size: small;
-    margin-top: 30px;
-  }
-
-  .consent-buttons {
+  .cancel-buttons {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
+    justify-content: center;
     width: auto;
   }
 
   button {
     width: max-content;
     height: fit-content;
-    margin: 6px;
+    margin: 5px;
     padding: 10px 15px;
     border: none;
     cursor: pointer;
     border-radius: 8px;
-    font-size: medium;
+    font-size: large;
     font-family: 'Times New Roman', Times, serif;
   }
 
-  .grant button {
-    background-color: #00f;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #00f;
-    color: #fff;
-  }
-
-  .deny button {
+  .cancel-slot button {
     background-color: #fff;
     color: red;
     border-style: solid;
@@ -93,28 +95,13 @@ body {
     border-color: red;
   }
 
-  .grant button:hover {
-    box-shadow: 0 0 8px #000000;
-  }
-
-  .deny button:hover {
+  .cancel-slot button:hover {
     box-shadow: 0 0 8px #999;
     color: #fff;
     background-color: red;
   }
 
-  .view-more p {
-    font-size: small;
-    color: #0000ff;
-    margin-top: -1px;
-    text-decoration-line: underline;
-  }
-
-  .view-more p:hover {
-    cursor: pointer;
-  }
-
-  /* Popup overlay */
+    /* Popup overlay */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -139,22 +126,6 @@ body {
   .popup h2 {
     margin-top: 0;
   }
-
-  .popup input{
-    width: 35px;
-    justify-self: center;
-  }
-
-  .inp {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  input::placeholder {
-    color: transparent;
-    text-shadow: 0 0 0 #000; /* Black color for text-shadow to make it transparent */
-  }
   
   /* Popup content */
   .popup p {
@@ -175,4 +146,3 @@ body {
   .popup button:hover {
     background-color: #0056b3;
   }
-  

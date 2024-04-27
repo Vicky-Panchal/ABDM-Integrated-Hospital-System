@@ -1,6 +1,7 @@
 package com.hadproject.dhanvantari.consent;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.patient.Patient;
 import jakarta.persistence.*;
@@ -8,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -26,7 +30,7 @@ public class Consent {
             strategy = GenerationType.SEQUENCE,
             generator = "consent_sequence"
     )
-    private int consentIdPK;
+    private Long consentIdPk;
     public String purposeText;
     public String consentId;
     public String fromDate;
@@ -51,4 +55,12 @@ public class Consent {
             referencedColumnName = "doctorId"
     )
     public Doctor doctor;
+
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "consent_id", referencedColumnName = "id")
+    List<CareContext> careContextList = new ArrayList<>();
+
+    public void addCareContext(CareContext careContext) {
+        this.careContextList.add(careContext);
+    }
 }

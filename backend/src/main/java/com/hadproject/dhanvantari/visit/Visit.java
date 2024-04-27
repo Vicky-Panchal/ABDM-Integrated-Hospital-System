@@ -30,7 +30,7 @@ public class Visit {
             strategy = GenerationType.SEQUENCE,
             generator = "visit_sequence"
     )
-    private int visitId;
+    private Long visitId;
 
     @Column
     private String prescription;

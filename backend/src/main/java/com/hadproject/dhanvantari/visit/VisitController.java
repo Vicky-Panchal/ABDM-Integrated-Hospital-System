@@ -42,4 +42,23 @@ public class VisitController {
         map.put(requestId, emitter);
         return emitter;
     }
+
+    @PostMapping("/v0.5/links/link/on-add-contexts")
+//    @CrossOrigin
+    public void onAddNewVisit(@RequestBody String response) {
+        logger.info("Entering addNewVisit with data: {}", response);
+        String[] respond = visitService.createOnAddContextResponse(response);
+        SseEmitter emitter = map.get(respond[0]);
+
+        try {
+            emitter.send(SseEmitter.event().name("on-init").data(respond[1]));
+            emitter.complete();
+            map.remove(respond[0]);
+        }
+        catch (Exception e) {
+            logger.error("error occurred: {}", e);
+            emitter.complete();
+            map.remove(respond[0]);
+        }
+    }
 }

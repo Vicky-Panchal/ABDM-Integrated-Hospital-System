@@ -38,6 +38,11 @@ public class Doctor {
 
     public String registrationNumber;
 
+    // Add more fields for doctor details
+    private String specialization;
+    private String qualifications;
+    private String hospitalName;
+
     @OneToOne(
             cascade = CascadeType.ALL,
             optional = false

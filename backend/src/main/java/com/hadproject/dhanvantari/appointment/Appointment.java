@@ -30,11 +30,10 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "slot_id")
     private AppointmentSlot slot;
 
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
-    private String status;
 }

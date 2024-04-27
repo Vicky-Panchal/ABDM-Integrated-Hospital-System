@@ -22,11 +22,13 @@ public class AppointmentSlot {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
+    @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String availabilityStatus;
+
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus availabilityStatus;
 }

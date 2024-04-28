@@ -225,6 +225,8 @@ const ScheduleAppointment = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="appointment-container">
       <div className="scheduled-container">
         {DummySlotListScheduled.map((item) => (
@@ -430,6 +432,7 @@ const ScheduleAppointment = () => {
       {showAddSlotPopup && (
         <AddSlotPopup onClose={() => setShowAddSlotPopup(false)} />
       )}
+    </div>
     </div>
   );
 };

@@ -63,8 +63,8 @@ const ForgetPasswordPage = () => {
                 />
               </div>
 
-              <div className="buttons">
-                <button type="submit" className="button">
+              <div className="fp-buttons">
+                <button type="submit" className="fp-button">
                   Next
                 </button>
               </div>
@@ -114,7 +114,7 @@ const ForgetPasswordPage = () => {
                 />
               </div>
               <div className="buttons">
-                <button type="submit" className="button">
+                <button type="submit" className="fp-button">
                   Submit
                 </button>
               </div>

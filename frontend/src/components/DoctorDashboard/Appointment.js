@@ -190,6 +190,8 @@ const Appointment = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="appointment-container">
       <div className="slotlist-container">
         <div className="slot-list-heading">
@@ -361,6 +363,7 @@ const Appointment = () => {
       {showAddSlotPopup && (
         <AddSlotPopup onClose={() => setShowAddSlotPopup(false)} />
       )}
+    </div>
     </div>
   );
 };

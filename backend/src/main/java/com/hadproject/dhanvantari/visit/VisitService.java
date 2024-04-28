@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -105,5 +106,28 @@ public class VisitService {
 
         logger.info("Exiting prepareAddContextRequest with data: {}", request);
         return request;
+    }
+
+    public String[] createOnAddContextResponse(String res) {
+        logger.info("Entering createOnAddContextResponse with data: {}", res);
+
+        JSONObject obj = new JSONObject(res);
+        JSONObject response = new JSONObject();
+        JSONObject resp = obj.getJSONObject("resp");
+        String requestId = resp.get("requestId").toString();
+
+        Visit visit = visitRepository.findVisitByRequestId(requestId);
+        if (obj.isNull("error")) {
+            response.put("status", HttpStatus.OK);
+            response.put("message", "New visit created with id " + visit.getId());
+            response.put("data", visit.getJSONObject());
+        }
+        else {
+            response.put("status", HttpStatus.BAD_REQUEST);
+            response.put("message", obj.getJSONObject("error").getString("message"));
+            visitRepository.delete(visit);
+        }
+        logger.info("exiting create on add care context response with data{}", response);
+        return new String[]{requestId, response.toString()};
     }
 }

@@ -143,7 +143,7 @@ const ProfilePage = () => {
   };
 
   const handleChangePassword = () => {
-    navigate("/change-password");
+    navigate("/ChangePasswordPage");
   };
 
   return (
@@ -184,7 +184,7 @@ const ProfilePage = () => {
                 <h3>Gender : {gender}</h3>
               </div>
               <div className="dob">
-                <h4>DOB : {dob}</h4>
+                <h4>DOB : {(new Date(dob)).toLocaleDateString('en-GB')}</h4>
               </div>
             </div>
           </div>

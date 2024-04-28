@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
+import "../Styles/ChangePasswordPage.css";
 
 const ChangePasswordPage = () => {
   const [currentPassword, setcurrentPassword] = useState("");
@@ -21,21 +22,21 @@ const ChangePasswordPage = () => {
   const handleChangePassword = async () => {
     // Validate new password
     if (!validatePassword(newPassword)) {
-        setNewPasswordError(
-          "Password must be more than 8 characters and contain both numbers and letters/special characters"
-        );
-        return;
-      } else {
-        setNewPasswordError("");
-      }
-  
-      // Validate confirm password
-      if (newPassword !== confirmationPassword) {
-        setConfirmPasswordError("Passwords do not match.");
-        return;
-      } else {
-        setConfirmPasswordError("");
-      }
+      setNewPasswordError(
+        "Password must be more than 8 characters and contain both numbers and letters/special characters"
+      );
+      return;
+    } else {
+      setNewPasswordError("");
+    }
+
+    // Validate confirm password
+    if (newPassword !== confirmationPassword) {
+      setConfirmPasswordError("Passwords do not match.");
+      return;
+    } else {
+      setConfirmPasswordError("");
+    }
 
     try {
       const response = await axios.patch(
@@ -57,14 +58,13 @@ const ChangePasswordPage = () => {
         console.log("Password changed successfully.");
         // Redirect to profile page or show a success message
         navigate("/ProfilePage");
-    } else {
+      } else {
         console.error("Failed to change password.");
         // Show error message
       }
     } catch (error) {
       console.error("Error changing password:", error);
       // Show error message
-
     }
   };
 
@@ -72,41 +72,52 @@ const ChangePasswordPage = () => {
     <div>
       <Navbar />
       <div className="change-password-container">
-        <h2>Change Password</h2>
-        <div className="form-group">
-          <label htmlFor="oldPassword">Old Password:</label>
-          <input
-            type="password"
-            id="oldPassword"
-            value={currentPassword}
-            onChange={(e) => setcurrentPassword(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="newPassword">New Password:</label>
-          <input
-            type="password"
-            id="newPassword"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          {newPasswordError && <div className="error">{newPasswordError}</div>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmationPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+        <div className="divisions">
+          <div className="description">
+            <img src="/hadlogo.png" alt="logo"></img>
+            <h1>Change Password </h1>
+            <h3>Change your Dhanvantari account password</h3>
+          </div>
+          <div className="change-password">
+            <div className="form-group">
+              <label htmlFor="oldPassword">Old Password:</label>
+              <input
+                type="password"
+                id="oldPassword"
+                value={currentPassword}
+                onChange={(e) => setcurrentPassword(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newPassword">New Password:</label>
+              <input
+                type="password"
+                id="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              {newPasswordError && (
+                <div className="error">{newPasswordError}</div>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmationPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
 
-          {confirmPasswordError && (
-            <div className="error">{confirmPasswordError}</div>
-          )}
-
+              {confirmPasswordError && (
+                <div className="error">{confirmPasswordError}</div>
+              )}
+            </div>
+            <button className="submit-button" onClick={handleChangePassword}>
+              Submit
+            </button>
+          </div>
         </div>
-        <button onClick={handleChangePassword}>Submit</button>
       </div>
     </div>
   );

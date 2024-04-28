@@ -8,7 +8,7 @@ function PDFViewer({ pdfData }) {
   useEffect(() => {
     if (pdfData) {
       // Convert bytes data to a Blob object
-      const blob = new Blob([pdfData], { type: 'application/pdf' });
+      const blob = new Blob([pdfData], { type: "application/pdf" });
       // Create URL for the Blob object
       const url = URL.createObjectURL(blob);
       setPdfUrl(url);
@@ -16,9 +16,13 @@ function PDFViewer({ pdfData }) {
   }, [pdfData]);
 
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <div style={{ width: "100%", height: "100vh" }}>
       {pdfUrl ? (
-        <iframe src={pdfUrl} title="PDF Viewer" style={{ width: '100%', height: '100%' }} />
+        <iframe
+          src={pdfUrl}
+          title="PDF Viewer"
+          style={{ width: "100%", height: "100%" }}
+        />
       ) : (
         <div>Loading PDF...</div>
       )}
@@ -36,12 +40,11 @@ const ABDMRegistration = () => {
   const [verificationError, setVerificationError] = useState("");
   const [currentSlide, setCurrentSlide] = useState(1);
   const [pdfData, setPdfData] = useState(null);
-  
 
   const handleSendOTPClick = () => {
     setOtpFieldDisabled(false);
   };
-  
+
   const handleNext = () => {
     setCurrentSlide(currentSlide + 1);
   };
@@ -53,7 +56,9 @@ const ABDMRegistration = () => {
   const handleAadharSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      const token = JSON.parse(
+        window.localStorage.getItem("loggedInUser")
+      ).access_token;
       const response = await axios.post(
         "http://localhost:8081/api/v1/patient/generateOtp",
         { aadhaar: aadharNumber },
@@ -79,7 +84,9 @@ const ABDMRegistration = () => {
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     try {
-      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      const token = JSON.parse(
+        window.localStorage.getItem("loggedInUser")
+      ).access_token;
       const response = await axios.post(
         "http://localhost:8081/api/v1/patient/verifyOtp",
         { txnId, otp },
@@ -100,15 +107,16 @@ const ABDMRegistration = () => {
   };
 
   const handlePhoneSubmit = async (e) => {
-    
     e.preventDefault();
     try {
-      const token = JSON.parse(window.localStorage.getItem("loggedInUser")).access_token;
+      const token = JSON.parse(
+        window.localStorage.getItem("loggedInUser")
+      ).access_token;
       const response = await axios.post(
         "http://localhost:8081/api/v1/patient/checkAndGenerateMobileOTP",
         {
           txnId,
-          "mobile":phoneNumber,
+          mobile: phoneNumber,
         },
         {
           headers: {
@@ -137,29 +145,33 @@ const ABDMRegistration = () => {
         );
         const consentToken = consentResponse.data.token;
 
-        console.log(consentData)
-        
-        const pdfResponse = await axios.get("http://localhost:8081/api/v1/patient/getCard", {
-          params: {
-            token: consentToken,
-          },
-        
-            headers: {
-              
-              Authorization: `Bearer ${token}`
+        console.log(consentData);
+
+        const pdfResponse = await axios.get(
+          "http://localhost:8081/api/v1/patient/getCard",
+          {
+            params: {
+              token: consentToken,
             },
-          
-          responseType: 'arraybuffer' // Set response type to arraybuffer to get binary data
-        });
+
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+
+            responseType: "arraybuffer", // Set response type to arraybuffer to get binary data
+          }
+        );
 
         console.log(pdfResponse);
-        const blob = new Blob([pdfResponse.data], { type: 'application/pdf' });
-      // Create URL for the Blob object
+        const blob = new Blob([pdfResponse.data], { type: "application/pdf" });
+        // Create URL for the Blob object
         const url = URL.createObjectURL(blob);
         setPdfUrl(url);
         setCurrentSlide(4); // Move to the slide to display the PDF
       } else {
-        setVerificationError("Mobile number not verified. Please enter a verified mobile number.");
+        setVerificationError(
+          "Mobile number not verified. Please enter a verified mobile number."
+        );
       }
     } catch (error) {
       console.error("Error verifying mobile number:", error);
@@ -189,11 +201,15 @@ const ABDMRegistration = () => {
                   onChange={(e) => setAadharNumber(e.target.value)}
                   required
                 />
-                <div className="verify"><button type="submit" onClick={handleSendOTPClick}>Send OTP</button></div>
+                <div className="abdm-verify">
+                  <button type="submit" onClick={handleSendOTPClick}>
+                    Send OTP
+                  </button>
+                </div>
               </div>
-              
+
               <div className="buttons">
-                <button type="button" className="button" onClick={handleNext}>
+                <button type="button" className="abdm-button" onClick={handleNext}>
                   Next
                 </button>
               </div>
@@ -207,11 +223,11 @@ const ABDMRegistration = () => {
           <div className="description">
             <img src="/hadlogo.png" alt="logo" />
             <h1>ABDM User</h1>
-            <h3>Provide OTP</h3>
+            <h3>Enter OTP</h3>
           </div>
           <div className="form">
             <form onSubmit={handleVerifyOTP}>
-            <div className="form-group">
+              <div className="form-group">
                 <label className="form-label">OTP :</label>
                 <input
                   type="text"
@@ -223,14 +239,20 @@ const ABDMRegistration = () => {
                 />
               </div>
               <div className="buttons">
-                <button type="button" className="button" onClick={handlePrevious}>
+                <button
+                  type="button"
+                  className="abdm-button"
+                  onClick={handlePrevious}
+                >
                   Previous
                 </button>
-                <button type="submit" className="button">
+                <button type="submit" className="abdm-button">
                   Submit
                 </button>
               </div>
-              {verificationError && <div className="error-message">{verificationError}</div>}
+              {verificationError && (
+                <div className="error-message">{verificationError}</div>
+              )}
             </form>
           </div>
         </div>
@@ -241,7 +263,7 @@ const ABDMRegistration = () => {
           <div className="description">
             <img src="/hadlogo.png" alt="logo" />
             <h1>ABDM User</h1>
-            <h3>Provide your Mobile Number</h3>
+            <h3>Enter your Mobile Number</h3>
           </div>
           <div className="form">
             <form onSubmit={handlePhoneSubmit}>
@@ -256,14 +278,20 @@ const ABDMRegistration = () => {
                 />
               </div>
               <div className="buttons">
-                <button type="button" className="button" onClick={handlePrevious}>
+                <button
+                  type="button"
+                  className="button"
+                  onClick={handlePrevious}
+                >
                   Previous
                 </button>
                 <button type="submit" className="button">
                   Submit
                 </button>
               </div>
-              {verificationError && <div className="error-message">{verificationError}</div>}
+              {verificationError && (
+                <div className="error-message">{verificationError}</div>
+              )}
             </form>
           </div>
         </div>
@@ -272,7 +300,12 @@ const ABDMRegistration = () => {
       <div className={`slide ${currentSlide === 4 ? "active" : ""}`}>
         <div className="pdf-display">
           {pdfUrl ? (
-            <iframe src={pdfUrl} title="PDF Document" width="100%" height="500px"></iframe>
+            <iframe
+              src={pdfUrl}
+              title="PDF Document"
+              width="100%"
+              height="500px"
+            ></iframe>
           ) : (
             <p>No PDF available</p>
           )}

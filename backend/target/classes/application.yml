@@ -2,12 +2,18 @@
 
 spring:
   datasource:
+<<<<<<< HEAD
+    url: jdbc:mysql://localhost:3306/abdm_app
+    username: parag
+    password: 12345678
+=======
 #    url: jdbc:mysql://mysql-cluster-ip-service:3306/abdm_app?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
 #    username: root
 #    password: 3370136
     url: jdbc:mysql://localhost:3306/abdm_app?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
     username: vicky
     password: 7701ATMmmp@
+>>>>>>> 0cccb45e6beba2be5c99f73d2f3e4c230cd091e2
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

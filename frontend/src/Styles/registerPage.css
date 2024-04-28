@@ -51,7 +51,24 @@ body {
   margin-bottom: 10px;
 }
 
-.submit-button {
+.gender-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 23px;
+  /* align-items: center; */
+}
+
+.gender-checkbox {
+  width: 32%;
+}
+
+.gender-input {
+  width: 10%;
+  margin-bottom: 20px;
+}
+
+.submit-button-div {
   display: flex;
   flex-direction: row;
   align-items: center;

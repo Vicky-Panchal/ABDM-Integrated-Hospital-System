@@ -16,16 +16,16 @@ const RegisterPage = () => {
     password: "",
     role: option.toUpperCase(), // Convert to uppercase
     mobile: "",
-    gender:"",
+    gender: "",
   });
 
   const [errors, setErrors] = useState({});
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
 
     // Clear the error message when the user starts typing
@@ -51,14 +51,14 @@ const RegisterPage = () => {
       isValid = false;
     }
 
-     // Validate email
-     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-     if (!emailPattern.test(formData.email)) {
-       newErrors.email = "Invalid email address";
-       isValid = false;
-     }
+    // Validate email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      newErrors.email = "Invalid email address";
+      isValid = false;
+    }
 
-     // Validate date of birth
+    // Validate date of birth
     const today = new Date();
     const dob = new Date(formData.dob);
     if (dob >= today) {
@@ -66,44 +66,44 @@ const RegisterPage = () => {
       isValid = false;
     }
 
-     // Validate mobile number
-     const mobilePattern = /^\+\d{1,3}-\d{10}$/;
-     if (!mobilePattern.test(formData.mobile)) {
-       newErrors.mobile = "Invalid mobile number (Format: +CC-XXXXXXXXXX)";
-       isValid = false;
-     }
+    // Validate mobile number
+    const mobilePattern = /^\+\d{1,3}-\d{10}$/;
+    if (!mobilePattern.test(formData.mobile)) {
+      newErrors.mobile = "Invalid mobile number (Format: +CC-XXXXXXXXXX)";
+      isValid = false;
+    }
 
-     // Validate gender
+    // Validate gender
     // if (!["male", "female", "others"].includes(formData.gender)) {
     //   newErrors.gender = "Please select a valid gender";
     //   isValid = false;
     // }
 
-      // Validate password
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  if (!passwordRegex.test(formData.password)) {
-    newErrors.password =
-      "Password must be more than 8 characters and contain both numbers and letters/special characters";
-     isValid = false;
+    // Validate password
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      newErrors.password =
+        "Password must be more than 8 characters and contain both numbers and letters/special characters";
+      isValid = false;
     }
 
     // Validate confirm password
-  if (formData.password !== formData["confirm-password"]) {
-    newErrors["confirm-password"] = "Passwords do not match";
-    isValid = false;
-  }
+    if (formData.password !== formData["confirm-password"]) {
+      newErrors["confirm-password"] = "Passwords do not match";
+      isValid = false;
+    }
 
     setErrors(newErrors);
     return isValid;
   };
-  
 
   const handleRegister = async (e) => {
     e.preventDefault(); // Prevent default form submission
     if (!validateForm()) {
       return;
     }
-    
+
     try {
       //console.log("I am in API");
       //console.log(option);
@@ -115,7 +115,7 @@ const RegisterPage = () => {
       );
       console.log("Registration successful!", response.data);
       // Redirect to login page after successful registration using navigate
-      navigate('/Login');
+      navigate("/Login");
     } catch (error) {
       console.error("Registration failed:", error);
     }
@@ -124,8 +124,8 @@ const RegisterPage = () => {
   return (
     <div className="register-container">
       <div className="heading">
-      <img src="/hadlogo.png" alt="logo"></img>
-      <h1 className="register-heading">Register as {option}</h1>
+        <img src="/hadlogo.png" alt="logo"></img>
+        <h1 className="register-heading">Register as {option}</h1>
       </div>
       <form onSubmit={handleRegister}>
         <div className="form-fields">
@@ -139,7 +139,9 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
-            {errors.firstname && <p className="error-message">{errors.firstname}</p>}
+            {errors.firstname && (
+              <p className="error-message">{errors.firstname}</p>
+            )}
 
             <label className="form-label">Middle Name : </label>
             <input
@@ -159,39 +161,9 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
-            {errors.lastname && <p className="error-message">{errors.lastname}</p>}
-
-            <label className="form-label">Gender : </label>
-            <div className="gender-checkbox">
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Male"
-                  onChange={handleFormChange}
-                />
-                Male
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Female"
-                  onChange={handleFormChange}
-                />
-                Female
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Other"
-                  onChange={handleFormChange}
-                />
-                Others
-              </label>
-              {errors.gender && <p className="error-message">{errors.gender}</p>}
-            </div>
+            {errors.lastname && (
+              <p className="error-message">{errors.lastname}</p>
+            )}
 
             <label className="form-label">Date of Birth : </label>
             <input
@@ -202,11 +174,11 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
-          {errors.dob && <p className="error-message">{errors.dob}</p>}
+            {errors.dob && <p className="error-message">{errors.dob}</p>}
           </div>
 
           <div className="account-info">
-          <label className="form-label">Phone Number : </label>
+            <label className="form-label">Phone Number : </label>
             <input
               type="tel"
               name="mobile"
@@ -247,7 +219,9 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
-            {errors.password && <p className="error-message">{errors.password}</p>}
+            {errors.password && (
+              <p className="error-message">{errors.password}</p>
+            )}
 
             <label className="form-label">Confirm Password : </label>
             <input
@@ -258,18 +232,57 @@ const RegisterPage = () => {
               onChange={handleFormChange}
               required
             />
-            {errors["confirm-password"] && <p className="error-message">{errors["confirm-password"]}</p>}
-
+            {errors["confirm-password"] && (
+              <p className="error-message">{errors["confirm-password"]}</p>
+            )}
           </div>
         </div>
-        <div className="submit-button">
-        <button type="submit" className="register-button">
-          Register
-        </button>
+
+        <div className="gender-info">
+          <div>
+            <label className="form-label">Gender : </label>
+          </div>
+          <div className="gender-checkbox">
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                className="gender-input"
+                value="Male"
+                onChange={handleFormChange}
+              />
+              Male
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                className="gender-input"
+                value="Female"
+                onChange={handleFormChange}
+              />
+              Female
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                className="gender-input"
+                value="Other"
+                onChange={handleFormChange}
+              />
+              Others
+            </label>
+            {errors.gender && <p className="error-message">{errors.gender}</p>}
+          </div>
+        </div>
+        <div className="submit-button-div">
+          <button type="submit" className="register-button">
+            Register
+          </button>
         </div>
       </form>
     </div>
-
   );
 };
 

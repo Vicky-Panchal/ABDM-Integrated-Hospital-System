@@ -1,74 +1,89 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #ddffff;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #ddffff;
+}
 
-  .profile-container {
-    width: 800px;
-    padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 0 10px #0099ff;
-    border-radius: 8px;
-    margin-top: 70px;
-  }
+.profile-container {
+  width: 800px;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #0099ff;
+  border-radius: 8px;
+  margin-top: 70px;
+}
 
-  .info1-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+.info1-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-  .profile-pic {
-    width: 40%;
-    padding: auto;
-  }
+.upload-button {
+  font-size: medium;
+  background-color: #ddd;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: "Times New Roman", Times, serif;
+  margin-left: -5px;
+}
 
-  .profile-pic img {
-    max-width: 70%;
-    height: auto;
-  }
+.upload-button:hover {
+  box-shadow: 0 0 2px #000000;
+}
 
-  .info {
-    width: 100%;
-    text-align: left;
-  }
+.profile-pic {
+  width: 40%;
+  padding: auto;
+}
 
-  .gender-dob {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+.profile-pic img {
+  max-width: 70%;
+  height: auto;
+}
 
-  .gender {
-    width: 100%;
-  }
+.info {
+  width: 100%;
+  text-align: left;
+}
 
-  .dob {
-    width: 100%;
-  }
+.gender-dob {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-  .info2-container {
+.gender {
+  width: 100%;
+}
 
-  }
+.dob {
+  width: 100%;
+}
 
-  .button-container {
-    text-align: center;
-  }
+.info2-container {
+}
 
-  .download-button {
-    background-color: #0000ff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-    border-radius: 20px;
-  }
-  
-  .download-button:hover {
-    box-shadow: 0 0 8px #000000;
-  }
+.button-container {
+  text-align: center;
+}
+
+.download-button,
+.change-password-button {
+  background-color: #0000ff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 20px;
+}
+
+.download-button:hover,
+.change-password-button:hover {
+  box-shadow: 0 0 8px #000000;
+}

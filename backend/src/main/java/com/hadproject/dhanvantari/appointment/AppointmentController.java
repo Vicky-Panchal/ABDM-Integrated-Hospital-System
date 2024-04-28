@@ -1,9 +1,6 @@
 package com.hadproject.dhanvantari.appointment;
 
-import com.hadproject.dhanvantari.appointment.dto.AddAppointmentSlotRequest;
-import com.hadproject.dhanvantari.appointment.dto.ChangeStatusRequest;
-import com.hadproject.dhanvantari.appointment.dto.GetAppointmentSlotsResponse;
-import com.hadproject.dhanvantari.appointment.dto.GetPatientAppointmentsResponse;
+import com.hadproject.dhanvantari.appointment.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +18,7 @@ public class AppointmentController {
 
     @PostMapping("/addSlots")
     @PreAuthorize("hasRole('DOCTOR')")
-    public String addSlot(@RequestBody AddAppointmentSlotRequest slots, Principal connectedUser) {
+    public String addSlot(@RequestBody() AddAppointmentSlotRequest slots, Principal connectedUser) {
         appointmentService.addAppointmentSlots(slots, connectedUser);
         return "Slots added successfully";
     }
@@ -33,8 +30,8 @@ public class AppointmentController {
 
     @PostMapping("/bookAppointment")
     @PreAuthorize("hasRole('PATIENT')")
-    public String bookAppointment(@RequestParam("slotId") Long slotId, Principal connectedUser) {
-        appointmentService.bookAppointment(slotId, connectedUser);
+    public String bookAppointment(@RequestBody() BookAppointmentRequest data, Principal connectedUser) {
+        appointmentService.bookAppointment(data, connectedUser);
         return "Appointment booked successfully";
     }
 

@@ -17,6 +17,9 @@ public class GetPatientAppointmentsResponse {
     public Long slotId;
     public String doctorName;
     public LocalDate appointmentDate;
-    public LocalTime appointmentTime;
+    public LocalTime appointmentStartTime;
+    public LocalTime appointmentEndTime;
     public String status;
+    public String purpose;
+    public String profileUrl;
 }

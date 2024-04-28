@@ -53,30 +53,8 @@ const DummySlotList = [
   // Add more containers as needed
 ];
 
-const AddSlotPopup = ({ onClose }) => {
-  const [addDate, setAddDate] = useState("");
-
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    setAddDate(today);
-  }, []);
-
-  const [currentTime, setCurrentTime] = useState("");
-
-  useEffect(() => {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    setCurrentTime(`${hours}:${minutes}`);
-  }, []);
-
-  const [doctorValue, setDoctorValue] = useState("");
-
-  const handleDoctorChange = (event) => {
-    setDoctorValue(event.target.value);
-  };
-
-  const dummyDoctorName = [
+const AddSlotPopup = ({ onCloseAdd }) => {
+  const dummyDoctor = [
     {
       id: 1,
       name: "Keshav",
@@ -86,97 +64,269 @@ const AddSlotPopup = ({ onClose }) => {
       id: 2,
       name: "Chintu",
       profilePic: "logo192.png",
-    }
+    },
   ];
-
-  const [purpose, setPurpose] = useState("");
-
-  const handlePurposeChange = (event) => {
-    setPurpose(event.target.value);
-  };
 
   const dummyPurpose = [
     {
       id: 1,
-      value: "Checkup"
+      value: "Checkup",
     },
     {
       id: 2,
-      value: "Lab Test"
-    }
+      value: "Lab Test",
+    },
   ];
 
+  const dummySlots = [
+    {
+      id: 1,
+      value: "09:00 AM - 09:30 AM",
+    },
+    {
+      id: 2,
+      value: "10:00 AM - 10:30 AM",
+    },
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(1);
+
+  const handleNext = () => {
+    setCurrentSlide(currentSlide + 1);
+  };
+
+  const handlePrevious = () => {
+    setCurrentSlide(currentSlide - 1);
+  };
+
+  const [doctorValue, setDoctorValue] = useState("");
+  const handleDoctorChange = (event) => {
+    setDoctorValue(event.target.value);
+  };
+
+  const [dateValue, setDateValue] = useState("");
+  const handleDateChange = (event) => {
+    setDateValue(event.target.value);
+  };
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    setDateValue(today);
+  }, []);
+
+  const handleDoctorSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  const [slotValue, setSlotValue] = useState("");
+  const handleSlotChange = (event) => {
+    setSlotValue(event.target.value);
+  };
+  const handleSlotSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  const [purposeValue, setPurposeValue] = useState("");
+  const handlePurposeChange = (event) => {
+    setPurposeValue(event.target.value);
+  };
+  const handlePurposeSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    setDateValue(today);
+  }, []);
+
   return (
-    <div className="popup-overlay">
-      <div className="popup">
-        <h2>Schedule Appointment</h2>
-        <div className="popup-date-time">
-          <label>Doctor Name : </label>
-          <select
-            className="dropdown-select"
-            value={doctorValue}
-            onChange={handleDoctorChange}
-          >
-            {dummyDoctorName.map((doctor) => (
-              <option value={doctor.name}>{doctor.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className="popup-date-time">
-          <label>Purpose : </label>
-          <select
-            className="dropdown-select"
-            value={purpose}
-            onChange={handlePurposeChange}
-          >
-            {dummyPurpose.map((purpose) => (
-              <option value={purpose.value}>{purpose.value}</option>
-            ))}
-          </select>
-        </div>
-        <div className="popup-date-time">
-          <label>Date : </label>
-          <input
-            className="filter-date"
-            type="date"
-            value={addDate}
-            onChange={(e) => setAddDate(e.target.value)}
-            required
-          />
-        </div>
-        <div className="popup-date-time">
-          <label for="timeInput">From : </label>
-          <input
-            type="time"
-            id="timeInput"
-            name="timeInput"
-            defaultValue={currentTime}
-            required
-          />
-        </div>
-        <div className="popup-date-time">
-          <label for="timeInput">To : </label>
-          <input
-            type="time"
-            id="timeInput"
-            name="timeInput"
-            defaultValue={currentTime}
-            required
-          />
+    <div className="schedule-popup-container-overlay">
+      <div className="schedule-popup-container">
+        <div className={`slide ${currentSlide === 1 ? "active" : ""}`}>
+          <div className="divisions">
+            <div className="description">
+              <img src="/hadlogo.png" alt="logo" />
+              <h1>Dhanvantri User</h1>
+              <h3>Schedule your appointment with doctor.</h3>
+            </div>
+            <div className="form">
+              <form onSubmit={handleDoctorSubmit}>
+                <div className="form-group">
+                  <label className="form-label">Select Doctor :</label>
+                  <select
+                    className="dropdown-select"
+                    value={doctorValue}
+                    onChange={handleDoctorChange}
+                    required
+                  >
+                    {dummyDoctor.map((item) => (
+                      <option value={item.name}>{item.name}</option>
+                    ))}
+                  </select>
+                  <label className="form-label">Select Date :</label>
+                  <input
+                    className="filter-date"
+                    type="date"
+                    value={dateValue}
+                    onChange={handleDateChange}
+                    required
+                  />
+                </div>
+
+                <div className="buttons">
+                  <button
+                    type="submit"
+                    className="abdm-button"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </button>
+                  <button
+                    type="button"
+                    className="cancel-button"
+                    onClick={onCloseAdd}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
 
-        <button className="close-button" onClick={onClose}>
-          Schedule
-        </button>
-        <button className="close-button" onClick={onClose}>
-          Cancel
-        </button>
+        <div className={`slide ${currentSlide === 2 ? "active" : ""}`}>
+          <div className="divisions">
+            <div className="description">
+              <img src="/hadlogo.png" alt="logo" />
+              <h1>Dhanvantri User</h1>
+              <h3>Schedule your appointment with doctor.</h3>
+            </div>
+            <div className="form">
+              <form onSubmit={handleSlotSubmit}>
+                <div className="form-group">
+                  <label className="form-label">
+                    Select from available slots :
+                  </label>
+                  <select
+                    className="dropdown-select"
+                    value={slotValue}
+                    onChange={handleSlotChange}
+                    required
+                  >
+                    {dummySlots.map((item) => (
+                      <option value={item.value}>{item.value}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="buttons">
+                  <button
+                    type="button"
+                    className="abdm-button"
+                    onClick={handlePrevious}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="submit"
+                    className="abdm-button"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </button>
+                  <button
+                    type="button"
+                    className="cancel-button"
+                    onClick={onCloseAdd}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div className={`slide ${currentSlide === 3 ? "active" : ""}`}>
+          <div className="divisions">
+            <div className="description">
+              <img src="/hadlogo.png" alt="logo" />
+              <h1>Dhanvantri User</h1>
+              <h3>Schedule your appointment with doctor.</h3>
+            </div>
+            <div className="form">
+              <form onSubmit={handlePurposeSubmit}>
+                <div className="form-group">
+                  <label className="form-label">
+                    Select purpose of appointment :
+                  </label>
+                  <select
+                    className="dropdown-select"
+                    value={purposeValue}
+                    onChange={handlePurposeChange}
+                    required
+                  >
+                    {dummyPurpose.map((item) => (
+                      <option value={item.value}>{item.value}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="buttons">
+                  <button
+                    type="button"
+                    className="abdm-button"
+                    onClick={handlePrevious}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="submit"
+                    className="abdm-button"
+                    onClick={handleNext}
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    className="cancel-button"
+                    onClick={onCloseAdd}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div className={`slide ${currentSlide === 4 ? "active" : ""}`}>
+          <div className="divisions">
+            <div className="description">
+              <img src="/hadlogo.png" alt="logo" />
+              <h1>Dhanvantri User</h1>
+              <h3>Schedule your appointment with doctor.</h3>
+            </div>
+            <div className="form">
+              <div className="form-group">
+                <label className="form-label">
+                  Your appointment has been booked.
+                </label>
+              </div>
+              <button
+                type="button"
+                className="abdm-button"
+                onClick={onCloseAdd}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 const DeleteSlotPopup = ({ onClose }) => {
+  console.log("delete");
   return (
     <div className="popup-overlay">
       <div className="popup">
@@ -227,13 +377,175 @@ const ScheduleAppointment = () => {
   return (
     <div>
       <Navbar />
-    <div className="appointment-container">
-      <div className="scheduled-container">
-        {DummySlotListScheduled.map((item) => (
-          <div key={item.id} className="scheduled-item">
-            {!showDetails[item.id] && (
-              <div className="short-list-item">
-                <div className="slot-col">
+      <div className="appointment-container">
+        <div className="scheduled-container">
+          {DummySlotListScheduled.map((item) => (
+            <div key={item.id} className="scheduled-item">
+              {!showDetails[item.id] && (
+                <div className="short-list-item">
+                  <div className="slot-col">
+                    <div className="slot-info">
+                      <p>
+                        <strong>Status : </strong>
+                        {item.status}
+                      </p>
+                      <p>
+                        <strong>Date : </strong>
+                        {item.date}
+                      </p>
+                    </div>
+                    <div className="slot-time">
+                      <p>
+                        <strong>From : </strong>
+                        {item.from}
+                      </p>
+                      <p>
+                        <strong>To : </strong>
+                        {item.to}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="delete-slot">
+                    <button onClick={() => handleCancelSlot(item.id)}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {showDetails[item.id] && (
+                <div className="detail-list-item">
+                  <div className="doctor-info">
+                    <div className="image">
+                      <img alt="ProfilePic" src={item.patientPic}></img>
+                    </div>
+                    <div className="info>">
+                      <p>
+                        <strong>Doctor Name : </strong>
+                        {item.patientName}
+                      </p>
+                      <p>
+                        <strong>Purpose of Appointment : </strong>
+                        {item.purpose}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="slot-info">
+                    <p>
+                      <strong>Status : </strong>
+                      {item.status}
+                    </p>
+                    <p>
+                      <strong>Date : </strong>
+                      {item.date}
+                    </p>
+                  </div>
+                  <div className="slot-time">
+                    <p>
+                      <strong>From : </strong>
+                      {item.from}
+                    </p>
+                    <p>
+                      <strong>To : </strong>
+                      {item.to}
+                    </p>
+                  </div>
+                  <div className="delete-slot">
+                    <button onClick={() => handleCancelSlot(item.id)}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <p className="show-hide" onClick={() => toggleDetails(item.id)}>
+                {showDetails[item.id] ? "Hide Details" : "Show More"}
+              </p>
+            </div>
+          ))}
+          <div>
+            <button
+              className="sch-app-btn"
+              onClick={() => setShowAddSlotPopup(true)}
+            >
+              Schedule Appointment
+            </button>
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="filter-slots">
+          <div className="dropdown-container">
+            <label>Filter : </label>
+            <select
+              className="dropdown-select"
+              value={filterValue}
+              onChange={handleFilterChange}
+            >
+              <option value="all">Completed or Canceled appointments</option>
+              <option value="completed">Completed appointments</option>
+              <option value="canceled">Canceled appointments</option>
+            </select>
+          </div>
+          <div className="filter-button">
+            <button
+              type="submit"
+              className="filter-app"
+              onClick={handleFilterSearch}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+
+        <div className="slot-list">
+          {DummySlotList.map((item) => (
+            <div key={item.id} className="slot-item">
+              {!showDetails[item.id] && (
+                <div className="short-list-item">
+                  <div className="slot-col">
+                    <div className="slot-info">
+                      <p>
+                        <strong>Status : </strong>
+                        {item.status}
+                      </p>
+                      <p>
+                        <strong>Date : </strong>
+                        {item.date}
+                      </p>
+                    </div>
+                    <div className="slot-time">
+                      <p>
+                        <strong>From : </strong>
+                        {item.from}
+                      </p>
+                      <p>
+                        <strong>To : </strong>
+                        {item.to}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {showDetails[item.id] && (
+                <div className="detail-list-item">
+                  <div className="doctor-info">
+                    <div className="image">
+                      <img alt="ProfilePic" src={item.patientPic}></img>
+                    </div>
+                    <div className="info>">
+                      <p>
+                        <strong>Doctor Name : </strong>
+                        {item.patientName}
+                      </p>
+                      <p>
+                        <strong>Purpose of Appointment : </strong>
+                        {item.purpose}
+                      </p>
+                    </div>
+                  </div>
                   <div className="slot-info">
                     <p>
                       <strong>Status : </strong>
@@ -255,184 +567,22 @@ const ScheduleAppointment = () => {
                     </p>
                   </div>
                 </div>
-                <div className="delete-slot">
-                  <button onClick={() => handleCancelSlot(item.id)}>
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
+              )}
 
-            {showDetails[item.id] && (
-              <div className="detail-list-item">
-                <div className="doctor-info">
-                  <div className="image">
-                    <img alt="ProfilePic" src={item.patientPic}></img>
-                  </div>
-                  <div className="info>">
-                    <p>
-                      <strong>Doctor Name : </strong>
-                      {item.patientName}
-                    </p>
-                    <p>
-                      <strong>Purpose of Appointment : </strong>
-                      {item.purpose}
-                    </p>
-                  </div>
-                </div>
-                <div className="slot-info">
-                  <p>
-                    <strong>Status : </strong>
-                    {item.status}
-                  </p>
-                  <p>
-                    <strong>Date : </strong>
-                    {item.date}
-                  </p>
-                </div>
-                <div className="slot-time">
-                  <p>
-                    <strong>From : </strong>
-                    {item.from}
-                  </p>
-                  <p>
-                    <strong>To : </strong>
-                    {item.to}
-                  </p>
-                </div>
-                <div className="delete-slot">
-                  <button onClick={() => handleCancelSlot(item.id)}>
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <p className="show-hide" onClick={() => toggleDetails(item.id)}>
-              {showDetails[item.id] ? "Hide Details" : "Show More"}
-            </p>
-          </div>
-        ))}
-        <div>
-          <button
-            className="add-slot-btn"
-            onClick={() => setShowAddSlotPopup(true)}
-          >
-            Schedule Appointment
-          </button>
+              <p className="show-hide" onClick={() => toggleDetails(item.id)}>
+                {showDetails[item.id] ? "Hide Details" : "Show More"}
+              </p>
+            </div>
+          ))}
         </div>
+
+        {showDeleteSlotPopup && (
+          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} />
+        )}
+        {showAddSlotPopup && (
+          <AddSlotPopup onCloseAdd={() => setShowAddSlotPopup(false)} />
+        )}
       </div>
-
-      <hr />
-
-      <div className="filter-slots">
-        <div className="dropdown-container">
-          <label>Filter : </label>
-          <select
-            className="dropdown-select"
-            value={filterValue}
-            onChange={handleFilterChange}
-          >
-            <option value="all">Completed or Canceled appointments</option>
-            <option value="completed">Completed appointments</option>
-            <option value="canceled">Canceled appointments</option>
-          </select>
-        </div>
-        <div className="filter-button">
-          <button
-            type="submit"
-            className="filter-search"
-            onClick={handleFilterSearch}
-          >
-            Search
-          </button>
-        </div>
-      </div>
-
-      <div className="slot-list">
-        {DummySlotList.map((item) => (
-          <div key={item.id} className="slot-item">
-            {!showDetails[item.id] && (
-              <div className="short-list-item">
-                <div className="slot-col">
-                  <div className="slot-info">
-                    <p>
-                      <strong>Status : </strong>
-                      {item.status}
-                    </p>
-                    <p>
-                      <strong>Date : </strong>
-                      {item.date}
-                    </p>
-                  </div>
-                  <div className="slot-time">
-                    <p>
-                      <strong>From : </strong>
-                      {item.from}
-                    </p>
-                    <p>
-                      <strong>To : </strong>
-                      {item.to}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {showDetails[item.id] && (
-              <div className="detail-list-item">
-                <div className="doctor-info">
-                  <div className="image">
-                    <img alt="ProfilePic" src={item.patientPic}></img>
-                  </div>
-                  <div className="info>">
-                    <p>
-                      <strong>Doctor Name : </strong>
-                      {item.patientName}
-                    </p>
-                    <p>
-                      <strong>Purpose of Appointment : </strong>
-                      {item.purpose}
-                    </p>
-                  </div>
-                </div>
-                <div className="slot-info">
-                  <p>
-                    <strong>Status : </strong>
-                    {item.status}
-                  </p>
-                  <p>
-                    <strong>Date : </strong>
-                    {item.date}
-                  </p>
-                </div>
-                <div className="slot-time">
-                  <p>
-                    <strong>From : </strong>
-                    {item.from}
-                  </p>
-                  <p>
-                    <strong>To : </strong>
-                    {item.to}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            <p className="show-hide" onClick={() => toggleDetails(item.id)}>
-              {showDetails[item.id] ? "Hide Details" : "Show More"}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {showDeleteSlotPopup && (
-        <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} />
-      )}
-      {showAddSlotPopup && (
-        <AddSlotPopup onClose={() => setShowAddSlotPopup(false)} />
-      )}
-    </div>
     </div>
   );
 };

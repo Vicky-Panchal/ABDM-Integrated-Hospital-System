@@ -98,6 +98,13 @@ const Navbar = () => {
       return `${seconds} second${seconds === 1 ? '' : 's'} ago`;
     }
   };
+
+  const handleLogout = () => {
+    // Clear user authentication details from local storage
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("loggedInUser");
+  };
   
   
 
@@ -113,19 +120,19 @@ const Navbar = () => {
 
           <button
             onClick={handleNotificationClick}
-            className="notification-icon"
+            className="icon"
           >
             <FontAwesomeIcon icon={faBell} />
           </button>
 
           <button
             onClick={handleProfileClick}
-            className="notification-icon"
+            className="icon"
           >
             <FontAwesomeIcon icon={faUser} />
           </button>
 
-          <h6>Logout</h6>
+          <Link to="/login" onClick={handleLogout}><h6>Logout</h6></Link>
 
           {showNotifications && (
 

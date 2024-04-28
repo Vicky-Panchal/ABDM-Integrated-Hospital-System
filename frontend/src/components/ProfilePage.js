@@ -20,6 +20,7 @@ const ProfilePage = () => {
   const userId = JSON.parse(localStorage.getItem("loggedInUser")).user_id;
   const token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
   const fileInputRef = useRef(null); // Create a ref for the file input
+  const navigate = useNavigate();
 
   //   const updateProfilePic = (imageUrl) => {
   //     setProfilePic(imageUrl);
@@ -141,6 +142,10 @@ const ProfilePage = () => {
     }
   };
 
+  const handleChangePassword = () => {
+    navigate("/change-password");
+  };
+
   return (
     <div>
       <Navbar />
@@ -192,6 +197,9 @@ const ProfilePage = () => {
         </div>
         <div className="button-container">
           <button className="download-button">Download ABHA Card</button>
+          <button className="change-password-button" onClick={handleChangePassword}>
+            Change Password
+          </button>
         </div>
       </div>
     </div>

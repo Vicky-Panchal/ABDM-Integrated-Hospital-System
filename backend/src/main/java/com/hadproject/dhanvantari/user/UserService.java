@@ -87,7 +87,7 @@ public class UserService {
     }
 
     public ResponseEntity<GetUserResponse> getUser(String userId) {
-        User user = userRepository.findById(Integer.valueOf(userId)).orElseThrow(() -> new NotFoundException("User not found"));
+        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new NotFoundException("User not found"));
 
         return ResponseEntity.ok(GetUserResponse.builder()
                 .id(String.valueOf(user.getUserId()))

@@ -1,13 +1,7 @@
 package com.hadproject.dhanvantari.care_context;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hadproject.dhanvantari.visit.Visit;
-import com.hadproject.dhanvantari.doctor.Doctor;
-import com.hadproject.dhanvantari.patient.Patient;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Entity
 @Data
@@ -18,32 +12,38 @@ import java.util.List;
 public class CareContext {
 
     @Id
-    @SequenceGenerator(
-            name = "care_context_sequence",
-            sequenceName = "care_context_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "care_context_sequence"
-    )
-    private int careContextId;
-    public String display;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column
+    private String patientReference;
+    @Column
+    private String careContextReference;
+    @Column
+    private String data;
+    @Column
+    private String encryptedData;
+    @Column
+    private String checkSum;
+    @Column
+    private String prescription;
+    @Column
+    private String diagnosis;
+    @Column
+    private String dosageInstruction;
+    @Column
+    private String patientName;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "patient_id_fk",
-            referencedColumnName = "patientId"
-    )
-    @JsonIgnore
-    public Patient patient;
-    @ManyToOne
-    @JoinColumn(
-            name = "doctor_id_fk",
-            referencedColumnName = "doctorId"
-    )
-    public Doctor doctor;
+    @Column
+    private String patientId;
 
-    @OneToMany(mappedBy = "careContext",cascade = CascadeType.ALL)
-    List<Visit> appointmentlist;
+    @Column
+    private String doctorId;
+
+    @Column
+    String doctorName;
+
+    public CareContext(String patientReference, String careContextReference) {
+        this.careContextReference = careContextReference;
+        this.patientReference = patientReference;
+    }
 }

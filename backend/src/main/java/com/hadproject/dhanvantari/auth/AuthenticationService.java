@@ -1,15 +1,20 @@
 package com.hadproject.dhanvantari.auth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hadproject.dhanvantari.auth.dto.AuthenticationRequest;
 import com.hadproject.dhanvantari.auth.dto.AuthenticationResponse;
 import com.hadproject.dhanvantari.auth.dto.RegisterRequest;
 import com.hadproject.dhanvantari.config.JwtService;
+import com.hadproject.dhanvantari.doctor.Doctor;
+import com.hadproject.dhanvantari.doctor.DoctorRepository;
+import com.hadproject.dhanvantari.patient.Patient;
+import com.hadproject.dhanvantari.patient.PatientRepository;
 import com.hadproject.dhanvantari.token.Token;
 import com.hadproject.dhanvantari.token.TokenRepository;
 import com.hadproject.dhanvantari.token.TokenType;
+import com.hadproject.dhanvantari.user.Role;
 import com.hadproject.dhanvantari.user.User;
 import com.hadproject.dhanvantari.user.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +34,8 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final PatientRepository patientRepository;
+  private final DoctorRepository doctorRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
     var user = User.builder()
@@ -43,6 +50,16 @@ public class AuthenticationService {
             .mobile(request.getMobile())
         .build();
     var savedUser = repository.save(user);
+    if(request.getRole().equals(Role.PATIENT)) {
+        patientRepository.save(Patient.builder()
+                        .user(user)
+                .build());
+    }
+    if(request.getRole().equals(Role.DOCTOR)) {
+      doctorRepository.save(Doctor.builder()
+                      .user(user)
+              .build());
+    }
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);

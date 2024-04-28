@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: backend
+  template:
+    metadata:
+      labels:
+        component: backend
+    spec:
+      containers:
+        - name: backend
+          image: vickypanchal/abdm-backend
+          ports:
+            - containerPort: 8081
+          env:
+            - name: MYSQL_DATABASE
+              value: 'abdm_app'
+            - name: MYSQL_ROOT_PASSWORD
+              value: '3370136'
+            - name: SPRING_DATASOURCE_URL
+              value: 'jdbc:mysql://mysql-cluster-ip-service:3306/abdm_app?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true'
+            - name: SPRING_DATASOURCE_USERNAME
+              value: 'root'
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: '3370136'

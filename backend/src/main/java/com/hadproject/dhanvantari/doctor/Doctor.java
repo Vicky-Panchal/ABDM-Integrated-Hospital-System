@@ -34,9 +34,14 @@ public class Doctor {
             strategy = GenerationType.SEQUENCE,
             generator = "doctor_sequence"
     )
-    private int doctorId;
+    private Long doctorId;
 
     public String registrationNumber;
+
+    // Add more fields for doctor details
+    private String specialization;
+    private String qualifications;
+    private String hospitalName;
 
     @OneToOne(
             cascade = CascadeType.ALL,

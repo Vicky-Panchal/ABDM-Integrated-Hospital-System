@@ -22,19 +22,12 @@ body {
   border-radius: 8px;
 }
 
-.slotlist-container {
-  width: 100%;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px #0099ff;
-  border-radius: 8px;
-}
-
-.slot-list-heading {
+.scheduled-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
+  width: 100%;
 }
 
 .add-slot-btn {
@@ -44,43 +37,10 @@ body {
   cursor: pointer;
   border-radius: 10px;
   font-family: "Times New Roman", Times, serif;
-  margin-top: -15px;
 }
 
 .add-slot-btn:hover {
   box-shadow: 0 0 2px #000000;
-}
-
-/* Style for the slot list table */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-/* Style for the table header */
-thead th {
-  background-color: #aaffff;
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-/* Style for the table rows */
-tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-/* Style for the table cells */
-td {
-  padding: 8px;
-  text-align: center;
-}
-
-/* Hover effect for table rows */
-tbody tr:hover {
-  background-color: #ddd;
 }
 
 .filter-slots {
@@ -104,8 +64,7 @@ tbody tr:hover {
 }
 
 /* Style for the select element */
-.dropdown-select,
-.filter-date {
+.dropdown-select {
   width: 300px;
   padding: 10px;
   font-size: 16px;
@@ -113,10 +72,6 @@ tbody tr:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none; /* Remove default focus outline */
-}
-
-.filter-date {
-  width: 150px;
 }
 
 /* Style for the options within the dropdown */
@@ -127,6 +82,10 @@ tbody tr:hover {
 /* Style for the selected option */
 .dropdown-selected-option {
   margin-top: 10px;
+}
+
+button {
+  background-color: #0000ff;
 }
 
 .filter-search {
@@ -149,7 +108,8 @@ tbody tr:hover {
   margin: 10px;
 }
 
-.slot-item {
+.slot-item, .scheduled-item {
+  width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -185,8 +145,6 @@ tbody tr:hover {
 
 .image {
   width: 50%;
-  /* padding: auto; */
-  /* background-color: #0056b3; */
 }
 
 .image img {
@@ -194,7 +152,7 @@ tbody tr:hover {
   height: auto;
 }
 
-.slot-info, .slot-time, .patient-info {
+.slot-info, .slot-time, .doctor-info {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -203,8 +161,9 @@ tbody tr:hover {
   /* background-color: #0000ff; */
 }
 
-.patient-info {
+.doctor-info {
   justify-content: space-around;
+  /* background-color: #0056b3; */
 }
 
 .show-hide {
@@ -221,28 +180,12 @@ tbody tr:hover {
   text-decoration-line: underline;
 }
 
-/* p {
-  margin: 9px;
-} */
-
 .delete-buttons {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: auto;
 }
-
-/* button {
-  width: max-content;
-  height: fit-content;
-  margin: 6px;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: medium;
-  font-family: "Times New Roman", Times, serif;
-} */
 
 .delete-slot button {
   background-color: #fff;
@@ -328,3 +271,8 @@ tbody tr:hover {
   box-sizing: border-box;
 }
 
+hr {
+    border: none; /* Remove default border */
+    border-top: 1px solid #000; /* Add a solid border on top */
+    margin: 30px 0; /* Add some margin above and below the line */
+  }

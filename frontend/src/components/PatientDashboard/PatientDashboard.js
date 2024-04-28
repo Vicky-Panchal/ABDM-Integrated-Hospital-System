@@ -15,7 +15,7 @@ const PatientDashboard = () => {
         <div className="row1">
           <button className="component" onClick={() => {navigate("/ABDMRegistration");}}>ABDM Registration</button>
           <button className="component" onClick={() => {navigate("/ConsentRequests");}}>Consent Requests</button>
-          <button className="component">Schedule Appointment</button>
+          <button className="component" onClick={() => {navigate("/ScheduleAppointment");}}>Schedule Appointment</button>
           
         </div>
         <div className="row2">

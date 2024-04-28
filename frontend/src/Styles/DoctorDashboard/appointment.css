@@ -37,7 +37,7 @@ body {
   justify-content: space-between;
 }
 
-.add-slot-btn {
+/* .add-slot-btn {
   font-size: medium;
   background-color: #ddd;
   border: none;
@@ -49,7 +49,7 @@ body {
 
 .add-slot-btn:hover {
   box-shadow: 0 0 2px #000000;
-}
+} */
 
 /* Style for the slot list table */
 table {
@@ -129,7 +129,8 @@ tbody tr:hover {
   margin-top: 10px;
 }
 
-.filter-search {
+.filter-search, .add-slot-btn {
+  margin-top: 40%;
   width: fit-content;
   height: fit-content;
   background-color: #0000ff;
@@ -141,7 +142,12 @@ tbody tr:hover {
   font-family: "Times New Roman", Times, serif;
 }
 
-.filter-search:hover {
+.add-slot-btn{
+  margin-top: 35%;
+  width: max-content;
+}
+
+.filter-search:hover, .add-slot-btn:hover {
   box-shadow: 0 0 4px #000000;
 }
 

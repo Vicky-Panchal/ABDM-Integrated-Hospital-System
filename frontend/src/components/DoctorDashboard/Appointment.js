@@ -193,7 +193,7 @@ const Appointment = () => {
     <div>
       <Navbar />
     <div className="appointment-container">
-      <div className="slotlist-container">
+      {/* <div className="slotlist-container">
         <div className="slot-list-heading">
           <div>
             <h2>Slots List</h2>
@@ -225,7 +225,7 @@ const Appointment = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       <div className="filter-slots">
         <div className="dropdown-container">
@@ -261,6 +261,14 @@ const Appointment = () => {
             Search
           </button>
         </div>
+        <div>
+            <button
+              className="add-slot-btn"
+              onClick={() => setShowAddSlotPopup(true)}
+            >
+              Add Slot
+            </button>
+          </div>
       </div>
 
       <div className="slot-list">

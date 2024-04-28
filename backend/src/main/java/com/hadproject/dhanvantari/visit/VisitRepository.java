@@ -12,5 +12,5 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
     Visit findVisitByReferenceNumber(String referenceNumber);
     Visit findVisitByRequestId (String requestId);
 
-    Visit findVisitByVisitId(Long visitId);
+    Visit findVisitById(Long id);
 }

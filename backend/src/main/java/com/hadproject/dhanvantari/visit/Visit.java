@@ -1,7 +1,6 @@
 package com.hadproject.dhanvantari.visit;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hadproject.dhanvantari.care_context.CareContext;
+import com.hadproject.dhanvantari.consent.ConsentRequest;
 import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.patient.Patient;
 import jakarta.persistence.*;
@@ -12,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -21,17 +22,8 @@ import java.time.LocalDate;
 @Table(name = "visit")
 public class Visit {
     @Id
-    @SequenceGenerator(
-            name = "visit_sequence",
-            sequenceName = "visit_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "visit_sequence"
-    )
-    private Long visitId;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @Column
     private String prescription;
     @Column
@@ -43,36 +35,21 @@ public class Visit {
     @Column
     private String referenceNumber;
     @Column
+    private String display;
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "patient_id", referencedColumnName = "patientId")
+    private Patient patient;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctorId")
+    private Doctor doctor;
+
+    @Column
     private String requestId;
     @Column
     private boolean isDisabled = false;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "patient_id_fk",
-            referencedColumnName = "patientId"
-    )
-    @JsonIgnore
-    public Patient patient;
-
-    @Column
-    private String display;
-
-    @ManyToOne
-    @JoinColumn(
-            name = "doctor_id_fk",
-            referencedColumnName = "doctorId"
-    )
-    @JsonIgnore
-    public Doctor doctor;
-
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(
-            name = "care_context_id_fk",
-            referencedColumnName = "careContextId"
-    )
-    public CareContext careContext;
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    List<ConsentRequest> consentRequestList = new ArrayList<>();
 
     public Visit(LocalDate visitDate, String referenceNumber, String display) {
         this.visitDate = visitDate;
@@ -82,7 +59,7 @@ public class Visit {
 
     public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
-        obj.put("id", "" + visitId);
+        obj.put("id", "" + id);
         obj.put("prescription", prescription);
         obj.put("diagnosis", diagnosis);
         obj.put("dosageInstruction", dosageInstruction);

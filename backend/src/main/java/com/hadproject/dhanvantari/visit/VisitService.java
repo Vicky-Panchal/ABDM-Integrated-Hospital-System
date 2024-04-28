@@ -119,7 +119,7 @@ public class VisitService {
         Visit visit = visitRepository.findVisitByRequestId(requestId);
         if (obj.isNull("error")) {
             response.put("status", HttpStatus.OK);
-            response.put("message", "New visit created with id " + visit.getVisitId());
+            response.put("message", "New visit created with id " + visit.getId());
             response.put("data", visit.getJSONObject());
         }
         else {

@@ -20,4 +20,7 @@ public class GetAppointmentSlotsResponse {
     public LocalTime startTime;
     public LocalTime endTime;
     public AppointmentStatus availabilityStatus;
+    public String patientName;
+    public String purpose;
+    public String profileUrl;
 }

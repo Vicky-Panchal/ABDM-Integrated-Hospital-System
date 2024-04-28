@@ -22,6 +22,8 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String purpose;
+
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;

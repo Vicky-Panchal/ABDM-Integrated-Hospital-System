@@ -1,14 +1,13 @@
 package com.hadproject.dhanvantari.appointment;
 
-import com.hadproject.dhanvantari.appointment.dto.AddAppointmentSlotRequest;
-import com.hadproject.dhanvantari.appointment.dto.ChangeStatusRequest;
-import com.hadproject.dhanvantari.appointment.dto.GetAppointmentSlotsResponse;
-import com.hadproject.dhanvantari.appointment.dto.GetPatientAppointmentsResponse;
+import com.hadproject.dhanvantari.appointment.dto.*;
+import com.hadproject.dhanvantari.aws.S3Service;
 import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.doctor.DoctorRepository;
 import com.hadproject.dhanvantari.error_handling.NotFoundException;
 import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.patient.PatientRepository;
+import com.hadproject.dhanvantari.user.Role;
 import com.hadproject.dhanvantari.user.User;
 import com.hadproject.dhanvantari.user.UserRepository;
 import com.hadproject.dhanvantari.user.UserService;
@@ -36,6 +35,7 @@ public class AppointmentService {
     private final UserService userService;
     private final AppointmentSlotRepository appointmentSlotRepository;
     private final DoctorRepository doctorRepository;
+    private final S3Service s3Service;
 
     public void addAppointmentSlots(AddAppointmentSlotRequest data, Principal connectedUser) {
         List<LocalDate> dates = data.getDate();
@@ -82,27 +82,41 @@ public class AppointmentService {
         }
 
         List<GetAppointmentSlotsResponse> response = new ArrayList<>();
-
+        String profileUrl = "";
+        if(user.getRole().equals(Role.PATIENT) && slots.get(0).getDoctor().getUser().getProfile() != null) {
+            profileUrl = s3Service.generatePresignedUrl(slots.get(0).getDoctor().getUser().getProfile());
+        }
         for(AppointmentSlot slot : slots) {
-            response.add(
-                    GetAppointmentSlotsResponse.builder()
-                            .id(slot.getId())
-                            .doctorId(doctor.getDoctorId())
-                            .availabilityStatus(slot.getAvailabilityStatus())
-                            .date(slot.getDate())
-                            .startTime(slot.getStartTime())
-                            .endTime(slot.getEndTime())
-                            .build()
-            );
+            GetAppointmentSlotsResponse responseDto = new GetAppointmentSlotsResponse();
+            responseDto.setId(slot.getId());
+            responseDto.setDoctorId(doctor.getDoctorId());
+            responseDto.setDate(slot.getDate());
+            responseDto.setStartTime(slot.getStartTime());
+            responseDto.setEndTime(slot.getEndTime());
+            responseDto.setAvailabilityStatus(slot.getAvailabilityStatus());
+            responseDto.setProfileUrl(profileUrl);
+            if(user.getRole().equals(Role.DOCTOR)
+                    && (slot.getAvailabilityStatus().equals(AppointmentStatus.SCHEDULED)
+                    || slot.getAvailabilityStatus().equals(AppointmentStatus.CANCELLED)
+                    || slot.getAvailabilityStatus().equals(AppointmentStatus.COMPLETED))) {
+                Appointment appointment = appointmentRepository.findBySlotId(slot.getId());
+                if(appointment.getPatient().getUser().getProfile() != null) {
+                    profileUrl = s3Service.generatePresignedUrl(appointment.getPatient().getUser().getProfile());
+                }
+                responseDto.setPurpose(appointment.getPurpose());
+                responseDto.setPatientName(appointment.getPatient().getUser().getFirstname() + " " + appointment.getPatient().getUser().getLastname());
+                responseDto.setProfileUrl(profileUrl);
+            }
+            response.add(responseDto);
         }
         return response;
     }
 
-    public void bookAppointment(Long slotId, Principal connectedUser) {
+    public void bookAppointment(BookAppointmentRequest data, Principal connectedUser) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
         Patient patient = patientRepository.findPatientByUser(user).orElseThrow(() -> new NotFoundException("Patient Not Found"));
 
-        AppointmentSlot slot = appointmentSlotRepository.findById(slotId).orElseThrow(() -> new NotFoundException("Slot Not Found"));
+        AppointmentSlot slot = appointmentSlotRepository.findById(data.getSlotId()).orElseThrow(() -> new NotFoundException("Slot Not Found"));
 
         if(slot.getAvailabilityStatus() != AVAILABLE){
             throw new RuntimeException("Slot Not Available");
@@ -113,6 +127,7 @@ public class AppointmentService {
 
         appointmentRepository.save(
                 Appointment.builder()
+                        .purpose(data.getPurpose())
                         .appointmentDate(slot.getDate())
                         .appointmentTime(slot.getStartTime())
                         .doctor(slot.getDoctor())
@@ -135,13 +150,27 @@ public class AppointmentService {
 
 
         for(Appointment appointment : appointments) {
+            String profileUrl = "";
+            if(appointment.getDoctor().getUser().getProfile() != null) {
+                profileUrl = s3Service.generatePresignedUrl(appointment.getDoctor().getUser().getProfile());
+            }
+            GetPatientAppointmentsResponse responseDto = new GetPatientAppointmentsResponse();
+            responseDto.setAppointmentId(appointment.getId());
+            responseDto.setAppointmentDate(appointment.getAppointmentDate());
+            responseDto.setPurpose(appointment.getPurpose());
+            responseDto.setAppointmentStartTime(appointment.getAppointmentTime());
+            responseDto.setAppointmentEndTime(appointment.getAppointmentTime().plusMinutes(30));
+            responseDto.setDoctorName(appointment.getDoctor().getUser().getFirstname() + " " + appointment.getDoctor().getUser().getLastname());
+            responseDto.setProfileUrl(profileUrl);
             response.add(
                     GetPatientAppointmentsResponse.builder()
+                            .purpose(appointment.getPurpose())
                             .appointmentId(appointment.getId())
                             .slotId(appointment.getSlot().getId())
                             .status(String.valueOf(appointment.getSlot().getAvailabilityStatus()))
                             .appointmentDate(appointment.getAppointmentDate())
-                            .appointmentTime(appointment.getAppointmentTime())
+                            .appointmentStartTime(appointment.getAppointmentTime())
+                            .appointmentEndTime(appointment.getAppointmentTime().plusMinutes(30))
                             .doctorName(appointment.getDoctor().getUser().getFirstname() + " " + appointment.getDoctor().getUser().getLastname())
                             .build()
             );

@@ -14,13 +14,14 @@ const PatientDashboard = () => {
       <div className="dashboard-container">
         <div className="row1">
           <button className="component" onClick={() => {navigate("/ABDMRegistration");}}>ABDM Registration</button>
-          <button className="component">Lab Tests</button>
           <button className="component" onClick={() => {navigate("/ConsentRequests");}}>Consent Requests</button>
+          <button className="component">Schedule Appointment</button>
+          
         </div>
         <div className="row2">
           <button className="component">View Documents</button>
           <button className="component">Upload Documents</button>
-          <button className="component">Appointment Scheduling</button>
+          <button className="component">Lab Tests</button>
         </div>
       </div>
     </div>

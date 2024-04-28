@@ -7,7 +7,6 @@ import Navbar from "../navbar";
 const DummySlotList = [
   {
     id: 1,
-    content: "Container 1 content...",
     status: "Scheduled",
     date: "20-05-2024",
     from: "09:30 AM",
@@ -18,7 +17,6 @@ const DummySlotList = [
   },
   {
     id: 2,
-    content: "Container 2 content...",
     status: "Canceled",
     date: "21-05-2024",
     from: "09:30 AM",
@@ -29,7 +27,6 @@ const DummySlotList = [
   },
   {
     id: 3,
-    content: "Container 3 content...",
     status: "Scheduled",
     date: "22-05-2024",
     from: "09:30 AM",
@@ -38,6 +35,16 @@ const DummySlotList = [
     patientName: "Adarsh",
     patientPic: "logo192.png",
   },
+  {
+    id: 4,
+    status: "Available",
+    date: "22-05-2024",
+    from: "09:30 AM",
+    to: "10:00 AM",
+    purpose: "N/A",
+    patientName: "N/A",
+    patientPic: "N/A",
+  }
   // Add more containers as needed
 ];
 
@@ -281,7 +288,7 @@ const Appointment = () => {
                     </p>
                   </div>
                 </div>
-                {item.status === "Scheduled" && (
+                {(item.status === "Scheduled" || item.status === "Available") && (
                   <div className="delete-slot">
                     <button onClick={() => handleCancelSlot(item.id)}>
                       Cancel
@@ -328,7 +335,7 @@ const Appointment = () => {
                     {item.to}
                   </p>
                 </div>
-                {item.status === "Scheduled" && (
+                {(item.status === "Scheduled" || item.status === "Available") && (
                   <div className="delete-slot">
                     <button onClick={() => handleCancelSlot(item.id)}>
                       Cancel
@@ -337,10 +344,13 @@ const Appointment = () => {
                 )}
               </div>
             )}
-
+            
+            {item.status !== "Available" && (
             <p className="show-hide" onClick={() => toggleDetails(item.id)}>
               {showDetails[item.id] ? "Hide Details" : "Show More"}
             </p>
+            )}
+            
           </div>
         ))}
       </div>

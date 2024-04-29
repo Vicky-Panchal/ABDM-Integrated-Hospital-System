@@ -3,6 +3,8 @@ package com.hadproject.dhanvantari.consent;
 import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.care_context.CareContextRepository;
+import com.hadproject.dhanvantari.doctor.DoctorRepository;
+import com.hadproject.dhanvantari.patient.PatientRepository;
 import com.hadproject.dhanvantari.visit.Visit;
 import com.hadproject.dhanvantari.visit.VisitRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,10 @@ public class ConsentService {
     private final VisitRepository visitRepository;
     private final CareContextRepository careContextRepository;
     private final ABDMService abdmService;
+    private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
+    private final ConsentRequestRepository consentRequestRepository;
+
     static Logger logger = LoggerFactory.getLogger(ConsentService.class);
     public static CareContext convertVisitIntoCareContext(Visit visit) {
         logger.info("Entering convertVisitIntoCareContext with data: {}", visit);
@@ -262,5 +268,100 @@ public class ConsentService {
         HttpEntity<String> entity = new HttpEntity<>(obj.toString(), headers);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject("https://dev.abdm.gov.in/gateway/v0.5/health-information/notify", entity, String.class);
+    }
+
+
+    //---------------------------------------------- Consent Request APIs --------------------------------------------
+
+    public ConsentRequest prepareConsentRequest(String req) {
+
+        logger.info("Entering prepareConsentRequest with data: {}", req);
+
+        JSONObject requestObj = new JSONObject(req);
+        ConsentRequest consentRequest = new ConsentRequest();
+        consentRequest.setPurpose(requestObj.getString("purpose"));
+        consentRequest.setPurposeCode("CAREMGT");
+
+        // TODO: check if converting time is good
+        consentRequest.setDateFrom((requestObj.getString("dateFrom")));
+        consentRequest.setDateTo((requestObj.getString("dateTo")));
+        consentRequest.setDataEraseAt((requestObj.getString("dateEraseAt")));
+        consentRequest.setAccessMode("VIEW");
+
+        consentRequest.setHiTypes(requestObj.get("hiTypes").toString());
+        consentRequest.setPatient(patientRepository.findPatientByPatientId(Long.parseLong(requestObj.getString("patientId"))));
+        consentRequest.setDoctor(doctorRepository.findByDoctorId(Long.parseLong(requestObj.getString("doctorId"))).orElseThrow(() -> new RuntimeException("Doctor not found")));
+
+        Visit visit = visitRepository.findVisitById(Long.parseLong(requestObj.getString("visitId")));
+
+        consentRequest.setVisit(visit);
+        visit.addConsentRequest(consentRequest);
+        logger.info("Exiting prepareConsentRequest with data if saved {}", consentRequest);
+
+        return consentRequestRepository.save(consentRequest);
+    }
+
+    public String fireABDMConsentRequestInit(ConsentRequest consentRequest) throws Exception {
+        logger.info("Entering fireABDMConsentRequestInit with data: {}", consentRequest);
+        JSONObject requestBody = prepareConsentRequestInIt(consentRequest);
+        abdmService.setToken();
+        String authToken = abdmService.getToken();
+        if (authToken.equals("-1")) return null;
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = prepareHeader(authToken);
+
+        HttpEntity<String> entity = new HttpEntity<String>(requestBody.toString(), headers);
+        restTemplate.postForObject("https://dev.abdm.gov.in/gateway/v0.5/consent-requests/init", entity, String.class);
+        return requestBody.get("requestId").toString();
+    }
+
+    public JSONObject prepareConsentRequestInIt(ConsentRequest consentRequest) {
+        logger.info("Entering prepareConsentRequestInIt with data: {}", consentRequest);
+        JSONObject response = new JSONObject();
+        response.put("requestId", randomUUID());
+        response.put("timestamp", ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT ));
+        response.put("consent", getConsentObjectForInIt(consentRequest));
+        consentRequest.setRequestId(response.get("requestId").toString());
+        consentRequestRepository.save(consentRequest);
+        logger.info("Exiting prepareConsentRequestInIt with data {}", consentRequest);
+        return response;
+    }
+
+    public static JSONObject getConsentObjectForInIt(ConsentRequest consentRequest) {
+        logger.info("Entering getConsentObjectForInit with data: consentRequest {}", consentRequest.toString());
+        JSONObject consent = new JSONObject();
+        consent.put("purpose", new JSONObject());
+        consent.getJSONObject("purpose").put("text", consentRequest.getPurpose());
+        consent.getJSONObject("purpose").put("code", consentRequest.getPurposeCode());
+
+        consent.put("patient", new JSONObject());
+        consent.getJSONObject("patient").put("id", consentRequest.getPatient().getUser().getHealthId());
+
+        consent.put("hiu", new JSONObject());
+        consent.getJSONObject("hiu").put("id", "HIU-29-1");
+
+        consent.put("requester", new JSONObject());
+        consent.getJSONObject("requester").put("name", consentRequest.getDoctor().getUser().getFirstname() + " " + consentRequest.getDoctor().getUser().getLastname());
+        consent.getJSONObject("requester").put("identifier", new JSONObject());
+        consent.getJSONObject("requester").getJSONObject("identifier").put("type", "REGNO");
+        consent.getJSONObject("requester").getJSONObject("identifier").put("value", consentRequest.getDoctor().getRegistrationNumber());
+        consent.getJSONObject("requester").getJSONObject("identifier").put("type", "https://www.mciindia.org");
+
+        consent.put("hiTypes", new JSONArray(consentRequest.getHiTypes()));
+
+        consent.put("permission", new JSONObject());
+        consent.getJSONObject("permission").put("accessMode", consentRequest.getAccessMode());
+        consent.getJSONObject("permission").put("dataEraseAt", consentRequest.getDataEraseAt());
+        consent.getJSONObject("permission").put("dateRange", new JSONObject());
+        consent.getJSONObject("permission").getJSONObject("dateRange").put("from", consentRequest.getDateFrom());
+        consent.getJSONObject("permission").getJSONObject("dateRange").put("to", consentRequest.getDateTo());
+
+        consent.getJSONObject("permission").put("frequency", new JSONObject());
+        consent.getJSONObject("permission").getJSONObject("frequency").put("unit", "HOUR");
+        consent.getJSONObject("permission").getJSONObject("frequency").put("value", 1);
+        consent.getJSONObject("permission").getJSONObject("frequency").put("repeats", 0);
+        logger.info("Exiting getConsentObjectForInIt with data: consent = {}", consent);
+        return consent;
     }
 }

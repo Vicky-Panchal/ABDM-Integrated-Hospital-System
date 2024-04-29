@@ -69,4 +69,9 @@ public class Visit {
         obj.put("isDisabled", isDisabled);
         return obj;
     }
+    public void addConsentRequest(ConsentRequest consentRequest) {
+        consentRequest.setVisit(this);
+        this.consentRequestList.add(consentRequest);
+    }
+
 }

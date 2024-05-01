@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ESDProject" uuid="1e4a6b4a-cafd-41b4-a3f4-d62c2b836c74">
+    <data-source source="LOCAL" name="abdm_app" uuid="1e4a6b4a-cafd-41b4-a3f4-d62c2b836c74">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

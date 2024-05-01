@@ -17,9 +17,12 @@ import ABDMRegistration from './components/ABDMRegistration';
 import ConsentList from './components/DoctorDashboard/ConsentList';
 import ConsentRequestForm from './components/DoctorDashboard/ConsentRequestForm'; // ConsentRequestForm
 import ConsentRequests from './components/PatientDashboard/ConsentRequests'; // ConsentRequests
+import ConsentInfo from './components/PatientDashboard/ConsentInfo'; // ConsentInfo
+import ScheduleAppointment from './components/PatientDashboard/ScheduleAppointment'; //ScheduleAppointment
 import ProfilePage from './components/ProfilePage';
 import ChangePasswordPage from "./components/ChangePasswordPage";
 import ForgetPasswordPage from "./components/ForgetPasswordPage";
+import Appointment from './components/DoctorDashboard/Appointment';
 
 
 const App = () => {
@@ -52,9 +55,12 @@ const App = () => {
         <Route path="/ConsentList" element={<ConsentList />} />
         <Route path="/ConsentRequestForm" element={<ConsentRequestForm />} />
         <Route path="/ConsentRequests" element={<ConsentRequests />} />
+        <Route path="/ConsentInfo" element={<ConsentInfo />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
-        <Route path="/change-password" element={<ChangePasswordPage />} />
-        <Route path="/forgetPassword" element={<ForgetPasswordPage />} /> 
+        <Route path="/ChangePasswordPage" element={<ChangePasswordPage />} />
+        <Route path="/ForgetPasswordPage" element={<ForgetPasswordPage />} /> 
+        <Route path="/Appointment" element={<Appointment />} />
+        <Route path="/ScheduleAppointment" element={<ScheduleAppointment />} /> 
       </Routes>
     </Router>
   );

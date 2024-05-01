@@ -101,7 +101,7 @@ const ConsentRequests = () => {
                 </p>
                 <p className="date-time">{new Date(notification.dateTime).toLocaleString()}</p>
               </div>
-              <div className="buttons">
+              <div className="consent-buttons">
                 <div className="grant">
                   <button onClick={() => setShowGrantConsentPopup(true)}>Grant Consent</button>
                 </div>
@@ -109,7 +109,7 @@ const ConsentRequests = () => {
                   <button onClick={() => setShowDenyConsentPopup(true)}>Deny Consent</button>
                 </div>
                 <div className="view-more">
-                  <p>View More</p>
+                  <p onClick={() => {navigate("/ConsentInfo");}}>View More</p>
                 </div>
               </div>
             </div>

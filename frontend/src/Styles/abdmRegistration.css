@@ -1,178 +1,113 @@
 /* Update your existing CSS file or create a new one */
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #ddffff;
-  }
-  
-  .abdmRegistration-container {
-    width: 800px;
-    padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 0 10px #0099ff;
-    border-radius: 8px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #ddffff;
+}
 
-  .slide {
-    display: none;
-  }
-  
-  .slide.active {
-    display: block;
-  }
-  
-  .divisions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .description {
-    width: 100%;
-  }
-  
-  .description img {
-    text-align: left;
-    max-width: 170px;
-    margin-bottom: -20px;
-  }
-  
-  .description h1 {
-    font-size: 3em;
-    color: #303030;
-    margin-bottom: -10px;
-  }
-  
-  .description h3 {
-    font-size: 1em;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  .form {
-    width: 100%;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
+.abdmRegistration-container {
+  width: 800px;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #0099ff;
+  border-radius: 8px;
+}
 
-  .verify {
-    width: fit-content;
-    font-size: 0.75em;
-    font-weight: bolder;
-    color: #0000ff;
-    margin-top: -7px;
-    cursor: pointer;
-  }
+.slide {
+  display: none;
+}
 
-  .verify:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
-  /* .links {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 18px;
-    margin-top: -13px;
-  }
-  
-  .forgotpass {
-    text-align: left;
-    width: 50%;
-    font-size: 0.8em;
-  }
-  
-  .newuser {
-    text-align: right;
-    width: 50%;
-    font-size: 0.8em;
-  } */
+.slide.active {
+  display: block;
+}
 
-  .buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .button{
-    background-color: #0000ff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 20px;
-  }
-  
-  .button:hover {
-    box-shadow: 0 0 8px #000000;
-  }
-  
-  .error-message {
-    color: #ff0000;
-    margin-top: 10px;
-    font-size: 0.9em;
-  }
-  
+.divisions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-/* 
-.abdm-container {
-    width: 300px;
-    margin: auto;
-  }
-  
-  .slide {
-    display: none;
-  }
-  
-  .slide.active {
-    display: block;
-  }
-  
-  form {
-    margin-top: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-  }
-  
-  button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-   */
+.description {
+  width: 100%;
+}
+
+.description img {
+  text-align: left;
+  max-width: 170px;
+  margin-bottom: -20px;
+}
+
+.description h1 {
+  font-size: 3em;
+  color: #303030;
+  margin-bottom: -10px;
+}
+
+.description h3 {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.abdm-verify button {
+  font-size: medium;
+  background-color: #ddd;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.abdm-verify button:hover {
+  box-shadow: 0 0 2px #000000;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.abdm-button {
+  background-color: #0000ff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 20px;
+}
+
+.abdm-button:hover {
+  box-shadow: 0 0 8px #000000;
+}
+
+.error-message {
+  color: #ff0000;
+  margin-top: 10px;
+  font-size: 0.9em;
+}

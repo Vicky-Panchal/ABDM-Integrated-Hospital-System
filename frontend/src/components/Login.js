@@ -75,7 +75,7 @@ const Login = () => {
             </div>
             <div className="links">
               <div className="forgotpass">
-              <Link to="/forgetPassword">Forgot Password?</Link> {/* Link to ForgetPasswordPage */}
+              <Link to="/ForgetPasswordPage">Forgot Password?</Link> {/* Link to ForgetPasswordPage */}
               </div>
               <div className="newuser">
                 <Link to="/SelectOptionPage">New User?</Link>

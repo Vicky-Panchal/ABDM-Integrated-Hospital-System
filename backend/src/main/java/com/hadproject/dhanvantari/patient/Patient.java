@@ -53,4 +53,6 @@ public class Patient {
         this.visits.add(visit);
         visit.setPatient(this);
     }
+
+
 }

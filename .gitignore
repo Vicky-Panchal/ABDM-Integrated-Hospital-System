@@ -23,5 +23,4 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 backend/src/main/resources/application.yml
-backend/target/classes/application.yml
 backend/target/**

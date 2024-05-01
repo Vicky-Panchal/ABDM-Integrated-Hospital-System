@@ -6,8 +6,13 @@ spring:
 #    username: root
 #    password: 3370136
     url: jdbc:mysql://localhost:3306/abdm_app?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+<<<<<<< HEAD
     username: keshav
     password: Agarwal_77
+=======
+    username: adarsh
+    password: 101973
+>>>>>>> 1041f2f57e46f3cd34211df7d86597771712e1b5
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

@@ -326,7 +326,6 @@ const AddSlotPopup = ({ onCloseAdd }) => {
 };
 
 const DeleteSlotPopup = ({ onClose }) => {
-  console.log("delete");
   return (
     <div className="popup-overlay">
       <div className="popup">

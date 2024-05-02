@@ -56,4 +56,8 @@ public class ConsentRequest {
     List<Consent> consentList = new ArrayList<>();
     @Column
     private String requestId;
+
+    public void addConsent(Consent consent) {
+        this.consentList.add(consent);
+    }
 }

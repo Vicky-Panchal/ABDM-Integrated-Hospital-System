@@ -1,0 +1,40 @@
+.graph-container {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    width: 100%;
+    /* background-color: aquamarine; */
+  }
+  
+  .graph {
+    width: 900px;
+    height: 400px;
+    margin-top: -35px;
+  }
+  
+  .select-container {
+    display: flex;
+    justify-content: right;
+    padding-right: 46px;
+    margin: 10px;
+    z-index: 1;
+    width: 60%;
+    /* background-color: #ccc; */
+  }
+  
+  .select-container select {
+    padding: 1px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    cursor: pointer;
+  }
+  
+  .select-container select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  

@@ -1,0 +1,105 @@
+/* viewAllPatients.css */
+
+.patient-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 350px;
+  /* margin: 10px; */
+}
+
+.patient-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 60%;
+  min-width: auto;
+  padding: 10px;
+  padding-right: 40px;
+  margin: 10px;
+  background-color: rgba(255,255,255,0.6);
+  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  border-radius: 8px;
+  transition: box-shadow 0.3s, transform 0.2s;
+  /* background-color: #0099ff; */
+}
+
+.patient-item:last-child {
+    
+  }
+
+.patient-item:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transform: translateY(-5px);
+  }
+
+.detail-shown {
+  padding-bottom: 20px;
+  padding-right: 10px;
+  /* Styles for slot-item when details are shown */
+}
+
+.detail-hidden {
+  /* Styles for slot-item when details are hidden */
+}
+
+.short-patient-item {
+  display: flex;
+  flex-direction: row;
+  /* background-color: #0099ff; */
+}
+
+.patient-image {
+    flex: 0 0 35%;
+    margin-left: 10px;
+  width: 70%;
+  /* background-color: aquamarine; */
+}
+
+.patient-image img {
+  max-width: 50%;
+  height: auto;
+}
+
+.patient-info,
+.patient-mail,
+.patient-detail-info,
+.patient-gender-dob {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  /* background-color: #0000ff; */
+}
+
+.patient-detail-info {
+  width: 100%;
+}
+
+.patient-info {
+  justify-content: space-around;
+}
+
+.name-mail-info {
+  width: 100%;
+  /* background-color: aqua; */
+}
+
+.patient-gender-dob {
+  justify-content: space-between;
+}
+
+.patient-show-hide {
+  width: max-content;
+  margin-top: 10px;
+  margin-bottom: -10px;
+  font-size: 0.85em;
+  color: blue;
+  cursor: pointer;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.patient-show-hide:hover {
+  text-decoration-line: underline;
+}

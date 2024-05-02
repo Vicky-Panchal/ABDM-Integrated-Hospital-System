@@ -58,11 +58,12 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
   //   e.preventDefault();
   // };
 
-  const handleSlotSubmit = async (doctorOptions) => {
+  const handleSlotSubmit = async () => {
     try {
       const token = loggedInUser.access_token;
-      const user_id = doctorOptions[0].userId;
+      const user_id = selectedDoctor;
       console.log(user_id);
+      console.log(selectedDoctor)
       const response = await axios.get(
         `http://localhost:8081/api/v1/appointment/getSlotsByDoctorId?userId=${user_id}&date=${selectedDate}`,
         {
@@ -139,26 +140,22 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleSlotSubmit(doctorOptions);
+                  handleSlotSubmit();
                 }}
               >
                 <div className="form-group">
                   <label className="form-label">Select Doctor :</label>
                   <select
                     className="dropdown-select"
-                    value={
-                      doctorOptions.length > 0
-                        ? doctorOptions[0].doctorName
-                        : ""
-                    }
+                    value={selectedDoctor}
                     onChange={(e) => setSelectedDoctor(e.target.value)}
                     required
                   >
                     {doctorOptions &&
                       doctorOptions.map((doctor) => (
                         <option
-                          key={`${doctor.doctorId}-${doctor.doctorName}`}
-                          value={doctor.firstName}
+                          key={`${doctor.doctorId}-${doctor.firstName}`}
+                          value={doctor.userId}
                         >
                           {doctor.firstName}
                         </option>

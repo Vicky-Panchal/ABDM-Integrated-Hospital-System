@@ -8,6 +8,7 @@ import Home from './components/Home';
 import PatientDashboard from './components/PatientDashboard/PatientDashboard';
 import DoctorDashboard from './components/DoctorDashboard/DoctorDashboard';
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
+// import AppointmentsBooked from './components/AdminDashboard/AppointmentsBooked';
 import Login from './components/Login';
 import NotFound from './components/NotFound/NotFound';
 import SelectOptionPage from './components/SelectOptionPage';
@@ -51,6 +52,8 @@ const App = () => {
         <Route path="/DashboardPage" element={<DashboardPage />} />
         <Route path="/PatientDashboard" element={<PatientDashboard />} />
         <Route path="/DoctorDashboard" element={<DoctorDashboard />} />
+        <Route path="/AdminDashboard" element={<AdminDashboard />} />
+        {/* <Route path="/AppointmentsBooked" element={<AppointmentsBooked />} /> */}
         <Route path="/ABDMRegistration" element={<ABDMRegistration />} />
         <Route path="/ConsentList" element={<ConsentList />} />
         <Route path="/ConsentRequestForm" element={<ConsentRequestForm />} />

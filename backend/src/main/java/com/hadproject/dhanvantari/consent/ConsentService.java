@@ -4,6 +4,7 @@ import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.abdm.DataEncryptionDecryption;
 import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.care_context.CareContextRepository;
+import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
 import com.hadproject.dhanvantari.doctor.DoctorRepository;
 import com.hadproject.dhanvantari.patient.PatientRepository;
 import com.hadproject.dhanvantari.visit.Visit;
@@ -276,26 +277,26 @@ public class ConsentService {
 
     //---------------------------------------------- Consent Request APIs --------------------------------------------
 
-    public ConsentRequest prepareConsentRequest(String req) {
+    public ConsentRequest prepareConsentRequest(CreateConsentRequest req) {
 
         logger.info("Entering prepareConsentRequest with data: {}", req);
 
-        JSONObject requestObj = new JSONObject(req);
+//        JSONObject requestObj = new JSONObject(req);
         ConsentRequest consentRequest = new ConsentRequest();
-        consentRequest.setPurpose(requestObj.getString("purpose"));
+        consentRequest.setPurpose(req.getPurpose());
         consentRequest.setPurposeCode("CAREMGT");
 
         // TODO: check if converting time is good
-        consentRequest.setDateFrom((requestObj.getString("dateFrom")));
-        consentRequest.setDateTo((requestObj.getString("dateTo")));
-        consentRequest.setDataEraseAt((requestObj.getString("dateEraseAt")));
+        consentRequest.setDateFrom((req.getDateFrom()));
+        consentRequest.setDateTo((req.getDateTo()));
+        consentRequest.setDataEraseAt((req.getDateEraseAt()));
         consentRequest.setAccessMode("VIEW");
 
-        consentRequest.setHiTypes(requestObj.get("hiTypes").toString());
-        consentRequest.setPatient(patientRepository.findPatientByPatientId(Long.parseLong(requestObj.getString("patientId"))));
-        consentRequest.setDoctor(doctorRepository.findByDoctorId(Long.parseLong(requestObj.getString("doctorId"))).orElseThrow(() -> new RuntimeException("Doctor not found")));
+        consentRequest.setHiTypes(req.getHiTypes());
+        consentRequest.setPatient(patientRepository.findPatientByPatientId(Long.parseLong(req.getPatientId())));
+        consentRequest.setDoctor(doctorRepository.findByDoctorId(Long.parseLong(req.getDoctorId())).orElseThrow(() -> new RuntimeException("Doctor not found")));
 
-        Visit visit = visitRepository.findVisitById(Long.parseLong(requestObj.getString("visitId")));
+        Visit visit = visitRepository.findVisitById(Long.parseLong(req.getVisitId()));
 
         consentRequest.setVisit(visit);
         visit.addConsentRequest(consentRequest);

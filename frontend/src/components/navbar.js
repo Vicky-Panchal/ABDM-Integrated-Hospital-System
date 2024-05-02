@@ -3,16 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styles/navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-<<<<<<< HEAD
-import { faBell , faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBell , faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-=======
-import {
-  faBell,
-  faUser,
-  faSignOutAlt,
-} from "@fortawesome/free-solid-svg-icons";
->>>>>>> 444cf589095ff0a746f9f944a7e6751ef810b805
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -83,7 +75,6 @@ const Navbar = () => {
     navigate("/ProfilePage");
   };
 
-<<<<<<< HEAD
   // const notifications = [
   //   {
   //     id: 1,
@@ -149,60 +140,6 @@ const Navbar = () => {
 //         console.error("Error marking notifications as read:", error);
 //     }
 // };
-=======
-  const notifications = [
-    {
-      id: 1,
-      title: "Consent Request",
-      message: "Doctor Adarsh requested for the document consent.",
-      date: "2024-04-28T22:20:00",
-      url: "google.com",
-      isRead: "unread",
-    },
-    {
-      id: 2,
-      title: "Cancel Appointment",
-      message:
-        "Your tomorrow's appointment has been canceled with doctor Keshav.",
-      date: "2024-04-15T18:45:00",
-      url: "",
-      isRead: "read",
-    },
-    {
-      id: 3,
-      title: "Document Sent",
-      message: "Your health documents have been shared to Doctor Keshav.",
-      date: "2024-03-01T12:00:00",
-      url: "google.com",
-      isRead: "unread",
-    },
-    {
-      id: 4,
-      title: "Consent Request",
-      message: "Doctor Adarsh requested for the document consent.",
-      date: "2024-01-28T09:30:00",
-      url: "google.com",
-      isRead: "unread",
-    },
-    {
-      id: 5,
-      title: "Cancel Appointment",
-      message:
-        "Your tomorrow's appointment has been canceled with doctor Keshav.",
-      date: "2023-12-15T18:45:00",
-      url: "",
-      isRead: "read",
-    },
-    {
-      id: 6,
-      title: "Document Sent",
-      message: "Your health documents have been shared to Doctor Keshav.",
-      date: "2022-07-01T12:00:00",
-      url: "google.com",
-      isRead: "unread",
-    },
-  ];
->>>>>>> 444cf589095ff0a746f9f944a7e6751ef810b805
 
   const getTimeAgo = (creationTime) => {
     const currentTime = new Date();
@@ -301,7 +238,6 @@ const Navbar = () => {
                 <h3>Notifications</h3>
               </div>
 
-<<<<<<< HEAD
               <hr/ >
               
               {notifications === null ? (
@@ -321,28 +257,6 @@ const Navbar = () => {
                   </div>
                 ))
               )}
-=======
-              <hr />
-
-              {notifications.map((notification) => (
-                <div
-                  key={notification.id}
-                  className={`notification ${
-                    notification.isRead ? "read" : "unread"
-                  }`}
-                >
-                  <div className="notification-title-message">
-                    <p>
-                      <strong>{notification.title} : </strong>
-                      {notification.message}
-                    </p>
-                  </div>
-                  <div className="notification-time">
-                    <p>{getTimeAgo(notification.date)}</p>
-                  </div>
-                </div>
-              ))}
->>>>>>> 444cf589095ff0a746f9f944a7e6751ef810b805
             </div>
           )}
 

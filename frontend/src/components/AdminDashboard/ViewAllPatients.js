@@ -1,110 +1,129 @@
 // ViewAllPatients.js
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios";
 import "../../Styles/AdminDashboard/viewAllPatients.css";
 
 const ViewAllPatients = () => {
-  const DummySlotList = [
-    {
-      patientId: 1,
-      firstName: "PARAG",
-      middleName: "DUTT",
-      lastName: "SHARMA",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      email: "parag0501@gmail.com",
-      profile: "logo192.png",
-    },
-    {
-      patientId: 2,
-      firstName: "VICKY",
-      middleName: "",
-      lastName: "PANCHAL",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      email: "vicky3000@gmail.com",
-      profile: "logo192.png",
-    },
-    {
-        patientId: 3,
-        firstName: "PARAG",
-        middleName: "DUTT",
-        lastName: "SHARMA",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "parag0501@gmail.com",
-        profile: "logo192.png",
+  const [patients, setPatients] = useState([]);
+  const [showDetails, setShowDetails] = useState({});
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("token")
+    axios.get("http://localhost:8081/api/v1/patient/getAllPatients", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-      {
-        patientId: 4,
-        firstName: "VICKY",
-        middleName: "",
-        lastName: "PANCHAL",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "vicky3000@gmail.com",
-        profile: "logo192.png",
-      },
-      {
-        patientId: 5,
-        firstName: "PARAG",
-        middleName: "DUTT",
-        lastName: "SHARMA",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "parag0501@gmail.com",
-        profile: "logo192.png",
-      },
-      {
-        patientId: 6,
-        firstName: "VICKY",
-        middleName: "",
-        lastName: "PANCHAL",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "vicky3000@gmail.com",
-        profile: "logo192.png",
-      },
-      {
-        patientId: 7,
-        firstName: "PARAG",
-        middleName: "DUTT",
-        lastName: "SHARMA",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "parag0501@gmail.com",
-        profile: "logo192.png",
-      },
-      {
-        patientId: 8,
-        firstName: "VICKY",
-        middleName: "",
-        lastName: "PANCHAL",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "vicky3000@gmail.com",
-        profile: "logo192.png",
-      },
-      {
-        patientId: 9,
-        firstName: "PARAG",
-        middleName: "DUTT",
-        lastName: "SHARMA",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "parag0501@gmail.com",
-        profile: "logo192.png",
-      },
-      {
-        patientId: 10,
-        firstName: "VICKY",
-        middleName: "",
-        lastName: "PANCHAL",
-        gender: "Male",
-        dob: "2023-12-12T00:00:00.000+00:00",
-        email: "vicky3000@gmail.com",
-        profile: "logo192.png",
-      },
-  ];
+    })
+      .then((response) => {
+        setPatients(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching patients:", error);
+      });
+  });
+
+  // const DummySlotList = [
+  //   {
+  //     patientId: 1,
+  //     firstName: "PARAG",
+  //     middleName: "DUTT",
+  //     lastName: "SHARMA",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     email: "parag0501@gmail.com",
+  //     profile: "logo192.png",
+  //   },
+  //   {
+  //     patientId: 2,
+  //     firstName: "VICKY",
+  //     middleName: "",
+  //     lastName: "PANCHAL",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     email: "vicky3000@gmail.com",
+  //     profile: "logo192.png",
+  //   },
+  //   {
+  //       patientId: 3,
+  //       firstName: "PARAG",
+  //       middleName: "DUTT",
+  //       lastName: "SHARMA",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "parag0501@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  //     {
+  //       patientId: 4,
+  //       firstName: "VICKY",
+  //       middleName: "",
+  //       lastName: "PANCHAL",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "vicky3000@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  //     {
+  //       patientId: 5,
+  //       firstName: "PARAG",
+  //       middleName: "DUTT",
+  //       lastName: "SHARMA",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "parag0501@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  //     {
+  //       patientId: 6,
+  //       firstName: "VICKY",
+  //       middleName: "",
+  //       lastName: "PANCHAL",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "vicky3000@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  //     {
+  //       patientId: 7,
+  //       firstName: "PARAG",
+  //       middleName: "DUTT",
+  //       lastName: "SHARMA",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "parag0501@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  //     {
+  //       patientId: 8,
+  //       firstName: "VICKY",
+  //       middleName: "",
+  //       lastName: "PANCHAL",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "vicky3000@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  //     {
+  //       patientId: 9,
+  //       firstName: "PARAG",
+  //       middleName: "DUTT",
+  //       lastName: "SHARMA",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "parag0501@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  //     {
+  //       patientId: 10,
+  //       firstName: "VICKY",
+  //       middleName: "",
+  //       lastName: "PANCHAL",
+  //       gender: "Male",
+  //       dob: "2023-12-12T00:00:00.000+00:00",
+  //       email: "vicky3000@gmail.com",
+  //       profile: "logo192.png",
+  //     },
+  // ];
 
   const formattedDate = (date) => {
     date = new Date(date);
@@ -116,14 +135,12 @@ const ViewAllPatients = () => {
     return `${day}-${month}-${year}`;
   };
 
-  const [showDetails, setShowDetails] = useState({});
+  // const [showDetails, setShowDetails] = useState({});
 
   const toggleDetails = (patientId) => {
     setShowDetails((prevState) => ({
-      //   ...prevState,
-      //   [patientId]: !prevState[patientId],
       ...Object.fromEntries(
-        DummySlotList.map((item) => [
+        patients.map((item) => [
           item.patientId,
           item.patientId === patientId ? !prevState[patientId] : false,
         ])
@@ -133,7 +150,7 @@ const ViewAllPatients = () => {
 
   return (
       <div className="patient-list">
-        {DummySlotList.map((item) => (
+        {patients.map((item) => (
           <div key={item.patientId} className={`patient-item ${showDetails[item.patientId] ? 'detail-shown' : 'detail-hidden'}`}>
             {!showDetails[item.patientId] && (
               <div className="short-patient-item">

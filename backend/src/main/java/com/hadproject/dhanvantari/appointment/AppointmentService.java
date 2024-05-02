@@ -37,6 +37,7 @@ public class AppointmentService {
     private final DoctorRepository doctorRepository;
     private final S3Service s3Service;
 
+
     public void addAppointmentSlots(AddAppointmentSlotRequest data, Principal connectedUser) {
         List<LocalDate> dates = data.getDate();
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
@@ -45,6 +46,7 @@ public class AppointmentService {
             addSlots(doctor, date, data.getStartTime(), data.getEndTime());
         }
     }
+
 
     public void addSlots(Doctor doctor, LocalDate date, LocalTime startTime, LocalTime endTime) {
 
@@ -177,5 +179,9 @@ public class AppointmentService {
         }
 
         return response;
+    }
+
+    public int countAppointmentsByDateRange(LocalDate startDate, LocalDate endDate) {
+        return appointmentRepository.countAppointmentsByDateRange(startDate, endDate);
     }
 }

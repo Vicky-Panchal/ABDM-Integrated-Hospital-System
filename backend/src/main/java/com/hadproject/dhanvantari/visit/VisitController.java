@@ -23,7 +23,7 @@ public class VisitController {
     private static final HashMap<String, SseEmitter> map = new HashMap<>();
 
     @GetMapping("/add-visit")
-    @CrossOrigin
+//    @CrossOrigin
     public SseEmitter addNewVisit(@RequestParam("patientId") String patient_id, @RequestParam("accessToken") String patientAuthToken) throws Exception {
         logger.info("Entering addNewVisitClass with data: patientId - {} authToken: {}", patient_id, patientAuthToken);
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);

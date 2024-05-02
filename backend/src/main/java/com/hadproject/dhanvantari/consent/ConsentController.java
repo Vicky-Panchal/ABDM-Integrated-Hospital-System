@@ -1,6 +1,5 @@
 package com.hadproject.dhanvantari.consent;
 
-import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ public class ConsentController {
     HashMap<String, SseEmitter> map = new HashMap<>();
 
     @PostMapping("/v0.5/consents/hip/notify")
-//    @CrossOrigin
     public void hipNotify(@RequestBody String str) throws Exception {
         JSONObject requestBody = new JSONObject(str);
         logger.info("Entering /v0.5/consents/hip/notify with data: {}", requestBody);
@@ -51,14 +49,28 @@ public class ConsentController {
     //--------------------------------------------- Consent Request APIs -----------------------------------------
 
     @GetMapping("/create-consent-request")
-//    @CrossOrigin
-    public SseEmitter consentRequestInit(@RequestBody CreateConsentRequest request) throws Exception {
+    public SseEmitter consentRequestInit(@RequestParam("purpose") String purpose,
+                                         @RequestParam("dateFrom") String dateFrom,
+                                         @RequestParam("dateTo") String dateTo,
+                                         @RequestParam("dateEraseAt") String dateEraseAt,
+                                         @RequestParam("hiTypes") String hiTypes,
+                                         @RequestParam("patientId") String patientId,
+                                         @RequestParam("doctorId") String doctorId,
+                                         @RequestParam("visitId") String visitId) throws Exception {
 
         logger.info("Entering /create-consent-request with requestBody: ");
         logger.info("currently emitter map is {}", map);
-        request.setHiTypes("[" + request.getHiTypes() + "]");
+        JSONObject req = new JSONObject();
+        req.put("purpose", purpose);
+        req.put("dateFrom", dateFrom);
+        req.put("dateTo", dateTo);
+        req.put("dateEraseAt", dateEraseAt);
+        req.put("hiTypes", "[" + hiTypes + "]");
+        req.put("patientId", patientId);
+        req.put("doctorId", doctorId);
+        req.put("visitId", visitId);
 
-        ConsentRequest consentRequest = consentService.prepareConsentRequest(request.toString());
+        ConsentRequest consentRequest = consentService.prepareConsentRequest(req.toString());
         logger.info("Prepared consent");
         if (consentRequest == null) throw new RuntimeException();
         String requestId = consentService.fireABDMConsentRequestInit(consentRequest);
@@ -74,5 +86,56 @@ public class ConsentController {
         map.put(requestId, sseEmitter);
         logger.info("Exiting /create-consent-request class and sending sseEmitter");
         return sseEmitter;
+    }
+
+    @PostMapping("/v0.5/consent-requests/on-init")
+//    @CrossOrigin
+    public void onConsentRequestInit(@RequestBody String responseBody) {
+        logger.info("Entering /v0.5/consent-requests/on-init with responseBody: {}", responseBody);
+        logger.info("currently emitter map is {}", map);
+        String[] response = consentService.prepareOnConsentRequestInitResponse(responseBody);
+        SseEmitter sseEmitter = map.get(response[0]);
+        if (response[1] == null) {
+            consentService.updateConsentRequestStatusFailed(response[0]);
+        }
+        else {
+            consentService.updateConsentRequestId(response[0], response[1]);
+        }
+        try {
+            sseEmitter.send(SseEmitter.event().name("consent-request-on-init").data(response[2]));
+        }
+        catch (Exception e) {
+            logger.error("Error occurred while sending emitter: {}", e);
+            sseEmitter.complete();
+            map.remove(response[0]);
+        }
+        logger.info("Exiting /v0.5/consent-requests/on-init");
+    }
+
+    @PostMapping("/v0.5/consents/hiu/notify")
+    public void hiuConsentNotify(@RequestBody String str) throws Exception {
+        JSONObject requestBody = new JSONObject(str);
+        logger.info("Entering /v0.5/consents/hiu/notify with requestBody: {}", requestBody);
+        boolean consentGranted = consentService.updateConsentRequestStatus(requestBody);
+        logger.info("Consent granted = {}", consentGranted);
+        if (consentGranted) consentService.fireArtifactsFetchRequest(requestBody.getJSONObject("notification").getJSONArray("consentArtefacts"));
+        logger.info("Exiting /v0.5/consents/hiu/notify");
+    }
+
+    @PostMapping("/v0.5/consents/on-fetch")
+    public void onFetch(@RequestBody String str) throws Exception {
+        JSONObject requestBody = new JSONObject(str);
+        logger.info("Entering /v0.5/consents/on-fetch with requestBody: {}", requestBody);
+        Consent consent = consentService.updateConsentRequestAfterOnFetch(requestBody);
+        consentService.fireABDMHealthInformationCMRequest(consent);
+        logger.info("Exiting /v0.5/consents/on-fetch");
+    }
+
+    @PostMapping("/data/push")
+    public void dataPush(@RequestBody String str) {
+        JSONObject data = new JSONObject(str);
+        logger.info("Entering /data/push with data: {}", data);
+        consentService.saveData(data);
+        logger.info("exiting /data/pus");
     }
 }

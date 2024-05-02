@@ -28,10 +28,10 @@ import static java.util.UUID.randomUUID;
 @RequiredArgsConstructor
 public class VisitService {
     Logger logger = LoggerFactory.getLogger(VisitService.class);
-    VisitRepository visitRepository;
-    ABDMService abdmService;
+    private final VisitRepository visitRepository;
+    private final ABDMService abdmService;
 
-    PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
     public Visit createNewVisit(Patient patient) {
         logger.info("entering create new visit with data:{}", patient.getPatientJSONObject());

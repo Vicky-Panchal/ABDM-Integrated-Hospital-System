@@ -1,6 +1,11 @@
 package com.hadproject.dhanvantari.visit;
 
 import com.hadproject.dhanvantari.abdm.ABDMService;
+import com.hadproject.dhanvantari.care_context.CareContext;
+import com.hadproject.dhanvantari.consent.Consent;
+import com.hadproject.dhanvantari.consent.ConsentRequest;
+import com.hadproject.dhanvantari.doctor.Doctor;
+import com.hadproject.dhanvantari.doctor.DoctorRepository;
 import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.patient.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +37,7 @@ public class VisitService {
     private final ABDMService abdmService;
 
     private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
 
     public Visit createNewVisit(Patient patient) {
         logger.info("entering create new visit with data:{}", patient.getPatientJSONObject());
@@ -129,5 +135,100 @@ public class VisitService {
         }
         logger.info("exiting create on add care context response with data{}", response);
         return new String[]{requestId, response.toString()};
+    }
+
+    public String getVisitById(String req) {
+        logger.info("entered getVisitById with data: {}", req);
+        JSONObject obj = new JSONObject(req);
+        JSONObject response = new JSONObject();
+        Visit visit = visitRepository.findVisitById(obj.getLong("visitId"));
+
+        if (visit == null) {
+            JSONObject res = new JSONObject();
+            res.put("status", HttpStatus.BAD_REQUEST);
+            res.put("message", "Visit with id : " + obj.getString("visitId") + " not found");
+            return res.toString();
+        }
+
+        if (visit.getDoctor() != null && visit.getDoctor().getDoctorId() != Long.parseLong(obj.getString("doctorId"))) {
+            JSONObject res = new JSONObject();
+            res.put("status", HttpStatus.BAD_REQUEST);
+            res.put("message", "Not authorized to view this visit");
+            return res.toString();
+        }
+
+        Patient patient = visit.getPatient();
+        Doctor doctor = doctorRepository.findByDoctorId(obj.getLong("doctorId")).orElseThrow(() -> new RuntimeException("Doctor Not Found"));
+        response.put("visit", visit.getJSONObject());
+        response.put("patient", patient.getPatientJSONObject());
+        response.put("otherVisit", prepareOldVisit(patient, doctor));
+        response.put("consentRequests", prepareConsentRequest(visit));
+        logger.info("exiting getVisitById with data: {}", response);
+
+        JSONObject object = new JSONObject();
+        object.put("status", HttpStatus.OK);
+        object.put("message", "Visit Fetched Successfully");
+        object.put("data", response);
+
+
+        return object.toString();
+    }
+
+    public JSONArray prepareOldVisit(Patient patient, Doctor doctor) {
+        JSONArray arr = new JSONArray();
+        List<Visit> listOfVisits = visitRepository.findVisitByDoctorAndPatient(doctor, patient);
+        for (Visit visit : listOfVisits) {
+            arr.put(visit.getJSONObject());
+        }
+        return arr;
+    }
+
+    public JSONObject prepareConsentRequest(Visit visit) {
+        JSONObject mainObj = new JSONObject();
+        mainObj.put("consentRequest", new JSONArray());
+        List<ConsentRequest> consentRequestList = visit.getConsentRequestList();
+        for (ConsentRequest consentRequest : consentRequestList) {
+            JSONObject consentRequestObj = new JSONObject();
+
+            consentRequestObj.put("id", consentRequest.getRequestId());
+            consentRequestObj.put("status", consentRequest.getStatus());
+            consentRequestObj.put("consent", new JSONArray());
+            if (!consentRequest.getStatus().equals("REQUESTED")) {
+                List<Consent> consentList = consentRequest.getConsentList();
+                for (Consent consent : consentList) {
+                    JSONObject consentObj = new JSONObject();
+                    consentObj.put("id", consent.getConsentId());
+                    consentObj.put("status", consent.getStatus());
+                    if (!consent.getStatus().equals("DELIVERED")) {
+                        consentObj.put("careContext", new JSONArray());
+                        consentRequestObj.getJSONArray("consent").put(consentObj);
+                        continue;
+                    }
+                    consentObj.put("careContext", new JSONArray());
+                    List<CareContext> careContextList = consent.getCareContextList();
+
+                    for (int k = 0; k < careContextList.size(); k++) {
+                        JSONObject careContextObj = getJsonObject(careContextList, k);
+                        consentObj.getJSONArray("careContext").put(careContextObj);
+                    }
+                    consentRequestObj.getJSONArray("consent").put(consentObj);
+                }
+            }
+            mainObj.getJSONArray("consentRequest").put(consentRequestObj);
+        }
+        return mainObj;
+    }
+
+    private static JSONObject getJsonObject(List<CareContext> careContextList, int k) {
+        CareContext careContext = careContextList.get(k);
+        JSONObject careContextObj = new JSONObject();
+        careContextObj.put("patientReference", careContext.getPatientReference());
+        careContextObj.put("prescription", careContext.getPrescription());
+        careContextObj.put("diagnosis", careContext.getDiagnosis());
+        careContextObj.put("dosageInstruction", careContext.getDosageInstruction());
+        careContextObj.put("doctorName", careContext.getDoctorName());
+        careContextObj.put("doctorId", careContext.getDoctorId());
+        careContextObj.put("careContextReference", careContext.getCareContextReference());
+        return careContextObj;
     }
 }

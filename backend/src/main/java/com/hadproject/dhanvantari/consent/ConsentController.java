@@ -30,7 +30,6 @@ public class ConsentController {
     }
 
     @PostMapping("/v0.5/health-information/hip/request")
-//    @CrossOrigin
     public void dataTransferRequest(@RequestBody String str) throws Exception {
         JSONObject requestObj = new JSONObject(str);
         logger.info("Entering /v0.5/health-information/hip/request with data: {}", requestObj);
@@ -89,7 +88,6 @@ public class ConsentController {
     }
 
     @PostMapping("/v0.5/consent-requests/on-init")
-//    @CrossOrigin
     public void onConsentRequestInit(@RequestBody String responseBody) {
         logger.info("Entering /v0.5/consent-requests/on-init with responseBody: {}", responseBody);
         logger.info("currently emitter map is {}", map);

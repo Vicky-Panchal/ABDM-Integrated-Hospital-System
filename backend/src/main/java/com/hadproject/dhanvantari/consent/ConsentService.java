@@ -521,7 +521,7 @@ public class ConsentService {
         response.getJSONObject("hiRequest").getJSONObject("dateRange").put("from", consent.getDataFrom() + "Z");
         response.getJSONObject("hiRequest").getJSONObject("dateRange").put("to", consent.getDataTo() + "Z");
 
-        response.getJSONObject("hiRequest").put("dataPushUrl", "https://webhook.site/371dd360-f7ca-458e-abaa-b259fd812c26/data/push");
+        response.getJSONObject("hiRequest").put("dataPushUrl", "https://webhook.site/371dd360-f7ca-458e-abaa-b259fd812c26/api/v1/consent/data/push");
 
         response.getJSONObject("hiRequest").put("keyMaterial", new JSONObject());
         response.getJSONObject("hiRequest").getJSONObject("keyMaterial").put("cryptoAlg", "ECDH");
@@ -554,6 +554,8 @@ public class ConsentService {
             String encryptedData = obj.getString("content");
             CareContext tempCareContext = findCareContext(careContexts, careContextReference);
             HashMap<String, String> decodedMsg = updateCareContextData(senderNonce, senderPublicKey, receiverNonce, receiverPrivateKey, encryptedData);
+            assert tempCareContext != null;
+            assert decodedMsg != null;
             tempCareContext.setDoctorId(decodedMsg.getOrDefault("doctorId", "temp-doctor-id"));
             tempCareContext.setPatientId(decodedMsg.getOrDefault("patientId", "temp-patient-id"));
             tempCareContext.setPatientName(decodedMsg.getOrDefault("patientName", "temp-patient-name"));

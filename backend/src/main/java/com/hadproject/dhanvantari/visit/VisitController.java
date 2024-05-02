@@ -44,7 +44,6 @@ public class VisitController {
     }
 
     @PostMapping("/v0.5/links/link/on-add-contexts")
-//    @CrossOrigin
     public void onAddNewVisit(@RequestBody String response) {
         logger.info("Entering addNewVisit with data: {}", response);
         String[] respond = visitService.createOnAddContextResponse(response);
@@ -60,5 +59,10 @@ public class VisitController {
             emitter.complete();
             map.remove(respond[0]);
         }
+    }
+
+    @GetMapping(value = "/visit", produces = "Application/JSON")
+    public String getVisit(@RequestBody String req) {
+        return visitService.getVisitById(req);
     }
 }

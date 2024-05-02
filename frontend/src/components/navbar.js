@@ -3,8 +3,16 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styles/navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+<<<<<<< HEAD
 import { faBell , faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+=======
+import {
+  faBell,
+  faUser,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
+>>>>>>> 444cf589095ff0a746f9f944a7e6751ef810b805
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -75,6 +83,7 @@ const Navbar = () => {
     navigate("/ProfilePage");
   };
 
+<<<<<<< HEAD
   // const notifications = [
   //   {
   //     id: 1,
@@ -140,45 +149,129 @@ const Navbar = () => {
 //         console.error("Error marking notifications as read:", error);
 //     }
 // };
+=======
+  const notifications = [
+    {
+      id: 1,
+      title: "Consent Request",
+      message: "Doctor Adarsh requested for the document consent.",
+      date: "2024-04-28T22:20:00",
+      url: "google.com",
+      isRead: "unread",
+    },
+    {
+      id: 2,
+      title: "Cancel Appointment",
+      message:
+        "Your tomorrow's appointment has been canceled with doctor Keshav.",
+      date: "2024-04-15T18:45:00",
+      url: "",
+      isRead: "read",
+    },
+    {
+      id: 3,
+      title: "Document Sent",
+      message: "Your health documents have been shared to Doctor Keshav.",
+      date: "2024-03-01T12:00:00",
+      url: "google.com",
+      isRead: "unread",
+    },
+    {
+      id: 4,
+      title: "Consent Request",
+      message: "Doctor Adarsh requested for the document consent.",
+      date: "2024-01-28T09:30:00",
+      url: "google.com",
+      isRead: "unread",
+    },
+    {
+      id: 5,
+      title: "Cancel Appointment",
+      message:
+        "Your tomorrow's appointment has been canceled with doctor Keshav.",
+      date: "2023-12-15T18:45:00",
+      url: "",
+      isRead: "read",
+    },
+    {
+      id: 6,
+      title: "Document Sent",
+      message: "Your health documents have been shared to Doctor Keshav.",
+      date: "2022-07-01T12:00:00",
+      url: "google.com",
+      isRead: "unread",
+    },
+  ];
+>>>>>>> 444cf589095ff0a746f9f944a7e6751ef810b805
 
   const getTimeAgo = (creationTime) => {
     const currentTime = new Date();
     const notificationTime = new Date(creationTime);
-  
+
     const timeDifference = currentTime.getTime() - notificationTime.getTime();
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     const weeks = Math.floor(days / 7);
-    const months = Math.floor(currentTime.getMonth() - notificationTime.getMonth() + (12 * (currentTime.getFullYear() - notificationTime.getFullYear())));
-    const years = Math.floor(currentTime.getFullYear() - notificationTime.getFullYear());
-  
+    const months = Math.floor(
+      currentTime.getMonth() -
+        notificationTime.getMonth() +
+        12 * (currentTime.getFullYear() - notificationTime.getFullYear())
+    );
+    const years = Math.floor(
+      currentTime.getFullYear() - notificationTime.getFullYear()
+    );
+
     if (years > 0) {
-      return `${years} year${years === 1 ? '' : 's'} ago`;
+      return `${years} year${years === 1 ? "" : "s"} ago`;
     } else if (months > 0) {
-      return `${months} month${months === 1 ? '' : 's'} ago`;
+      return `${months} month${months === 1 ? "" : "s"} ago`;
     } else if (weeks > 0) {
-      return `${weeks} week${weeks === 1 ? '' : 's'} ago`;
+      return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
     } else if (days > 0) {
-      return `${days} day${days === 1 ? '' : 's'} ago`;
+      return `${days} day${days === 1 ? "" : "s"} ago`;
     } else if (hours > 0) {
-      return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+      return `${hours} hour${hours === 1 ? "" : "s"} ago`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+      return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
     } else {
-      return `${seconds} second${seconds === 1 ? '' : 's'} ago`;
+      return `${seconds} second${seconds === 1 ? "" : "s"} ago`;
     }
+  };
+
+  const LogoutPopup = ({ onClose }) => {
+    return (
+      <div className="logout-popup-overlay">
+        <div className="logout-popup">
+          <h2>Confirmation</h2>
+          <p>Are you sure you want to logout?</p>
+          {/* Add Deny Consent confirmation message and buttons here */}
+          <button className="confirmation-button" onClick={handleLogout}>
+            Yes
+          </button>
+          <button className="close-button" onClick={onClose}>
+            No
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+
+  const handleLogoutClick = () => {
+    setShowLogoutPopup(true);
   };
 
   const handleLogout = () => {
     // Clear user authentication details from local storage
+    setShowLogoutPopup(false);
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userRole");
     localStorage.removeItem("loggedInUser");
+    navigate("/login");
   };
-  
-  
 
   return (
     <div className="navbar-container">
@@ -190,29 +283,25 @@ const Navbar = () => {
         <div className="right">
           <h6>About</h6>
 
-          <button
-            onClick={handleNotificationClick}
-            className="icon"
-          >
+          <button onClick={handleNotificationClick} className="icon">
             <FontAwesomeIcon icon={faBell} />
           </button>
 
-          <button
-            onClick={handleProfileClick}
-            className="icon"
-          >
+          <button onClick={handleProfileClick} className="icon">
             <FontAwesomeIcon icon={faUser} />
           </button>
 
-          <Link to="/login" onClick={handleLogout}><h6>Logout</h6></Link>
+          <button onClick={handleLogoutClick} className="icon">
+            <FontAwesomeIcon icon={faSignOutAlt} />
+          </button>
 
           {showNotifications && (
-
             <div className="notification-container">
               <div className="notification-heading">
                 <h3>Notifications</h3>
               </div>
 
+<<<<<<< HEAD
               <hr/ >
               
               {notifications === null ? (
@@ -232,8 +321,33 @@ const Navbar = () => {
                   </div>
                 ))
               )}
-            </div>
+=======
+              <hr />
 
+              {notifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`notification ${
+                    notification.isRead ? "read" : "unread"
+                  }`}
+                >
+                  <div className="notification-title-message">
+                    <p>
+                      <strong>{notification.title} : </strong>
+                      {notification.message}
+                    </p>
+                  </div>
+                  <div className="notification-time">
+                    <p>{getTimeAgo(notification.date)}</p>
+                  </div>
+                </div>
+              ))}
+>>>>>>> 444cf589095ff0a746f9f944a7e6751ef810b805
+            </div>
+          )}
+
+          {showLogoutPopup && (
+            <LogoutPopup onClose={() => setShowLogoutPopup(false)} />
           )}
         </div>
       </div>

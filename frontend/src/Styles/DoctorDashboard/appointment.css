@@ -51,13 +51,11 @@ body {
   box-shadow: 0 0 2px #000000;
 } */
 
-/* Style for the slot list table */
-table {
+/* table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* Style for the table header */
 thead th {
   background-color: #aaffff;
   text-align: center;
@@ -67,21 +65,18 @@ thead th {
   padding-right: 30px;
 }
 
-/* Style for the table rows */
 tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-/* Style for the table cells */
 td {
   padding: 8px;
   text-align: center;
 }
 
-/* Hover effect for table rows */
 tbody tr:hover {
   background-color: #ddd;
-}
+} */
 
 .filter-slots {
   display: flex;

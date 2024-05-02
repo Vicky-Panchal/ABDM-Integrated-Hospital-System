@@ -23,6 +23,7 @@ const Login = () => {
       localStorage.setItem("userRole", response.data.role);
       console.log("loggedInUser: " + JSON.stringify(response.data))
       window.localStorage.setItem("loggedInUser", JSON.stringify(response.data));
+      localStorage.setItem("token",response.data.access_token)
       
       switch (response.data.role) {
         case "PATIENT":

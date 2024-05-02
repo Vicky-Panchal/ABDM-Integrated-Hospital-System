@@ -3,14 +3,22 @@ package com.hadproject.dhanvantari.patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.abdm.AadhaarValidationService;
+import com.hadproject.dhanvantari.aws.S3Service;
 import com.hadproject.dhanvantari.patient.dto.*;
+import com.hadproject.dhanvantari.user.Role;
+import com.hadproject.dhanvantari.user.User;
+import com.hadproject.dhanvantari.user.UserRepository;
 import io.jsonwebtoken.io.IOException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +27,8 @@ public class PatientService {
     private final ABDMService abdmService;
     private final AadhaarValidationService aadhaarValidationService;
     private final PatientRepository patientRepository;
+    private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     GenerateOtpResponse generateOtp(String aadhaarId) throws Exception{
         if(aadhaarValidationService.validateAadhaar(aadhaarId)) {
@@ -70,7 +80,6 @@ public class PatientService {
                 if (!temp.isNull("value") && temp.getString("type").equals("HEALTH_NUMBER")) patientObj.put("abhaNumber", temp.getString("value"));
             }
         }
-
 //        Patient newPatient = patientRepository.findPatientByUser_HealthId(patientObj.getString("id"));
 //        newPatient = (newPatient != null) ? newPatient : patientRepository.save(createNewPatient(patientObj));
 //        respond.put("patient", newPatient.getPatientJSONObject());
@@ -83,5 +92,75 @@ public class PatientService {
 
 
         return finalObj;
+    }
+
+//    public PatientDto createPatient(PatientCreateRequest request) {
+//        // Map the request to Patient entity
+//        Patient patient = mapRequestToEntity(request);
+//
+//        // Save the patient entity
+//        Patient savedPatient = patientRepository.save(patient);
+//
+//        // Map the saved patient entity to DTO and return
+//        return mapEntityToDto(savedPatient);
+//    }
+
+//    public PatientDto getPatientById(Long id) {
+//        // Find the patient by id
+//        Patient patient = patientRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+//
+//        // Map the patient entity to DTO and return
+//        return mapEntityToDto(patient);
+//    }
+//
+//    private Patient mapRequestToEntity(PatientCreateRequest request) {
+//        return Patient.builder()
+//                .firstName(request.getFirstName())
+//                .lastName(request.getLastName())
+//                .mobile(request.getMobile())
+//                .gender(request.getGender())
+//                .dob(request.getDob())
+//                .email(request.getEmail())
+//                .profile(request.getProfile())
+//                .build();
+//    }
+//
+//    private PatientDto mapEntityToDto(Patient patient) {
+//        return PatientDto.builder()
+//                .id(patient.getId())
+//                .firstName(patient.getFirstName())
+//                .lastName(patient.getLastName())
+//                .mobile(patient.getMobile())
+//                .gender(patient.getGender())
+//                .dob(patient.getDob())
+//                .email(patient.getEmail())
+//                .profile(patient.getProfile())
+//                .build();
+//    }
+
+    public List<GetAllPatient> getAllPatients() {
+        List<User> users = userRepository.findByRole(Role.PATIENT);
+
+        List<GetAllPatient> patients = new ArrayList<>();
+        for (User user : users) {
+            Patient patient = patientRepository.findPatientByUser(user).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+            String profileUrl = "";
+            if(user.getProfile() != null) {
+                profileUrl = s3Service.generatePresignedUrl(user.getProfile());
+            }
+            patients.add(GetAllPatient.builder()
+                            .patientId(String.valueOf(patient.getPatientId()))
+                            .dob(user.getDob())
+                            .email(user.getEmail())
+                            .firstName(user.getFirstname())
+                            .middleName(user.getMiddlename())
+                            .lastName(user.getLastname())
+                            .profile(profileUrl)
+                            .gender(user.getGender())
+                    .build());
+        }
+
+        return patients;
     }
 }

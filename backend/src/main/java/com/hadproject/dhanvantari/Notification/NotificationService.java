@@ -4,7 +4,6 @@ import com.hadproject.dhanvantari.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,27 +17,26 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
+//    @Transactional
+//    public void markAllAsRead(User user) {
+//        List<Notification> notifications = notificationRepository.findUnreadNotificationsByUser(user);
+//        for (Notification notification : notifications) {
+//            notification.setRead(true);
+//            notificationRepository.save(notification);
+//        }
+//    }
+
+    @Transactional
     public void markAllAsRead(User user) {
         List<Notification> notifications = notificationRepository.findUnreadNotificationsByUser(user);
         for (Notification notification : notifications) {
+            // Set isRead to true for each notification
             notification.setRead(true);
+            // Save the updated notification
             notificationRepository.save(notification);
         }
     }
 
-    @Transactional
-    public void markNotificationAsRead(Long notificationId, String userEmail) {
-        Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new IllegalArgumentException("Notification not found"));
-
-        // Ensure that the notification belongs to the user
-        if (!notification.getUser().getEmail().equals(userEmail)) {
-            throw new IllegalArgumentException("Notification does not belong to the user");
-        }
-
-        notification.setRead(true);
-        notificationRepository.save(notification);
-    }
     public List<GetNotificationResponse> getUnreadNotifications(User user) {
         List<Notification> notifications = notificationRepository.findUnreadNotificationsByUser(user);
         List<GetNotificationResponse> response = new ArrayList<>();

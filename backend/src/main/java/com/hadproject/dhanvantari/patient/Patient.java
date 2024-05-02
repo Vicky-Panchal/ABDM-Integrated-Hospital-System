@@ -29,7 +29,7 @@ public class Patient {
             strategy = GenerationType.SEQUENCE,
             generator = "patient_sequence"
     )
-    public int patientId;
+    public Long patientId;
 
     @OneToOne(
             cascade = CascadeType.ALL,

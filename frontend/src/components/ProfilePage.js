@@ -20,6 +20,7 @@ const ProfilePage = () => {
   const userId = JSON.parse(localStorage.getItem("loggedInUser")).user_id;
   const token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
   const fileInputRef = useRef(null); // Create a ref for the file input
+  const navigate = useNavigate();
 
   //   const updateProfilePic = (imageUrl) => {
   //     setProfilePic(imageUrl);
@@ -70,7 +71,7 @@ const ProfilePage = () => {
       setmiddleName(userData.middlename);
       setlastName(userData.lastname);
       setGender(userData.gender);
-      setDob(userData.dob);
+      setDob(userData.dob.toString().slice(0,10));
       setPhone(userData.mobile);
       // setAddress(userData.address);
       setHealthId(userData.healthId);
@@ -141,6 +142,10 @@ const ProfilePage = () => {
     }
   };
 
+  const handleChangePassword = () => {
+    navigate("/ChangePasswordPage");
+  };
+
   return (
     <div>
       <Navbar />
@@ -179,7 +184,7 @@ const ProfilePage = () => {
                 <h3>Gender : {gender}</h3>
               </div>
               <div className="dob">
-                <h4>DOB : {dob}</h4>
+                <h4>DOB : {(new Date(dob)).toLocaleDateString('en-GB')}</h4>
               </div>
             </div>
           </div>
@@ -192,6 +197,9 @@ const ProfilePage = () => {
         </div>
         <div className="button-container">
           <button className="download-button">Download ABHA Card</button>
+          <button className="change-password-button" onClick={handleChangePassword}>
+            Change Password
+          </button>
         </div>
       </div>
     </div>

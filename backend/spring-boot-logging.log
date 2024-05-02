@@ -1,0 +1,7 @@
+2024-05-02T00:12:01.285+05:30  INFO 163312 --- [http-nio-8081-exec-4] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-02T01:14:17.915+05:30  INFO 163312 --- [http-nio-8081-exec-6] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-02T01:43:13.721+05:30  INFO 163312 --- [http-nio-8081-exec-10] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-02T01:45:04.670+05:30  INFO 163312 --- [http-nio-8081-exec-5] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-02T01:55:11.139+05:30  INFO 163312 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-02T01:55:11.255+05:30  INFO 163312 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-05-02T01:55:11.340+05:30  INFO 163312 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

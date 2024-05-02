@@ -1,0 +1,410 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #ddffff;
+}
+
+.appointment-container {
+  position: absolute;
+  top: 10%;
+  left: 16%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+  height: fit-content;
+  padding: 30px;
+  /* background-color: #fff;
+    box-shadow: 0 0 10px #0099ff; */
+  border-radius: 8px;
+}
+
+.scheduled-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.sch-app-btn {
+  font-size: medium;
+  background-color: #ddd;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.sch-app-btn:hover {
+  box-shadow: 0 0 2px #000000;
+}
+
+.filter-slots {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
+  /* background-color: #007bff; */
+}
+
+.filter-slots label {
+  font-size: 1.3em;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+/* Style for the dropdown container */
+.dropdown-container {
+  margin: 20px;
+  /* background-color: #000; */
+}
+
+/* Style for the select element */
+.dropdown-select {
+  width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none; /* Remove default focus outline */
+}
+
+/* Style for the options within the dropdown */
+.dropdown-select option {
+  padding: 10px;
+}
+
+/* Style for the selected option */
+.dropdown-selected-option {
+  margin-top: 10px;
+}
+
+button {
+  background-color: #0000ff;
+}
+
+.filter-app {
+  width: fit-content;
+  height: fit-content;
+  background-color: #0000ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: medium;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.filter-app:hover {
+  box-shadow: 0 0 4px #000000;
+}
+
+.slot-list {
+  margin: 10px;
+}
+
+.slot-item, .scheduled-item {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: auto;
+  padding: 20px;
+  padding-right: 40px;
+  margin: 25px;
+  background-color: #ffffff;
+  box-shadow: 0 0 4px #000000;
+  border-radius: 8px;
+  /* background-color: #0099ff; */
+}
+
+.short-list-item {
+  display: flex;
+  flex-direction: row;
+  /* background-color: #0099ff; */
+}
+
+.slot-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* background-color: #00ffff; */
+}
+
+.delete-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 50%;
+}
+
+.image img {
+  max-width: 50%;
+  height: auto;
+}
+
+.slot-info, .slot-time, .doctor-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  /* background-color: #0000ff; */
+}
+
+.doctor-info {
+  justify-content: space-around;
+  /* background-color: #0056b3; */
+}
+
+.show-hide {
+  width: fit-content;
+  margin-top: 10px;
+  margin-bottom: -10px;
+  font-size: 0.85em;
+  color: blue;
+  cursor: pointer;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.show-hide:hover {
+  text-decoration-line: underline;
+}
+
+.delete-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: auto;
+}
+
+.delete-slot button {
+  background-color: #fff;
+  color: red;
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
+}
+
+.delete-slot button:hover {
+  box-shadow: 0 0 8px #999;
+  color: #fff;
+  background-color: red;
+}
+
+/* Popup overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Popup container */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+/* Popup title */
+.popup h2 {
+  margin-top: 0;
+}
+
+/* Popup content */
+.popup p, .popup label, .popup-date-time {
+  margin-bottom: 10px;
+}
+
+.popup input{
+  width: 150px;
+  justify-self: center;
+}
+
+/* Popup buttons */
+.popup button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
+}
+
+.popup-date-time label {
+  display: block;
+}
+
+.popup-date-time input[type="date"],
+.popup-date-time input[type="time"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+hr {
+    border: none; /* Remove default border */
+    border-top: 1px solid #000; /* Add a solid border on top */
+    margin: 30px 0; /* Add some margin above and below the line */
+  }
+
+
+
+
+
+  .schedule-popup-container-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .schedule-popup-container {
+    position: fixed;
+    top: 30%;
+    width: 800px;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 0 10px #0099ff;
+    border-radius: 8px;
+  }
+  
+  .schedule-popup-container .slide {
+    display: none;
+  }
+  
+  .schedule-popup-container .slide.active {
+    display: block;
+  }
+  
+  .schedule-popup-container .divisions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .schedule-popup-container .description {
+    width: 100%;
+  }
+  
+  .schedule-popup-container .description img {
+    text-align: left;
+    max-width: 170px;
+    margin-bottom: -20px;
+  }
+  
+  .schedule-popup-container .description h1 {
+    font-size: 2em;
+    color: #303030;
+    margin-bottom: -10px;
+  }
+  
+  .schedule-popup-container .description h3 {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .schedule-popup-container .form {
+    width: 100%;
+  }
+  
+  .schedule-popup-container .form-group {
+    margin-bottom: 20px;
+  }
+
+  /* Style for the select element */
+  .schedule-popup-container .dropdown-select {
+  margin-bottom: 20px;
+}
+  
+  .schedule-popup-container .form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .schedule-popup-container .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    margin-left: -2%;
+  }
+
+  .schedule-popup-container .buttons {
+    margin-right: 10px; /* Adjust the margin as needed */
+  }
+
+  .schedule-popup-container .buttons button:last-child {
+    margin-right: 0; /* Adjust the margin as needed */
+  }
+  
+  .schedule-popup-container .abdm-button {
+    background-color: #0000ff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  
+  .schedule-popup-container .abdm-button:hover {
+    box-shadow: 0 0 8px #000000;
+  }
+
+  .schedule-popup-container .cancel-button {
+    background-color: #fff;
+    color: red;
+    border-style: solid;
+    border-width: 1px;
+    border-color: red;
+  }
+  
+  .schedule-popup-container .cancel-button:hover {
+    box-shadow: 0 0 8px #999;
+    color: #fff;
+    background-color: red;
+  }
+
+  .done {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content; /* Optionally, adjust the height of the container */
+  }

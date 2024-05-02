@@ -40,7 +40,7 @@ const ConsentList = () => {
   return (
     <div>
       <Navbar />
-        <button className="request-button" onClick={() => {navigate("/ConsentRequestForm");}}>Create Consent Request</button>
+      <button className="request-button" onClick={() => {navigate("/ConsentRequestForm");}}>Create Consent Request</button>
       <div className="consentlist-container">
         <h2>Consent List</h2>
         <table>

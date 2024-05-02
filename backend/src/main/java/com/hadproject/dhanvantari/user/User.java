@@ -26,7 +26,7 @@ public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer userId;
+  private Long userId;
 
   private String firstname;
   private String middlename;

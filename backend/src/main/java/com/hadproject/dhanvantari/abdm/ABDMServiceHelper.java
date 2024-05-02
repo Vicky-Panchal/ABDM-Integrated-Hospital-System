@@ -26,7 +26,7 @@ public class ABDMServiceHelper {
         query.put("authMode", "MOBILE_OTP");
         JSONObject requester = new JSONObject();
         requester.put("type", "HIP");
-        requester.put("id", "team-29-hip-1");
+        requester.put("id", "HIP-29-1");
         query.put("requester", requester);
         request.put("query", query);
         logger.info("Exiting prepareGenerateOTPEntity with data: " + request.toString());

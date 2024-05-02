@@ -4,9 +4,6 @@ import "../../Styles/DoctorDashboard/appointment.css";
 import Navbar from "../navbar";
 import axios from "axios";
 
-// const userId = JSON.parse(localStorage.getItem("loggedInUser")).user_id;
-// const token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
-
 const DeleteSlotPopup = ({ onClose }) => {
   return (
     <div className="popup-overlay">
@@ -25,10 +22,10 @@ const DeleteSlotPopup = ({ onClose }) => {
 };
 
 const AddSlotPopup = ({ onClose }) => {
-  const [addDate, setAddDate] = useState([""]); // Initialize as an array with an empty string
+  const [addDate, setAddDate] = useState([""]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [error, setError] = useState(null); // State to hold error message
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -38,19 +35,17 @@ const AddSlotPopup = ({ onClose }) => {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
-    const second = String(now.getSeconds()).padStart(2,"0");
+    const second = String(now.getSeconds()).padStart(2, "0");
     setStartTime(`${hours}:${minutes}:${second}`);
     setEndTime(`${hours}:${minutes}:${second}`);
   }, []);
 
-
-
   const handleAddSlot = async () => {
-    setLoading(true); // Set loading to true before making the request
-    setError(null); // Clear any previous errors
+    setLoading(true);
+    setError(null);
     try {
       const access_token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
-      const formattedDates = addDate.map(date => new Date(date).toISOString().split('T')[0]); // Format dates as strings in ISO format
+      const formattedDates = addDate.map(date => new Date(date).toISOString().split('T')[0]);
       const body = {
         date: formattedDates,
         startTime,
@@ -58,23 +53,23 @@ const AddSlotPopup = ({ onClose }) => {
       };
       console.log(body);
       console.log(access_token);
-        const response = await axios.post(
-          "http://localhost:8081/api/v1/appointment/addSlots",
-          body,
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        );
-        const data = response.data;
-        console.log(data); // Show response in console
-       
-      onClose(); // Close the popup after successful addition
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/appointment/addSlots",
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data);
+
+      onClose();
     } catch (error) {
-      setError(error.message); // Set error message
+      setError(error.message);
     } finally {
-      setLoading(false); // Set loading to false after request completion
+      setLoading(false);
     }
   };
 
@@ -122,7 +117,7 @@ const AddSlotPopup = ({ onClose }) => {
         </div>
 
         <button className="close-button" onClick={handleAddSlot}>
-        {loading ? "Adding..." : "Add"}
+          {loading ? "Adding..." : "Add"}
         </button>
         <button className="close-button" onClick={onClose}>
           Cancel
@@ -141,18 +136,16 @@ const Appointment = () => {
   const [slots, setSlots] = useState([]);
   const [filterValue, setFilterValue] = useState("all");
   const [filterDate, setFilterDate] = useState("");
-  const [error, setError] = useState(null); // State to hold error message
-  const [loading, setLoading] = useState(false); // State to indicate loading state
-
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
   useEffect(() => {
-    // Fetch data from API and set it to slots state
     const fetchData = async () => {
-      setLoading(true); // Set loading to true before making the request
-      setError(null); // Clear any previous errors
+      setLoading(true);
+      setError(null);
       try {
         const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
         if (!loggedInUser) {
-          // Redirect user to login if not logged in
           navigate("/login");
           return;
         }
@@ -160,7 +153,7 @@ const Appointment = () => {
         const userId = loggedInUser.user_id;
         const token = loggedInUser.access_token;
         const today = new Date().toISOString().split("T")[0];
-         // Set filterDate to today's date
+        setFilterDate(today);
         const response = await axios.get(
           `http://localhost:8081/api/v1/appointment/getSlotsByDoctorId?userId=${userId}&date=${today}`,
           {
@@ -170,12 +163,11 @@ const Appointment = () => {
           }
         );
         const data = await response.data;
-        console.log(data);
         setSlots(data);
+         // Save original slots for filtering
       } catch (error) {
         setError(error.message);
-      }
-      finally{
+      } finally {
         setLoading(false);
       }
     };
@@ -191,8 +183,53 @@ const Appointment = () => {
     setFilterValue(event.target.value);
   };
 
-  const handleFilterSearch = (event) => {
-    // Handle filter search logic here
+  const handleFilterSearch = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (!loggedInUser) {
+        navigate("/login");
+        return;
+      }
+
+      const userId = loggedInUser.user_id;
+      const token = loggedInUser.access_token;
+      const response = await axios.get(
+        `http://localhost:8081/api/v1/appointment/getSlotsByDoctorId?userId=${userId}&date=${filterDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.data;
+      let filteredSlots = data;
+
+      // Filter based on selected filter value
+      switch (filterValue) {
+        case "scheduled":
+          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "SCHEDULED");
+          break;
+        case "completed":
+          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "COMPLETED");
+          break;
+        case "canceled":
+          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "CANCELED");
+          break;
+        case "available":
+          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "AVAILABLE");
+          break;
+        default:
+          break;
+      }
+
+      setSlots(filteredSlots);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const [showDetails, setShowDetails] = useState({});
@@ -253,110 +290,107 @@ const Appointment = () => {
         </div>
 
         <div className="slot-list">
-        {loading ? (
+          {loading ? (
             <p>Loading...</p>
           ) : error ? (
             <p>Error: {error}</p>
           ) : (
             <>
-          {Array.isArray(slots) && slots.length > 0 ? (
-            slots.map((item) => (
-              <div key={item.id} className="slot-item">
-                {/* Render slot item details */}
-                {!showDetails[item.id] && (
-              <div className="short-list-item">
-                <div className="slot-col">
-                  <div className="slot-info">
-                    <p>
-                      <strong>Status : </strong>
-                      {item.availabilityStatus}
-                    </p>
-                    <p>
-                      <strong>Date : </strong>
-                      {item.date}
-                    </p>
-                  </div>
-                  <div className="slot-time">
-                    <p>
-                      <strong>From : </strong>
-                      {item.startTime}
-                    </p>
-                    <p>
-                      <strong>To : </strong>
-                      {item.endTime}
-                    </p>
-                  </div>
-                </div>
-                {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
-                  <div className="delete-slot">
-                    <button onClick={() => handleCancelSlot(item.id)}>
-                      Cancel
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+              {Array.isArray(slots) && slots.length > 0 ? (
+                slots.map((item) => (
+                  <div key={item.id} className="slot-item">
+                    {!showDetails[item.id] && (
+                      <div className="short-list-item">
+                        <div className="slot-col">
+                          <div className="slot-info">
+                            <p>
+                              <strong>Status : </strong>
+                              {item.availabilityStatus}
+                            </p>
+                            <p>
+                              <strong>Date : </strong>
+                              {item.date}
+                            </p>
+                          </div>
+                          <div className="slot-time">
+                            <p>
+                              <strong>From : </strong>
+                              {item.startTime}
+                            </p>
+                            <p>
+                              <strong>To : </strong>
+                              {item.endTime}
+                            </p>
+                          </div>
+                        </div>
+                        {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
+                          <div className="delete-slot">
+                            <button onClick={() => handleCancelSlot(item.id)}>
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-            {showDetails[item.id] && (
-              <div className="detail-list-item">
-                <div className="patient-info">
-                  <div className="image">
-                    <img alt="ProfilePic" src={item.profileUrl}></img>
+                    {showDetails[item.id] && (
+                      <div className="detail-list-item">
+                        <div className="patient-info">
+                          <div className="image">
+                            <img alt="ProfilePic" src={item.profileUrl}></img>
+                          </div>
+                          <div className="info>">
+                            <p>
+                              <strong>Patient Name : </strong>
+                              {item.patientName}
+                            </p>
+                            <p>
+                              <strong>Purpose of Appointment : </strong>
+                              {item.purpose}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="slot-info">
+                          <p>
+                            <strong>Status : </strong>
+                            {item.availabilityStatus}
+                          </p>
+                          <p>
+                            <strong>Date : </strong>
+                            {item.date}
+                          </p>
+                        </div>
+                        <div className="slot-time">
+                          <p>
+                            <strong>From : </strong>
+                            {item.startTime}
+                          </p>
+                          <p>
+                            <strong>To : </strong>
+                            {item.endTime}
+                          </p>
+                        </div>
+                        {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
+                          <div className="delete-slot">
+                            <button onClick={() => handleCancelSlot(item.id)}>
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {item.patientName !== null && (
+                      <p className="show-hide" onClick={() => toggleDetails(item.id)}>
+                        {showDetails[item.id] ? "Hide Details" : "Show More"}
+                      </p>
+                    )}
                   </div>
-                  <div className="info>">
-                    <p>
-                      <strong>Patient Name : </strong>
-                      {item.patientName}
-                    </p>
-                    <p>
-                      <strong>Purpose of Appointment : </strong>
-                      {item.purpose}
-                    </p>
-                  </div>
-                </div>
-                <div className="slot-info">
-                  <p>
-                    <strong>Status : </strong>
-                    {item.availabilityStatus}
-                  </p>
-                  <p>
-                    <strong>Date : </strong>
-                    {item.date}
-                  </p>
-                </div>
-                <div className="slot-time">
-                  <p>
-                    <strong>From : </strong>
-                    {item.startTime}
-                  </p>
-                  <p>
-                    <strong>To : </strong>
-                    {item.endTime}
-                  </p>
-                </div>
-                {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
-                  <div className="delete-slot">
-                    <button onClick={() => handleCancelSlot(item.id)}>
-                      Cancel
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {item.patientName !== null && (
-            <p className="show-hide" onClick={() => toggleDetails(item.id)}>
-              {showDetails[item.id] ? "Hide Details" : "Show More"}
-            </p>
-            )}
-            
-          </div>
-        ))
-             
-          ) : (
-            <p>No slots available</p>
-          )}
-          </>
+                ))
+              ) : (
+                <p>No slots available</p>
+              )}
+            </>
           )}
         </div>
 

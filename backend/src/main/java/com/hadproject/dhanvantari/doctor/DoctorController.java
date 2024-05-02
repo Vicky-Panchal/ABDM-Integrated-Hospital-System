@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DoctorController {
 
-    private DoctorRepository doctorRepository;
-    private DoctorService doctorService;
+    private final DoctorRepository doctorRepository;
+    private final DoctorService doctorService;
 
     @GetMapping("/searchDoctor")
     public List<DoctorDTO> autocompleteDoctors(@RequestParam("name") String name) {

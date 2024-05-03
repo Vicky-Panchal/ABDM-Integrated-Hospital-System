@@ -108,6 +108,8 @@ button {
   margin: 10px;
 }
 
+
+/* Change here for the new css */
 .slot-item, .scheduled-item {
   width: 80%;
   display: flex;

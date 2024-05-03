@@ -1552,3 +1552,111 @@ io.jsonwebtoken.MalformedJwtException: JWT strings must contain exactly 2 period
 2024-05-03T13:39:08.014+05:30  INFO 307902 --- [http-nio-8081-exec-2] c.h.d.auth.AuthenticationController      : Login Successfully
 2024-05-03T16:09:28.134+05:30  INFO 307902 --- [http-nio-8081-exec-7] c.h.d.auth.AuthenticationController      : Login Successfully
 2024-05-03T16:09:59.873+05:30  INFO 307902 --- [http-nio-8081-exec-4] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T16:40:43.866+05:30  INFO 307902 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03T16:40:43.875+05:30  INFO 307902 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-05-03T16:40:43.882+05:30  INFO 307902 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-05-03T18:14:27.243+05:30  INFO 334659 --- [main] c.h.dhanvantari.DhanvantariApplication   : Starting DhanvantariApplication using Java 17.0.9 with PID 334659 (/home/parag/IIITB_Assignments/HAD/ABDM-Integrated-Hospital-System/backend/target/classes started by parag in /home/parag/IIITB_Assignments/HAD/ABDM-Integrated-Hospital-System/backend)
+2024-05-03T18:14:27.249+05:30  INFO 334659 --- [main] c.h.dhanvantari.DhanvantariApplication   : No active profile set, falling back to 1 default profile: "default"
+2024-05-03T18:14:30.598+05:30  INFO 334659 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-03T18:14:30.799+05:30  INFO 334659 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 186 ms. Found 13 JPA repository interfaces.
+2024-05-03T18:14:32.321+05:30  INFO 334659 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2024-05-03T18:14:32.353+05:30  INFO 334659 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-05-03T18:14:32.355+05:30  INFO 334659 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-05-03T18:14:32.614+05:30  INFO 334659 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-05-03T18:14:32.617+05:30  INFO 334659 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5179 ms
+2024-05-03T18:14:32.929+05:30  INFO 334659 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-03T18:14:33.059+05:30  INFO 334659 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-05-03T18:14:33.064+05:30  INFO 334659 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-05-03T18:14:33.303+05:30  INFO 334659 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-05-03T18:14:33.480+05:30  INFO 334659 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-03T18:14:33.503+05:30  INFO 334659 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-05-03T18:14:33.755+05:30  INFO 334659 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6ceb11f9
+2024-05-03T18:14:33.758+05:30  INFO 334659 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-05-03T18:14:34.660+05:30  INFO 334659 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-05-03T18:14:36.233+05:30  INFO 334659 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-05-03T18:14:36.483+05:30  INFO 334659 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03T18:14:37.033+05:30  INFO 334659 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-03T18:14:37.531+05:30  INFO 334659 --- [main] c.h.dhanvantari.config.SimpleCORSFilter  : SimpleCORSFilter init
+2024-05-03T18:14:39.307+05:30  WARN 334659 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-03T18:14:39.903+05:30  INFO 334659 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@763d7eef, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3ea7d936, org.springframework.security.web.context.SecurityContextHolderFilter@707004b6, org.springframework.security.web.header.HeaderWriterFilter@520dc647, org.springframework.security.web.authentication.logout.LogoutFilter@35f18100, com.hadproject.dhanvantari.config.JwtAuthenticationFilter@280fa441, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@667c2066, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@11c94cf7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@458f1355, org.springframework.security.web.session.SessionManagementFilter@554a76fd, org.springframework.security.web.access.ExceptionTranslationFilter@5b6abe1f, org.springframework.security.web.access.intercept.AuthorizationFilter@6c9c375]
+2024-05-03T18:14:40.450+05:30  INFO 334659 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2024-05-03T18:14:40.464+05:30  INFO 334659 --- [main] c.h.dhanvantari.DhanvantariApplication   : Started DhanvantariApplication in 14.846 seconds (process running for 17.1)
+2024-05-03T18:16:45.216+05:30  INFO 334659 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-03T18:16:45.217+05:30  INFO 334659 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-05-03T18:16:45.220+05:30  INFO 334659 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-05-03T18:16:45.306+05:30  INFO 334659 --- [http-nio-8081-exec-1] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:16:51.711+05:30  INFO 334659 --- [http-nio-8081-exec-4] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:19:24.475+05:30  INFO 334659 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03T18:19:24.479+05:30  INFO 334659 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-05-03T18:19:24.490+05:30  INFO 334659 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-05-03T18:19:29.537+05:30  INFO 335770 --- [main] c.h.dhanvantari.DhanvantariApplication   : Starting DhanvantariApplication using Java 17.0.9 with PID 335770 (/home/parag/IIITB_Assignments/HAD/ABDM-Integrated-Hospital-System/backend/target/classes started by parag in /home/parag/IIITB_Assignments/HAD/ABDM-Integrated-Hospital-System/backend)
+2024-05-03T18:19:29.543+05:30  INFO 335770 --- [main] c.h.dhanvantari.DhanvantariApplication   : No active profile set, falling back to 1 default profile: "default"
+2024-05-03T18:19:31.323+05:30  INFO 335770 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-03T18:19:31.490+05:30  INFO 335770 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 157 ms. Found 13 JPA repository interfaces.
+2024-05-03T18:19:32.370+05:30  INFO 335770 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2024-05-03T18:19:32.384+05:30  INFO 335770 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-05-03T18:19:32.384+05:30  INFO 335770 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-05-03T18:19:32.524+05:30  INFO 335770 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-05-03T18:19:32.524+05:30  INFO 335770 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2850 ms
+2024-05-03T18:19:32.766+05:30  INFO 335770 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-03T18:19:32.838+05:30  INFO 335770 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-05-03T18:19:32.841+05:30  INFO 335770 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-05-03T18:19:33.016+05:30  INFO 335770 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-05-03T18:19:33.173+05:30  INFO 335770 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-03T18:19:33.196+05:30  INFO 335770 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-05-03T18:19:33.432+05:30  INFO 335770 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@49bb808f
+2024-05-03T18:19:33.435+05:30  INFO 335770 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-05-03T18:19:33.964+05:30  INFO 335770 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-05-03T18:19:35.314+05:30  INFO 335770 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-05-03T18:19:35.561+05:30  INFO 335770 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03T18:19:36.100+05:30  INFO 335770 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-03T18:19:36.608+05:30  INFO 335770 --- [main] c.h.dhanvantari.config.SimpleCORSFilter  : SimpleCORSFilter init
+2024-05-03T18:19:38.249+05:30  WARN 335770 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-03T18:19:38.756+05:30  INFO 335770 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5b6abe1f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@21f9b360, org.springframework.security.web.context.SecurityContextHolderFilter@2121d0ed, org.springframework.security.web.header.HeaderWriterFilter@1efb1a38, org.springframework.security.web.authentication.logout.LogoutFilter@332815a3, com.hadproject.dhanvantari.config.JwtAuthenticationFilter@72cec2e2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1f5513df, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b230f87, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@520dc647, org.springframework.security.web.session.SessionManagementFilter@2432c72c, org.springframework.security.web.access.ExceptionTranslationFilter@f5eff92, org.springframework.security.web.access.intercept.AuthorizationFilter@6e52877d]
+2024-05-03T18:19:39.294+05:30  INFO 335770 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2024-05-03T18:19:39.310+05:30  INFO 335770 --- [main] c.h.dhanvantari.DhanvantariApplication   : Started DhanvantariApplication in 10.891 seconds (process running for 12.728)
+2024-05-03T18:20:23.593+05:30  INFO 335770 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-03T18:20:23.594+05:30  INFO 335770 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-05-03T18:20:23.597+05:30  INFO 335770 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-05-03T18:22:31.442+05:30  INFO 335770 --- [http-nio-8081-exec-9] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:24:04.254+05:30  INFO 335770 --- [http-nio-8081-exec-9] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:26:42.039+05:30  INFO 335770 --- [http-nio-8081-exec-6] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:27:55.118+05:30  INFO 335770 --- [http-nio-8081-exec-1] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:28:22.823+05:30  INFO 335770 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03T18:28:22.828+05:30  INFO 335770 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-05-03T18:28:22.859+05:30  INFO 335770 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-05-03T18:28:27.975+05:30  INFO 336365 --- [main] c.h.dhanvantari.DhanvantariApplication   : Starting DhanvantariApplication using Java 17.0.9 with PID 336365 (/home/parag/IIITB_Assignments/HAD/ABDM-Integrated-Hospital-System/backend/target/classes started by parag in /home/parag/IIITB_Assignments/HAD/ABDM-Integrated-Hospital-System/backend)
+2024-05-03T18:28:27.984+05:30  INFO 336365 --- [main] c.h.dhanvantari.DhanvantariApplication   : No active profile set, falling back to 1 default profile: "default"
+2024-05-03T18:28:29.537+05:30  INFO 336365 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-03T18:28:29.708+05:30  INFO 336365 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 160 ms. Found 13 JPA repository interfaces.
+2024-05-03T18:28:30.679+05:30  INFO 336365 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2024-05-03T18:28:30.692+05:30  INFO 336365 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-05-03T18:28:30.693+05:30  INFO 336365 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-05-03T18:28:30.860+05:30  INFO 336365 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-05-03T18:28:30.860+05:30  INFO 336365 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2773 ms
+2024-05-03T18:28:31.099+05:30  INFO 336365 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-03T18:28:31.173+05:30  INFO 336365 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-05-03T18:28:31.178+05:30  INFO 336365 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-05-03T18:28:31.362+05:30  INFO 336365 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-05-03T18:28:31.533+05:30  INFO 336365 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-03T18:28:31.553+05:30  INFO 336365 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-05-03T18:28:31.793+05:30  INFO 336365 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3593e074
+2024-05-03T18:28:31.796+05:30  INFO 336365 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-05-03T18:28:32.295+05:30  INFO 336365 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-05-03T18:28:33.757+05:30  INFO 336365 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-05-03T18:28:34.028+05:30  INFO 336365 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03T18:28:34.664+05:30  INFO 336365 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-03T18:28:35.168+05:30  INFO 336365 --- [main] c.h.dhanvantari.config.SimpleCORSFilter  : SimpleCORSFilter init
+2024-05-03T18:28:37.040+05:30  WARN 336365 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-03T18:28:37.535+05:30  INFO 336365 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7d963aca, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@343a8b18, org.springframework.security.web.context.SecurityContextHolderFilter@f5eff92, org.springframework.security.web.header.HeaderWriterFilter@5a52b5f8, org.springframework.security.web.authentication.logout.LogoutFilter@5b293cc9, com.hadproject.dhanvantari.config.JwtAuthenticationFilter@597050fa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1efb1a38, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@34bbfd4b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@137b9be1, org.springframework.security.web.session.SessionManagementFilter@2e608993, org.springframework.security.web.access.ExceptionTranslationFilter@31d7e70, org.springframework.security.web.access.intercept.AuthorizationFilter@2dfc833b]
+2024-05-03T18:28:38.233+05:30  INFO 336365 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2024-05-03T18:28:38.255+05:30  INFO 336365 --- [main] c.h.dhanvantari.DhanvantariApplication   : Started DhanvantariApplication in 11.305 seconds (process running for 12.832)
+2024-05-03T18:28:50.910+05:30  INFO 336365 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-05-03T18:28:50.910+05:30  INFO 336365 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-05-03T18:28:50.913+05:30  INFO 336365 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-05-03T18:28:51.007+05:30  INFO 336365 --- [http-nio-8081-exec-1] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:35:27.435+05:30  INFO 336365 --- [http-nio-8081-exec-1] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:35:38.385+05:30  INFO 336365 --- [http-nio-8081-exec-4] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:37:08.309+05:30  INFO 336365 --- [http-nio-8081-exec-5] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:37:32.256+05:30  INFO 336365 --- [http-nio-8081-exec-3] c.h.d.auth.AuthenticationController      : Login Successfully
+2024-05-03T18:52:11.456+05:30  INFO 336365 --- [http-nio-8081-exec-6] c.h.d.auth.AuthenticationController      : Login Successfully

@@ -4,13 +4,37 @@ import "../../Styles/DoctorDashboard/appointment.css";
 import Navbar from "../navbar";
 import axios from "axios";
 
-const DeleteSlotPopup = ({ onClose }) => {
+const DeleteSlotPopup = ({ onClose, slotId}) => {
+  const handleCancelConfirmation = async () => {
+    try {
+      const access_token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/appointment/changeStatus",
+        {
+          slotId,
+          status: "CANCELLED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data); // Log the success message
+      onClose(); // Close the delete slot popup
+       // Fetch updated slot data
+    } catch (error) {
+      console.error("Error cancelling slot:", error.message);
+    }
+  };
+
   return (
     <div className="popup-overlay">
       <div className="popup">
         <h2>Confirmation</h2>
         <p>Are you sure you want to cancel this slot?</p>
-        <button className="close-button" onClick={onClose}>
+        <button className="close-button" onClick={handleCancelConfirmation}>
           Yes
         </button>
         <button className="close-button" onClick={onClose}>
@@ -20,6 +44,7 @@ const DeleteSlotPopup = ({ onClose }) => {
     </div>
   );
 };
+
 
 const AddSlotPopup = ({ onClose }) => {
   const [addDate, setAddDate] = useState([""]);
@@ -44,8 +69,12 @@ const AddSlotPopup = ({ onClose }) => {
     setLoading(true);
     setError(null);
     try {
-      const access_token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
-      const formattedDates = addDate.map(date => new Date(date).toISOString().split('T')[0]);
+      const access_token = JSON.parse(
+        localStorage.getItem("loggedInUser")
+      ).access_token;
+      const formattedDates = addDate.map(
+        (date) => new Date(date).toISOString().split("T")[0]
+      );
       const body = {
         date: formattedDates,
         startTime,
@@ -138,6 +167,7 @@ const Appointment = () => {
   const [filterDate, setFilterDate] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [slotid , setslotid] = useState(null);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -164,7 +194,7 @@ const Appointment = () => {
         );
         const data = await response.data;
         setSlots(data);
-         // Save original slots for filtering
+        // Save original slots for filtering
       } catch (error) {
         setError(error.message);
       } finally {
@@ -175,9 +205,9 @@ const Appointment = () => {
     fetchData();
   }, [navigate]);
 
-  const handleCancelSlot = (id) => {
-    setShowDeleteSlotPopup(true);
-  };
+  // const handleCancelSlot = (id) => {
+  //   setShowDeleteSlotPopup(true);
+  // };
 
   const handleFilterChange = (event) => {
     setFilterValue(event.target.value);
@@ -209,16 +239,24 @@ const Appointment = () => {
       // Filter based on selected filter value
       switch (filterValue) {
         case "scheduled":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "SCHEDULED");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "SCHEDULED"
+          );
           break;
         case "completed":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "COMPLETED");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "COMPLETED"
+          );
           break;
         case "canceled":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "CANCELED");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "CANCELED"
+          );
           break;
         case "available":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "AVAILABLE");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "AVAILABLE"
+          );
           break;
         default:
           break;
@@ -231,7 +269,10 @@ const Appointment = () => {
       setLoading(false);
     }
   };
-
+  const handleCancelSlot = (slotId) => {
+    setslotid(slotId);
+    setShowDeleteSlotPopup(true);
+  };
   const [showDetails, setShowDetails] = useState({});
 
   const toggleDetails = (id) => {
@@ -323,7 +364,8 @@ const Appointment = () => {
                             </p>
                           </div>
                         </div>
-                        {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
+                        {(item.availabilityStatus === "SCHEDULED" ||
+                          item.availabilityStatus === "AVAILABLE") && (
                           <div className="delete-slot">
                             <button onClick={() => handleCancelSlot(item.id)}>
                               Cancel
@@ -370,7 +412,8 @@ const Appointment = () => {
                             {item.endTime}
                           </p>
                         </div>
-                        {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
+                        {(item.availabilityStatus === "SCHEDULED" ||
+                          item.availabilityStatus === "AVAILABLE") && (
                           <div className="delete-slot">
                             <button onClick={() => handleCancelSlot(item.id)}>
                               Cancel
@@ -381,7 +424,10 @@ const Appointment = () => {
                     )}
 
                     {item.patientName !== null && (
-                      <p className="show-hide" onClick={() => toggleDetails(item.id)}>
+                      <p
+                        className="show-hide"
+                        onClick={() => toggleDetails(item.id)}
+                      >
                         {showDetails[item.id] ? "Hide Details" : "Show More"}
                       </p>
                     )}
@@ -395,7 +441,8 @@ const Appointment = () => {
         </div>
 
         {showDeleteSlotPopup && (
-          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} />
+          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} slotId={slotid}
+          />
         )}
         {showAddSlotPopup && (
           <AddSlotPopup onClose={() => setShowAddSlotPopup(false)} />

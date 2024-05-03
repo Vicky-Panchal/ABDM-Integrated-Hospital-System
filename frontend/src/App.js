@@ -24,6 +24,7 @@ import ProfilePage from './components/ProfilePage';
 import ChangePasswordPage from "./components/ChangePasswordPage";
 import ForgetPasswordPage from "./components/ForgetPasswordPage";
 import Appointment from './components/DoctorDashboard/Appointment';
+import AddVisit from './components/DoctorDashboard/AddVisit';
 
 
 const App = () => {
@@ -64,6 +65,7 @@ const App = () => {
         <Route path="/ForgetPasswordPage" element={<ForgetPasswordPage />} /> 
         <Route path="/Appointment" element={<Appointment />} />
         <Route path="/ScheduleAppointment" element={<ScheduleAppointment />} /> 
+        <Route path="/AddVisit" element={<AddVisit />} />
       </Routes>
     </Router>
   );

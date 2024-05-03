@@ -161,7 +161,6 @@ public class PatientController {
 //    }
 
     @GetMapping("/getAllPatients")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<GetAllPatient>> getAllPatients() {
         return ResponseEntity.ok(patientService.getAllPatients());
     }

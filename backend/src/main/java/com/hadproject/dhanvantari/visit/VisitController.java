@@ -23,7 +23,7 @@ public class VisitController {
     private static final HashMap<String, SseEmitter> map = new HashMap<>();
 
     @GetMapping("/add-visit")
-    @CrossOrigin
+//    @CrossOrigin
     public SseEmitter addNewVisit(@RequestParam("patientId") String patient_id, @RequestParam("accessToken") String patientAuthToken) throws Exception {
         logger.info("Entering addNewVisitClass with data: patientId - {} authToken: {}", patient_id, patientAuthToken);
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
@@ -44,7 +44,6 @@ public class VisitController {
     }
 
     @PostMapping("/v0.5/links/link/on-add-contexts")
-//    @CrossOrigin
     public void onAddNewVisit(@RequestBody String response) {
         logger.info("Entering addNewVisit with data: {}", response);
         String[] respond = visitService.createOnAddContextResponse(response);
@@ -60,5 +59,10 @@ public class VisitController {
             emitter.complete();
             map.remove(respond[0]);
         }
+    }
+
+    @GetMapping(value = "/visit", produces = "Application/JSON")
+    public String getVisit(@RequestBody String req) {
+        return visitService.getVisitById(req);
     }
 }

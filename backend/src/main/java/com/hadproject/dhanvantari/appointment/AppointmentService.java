@@ -1,5 +1,7 @@
 package com.hadproject.dhanvantari.appointment;
 
+import com.hadproject.dhanvantari.Notification.Notification;
+import com.hadproject.dhanvantari.Notification.NotificationRepository;
 import com.hadproject.dhanvantari.appointment.dto.*;
 import com.hadproject.dhanvantari.aws.S3Service;
 import com.hadproject.dhanvantari.doctor.Doctor;
@@ -21,9 +23,10 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static com.hadproject.dhanvantari.appointment.AppointmentStatus.AVAILABLE;
+import static com.hadproject.dhanvantari.appointment.AppointmentStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,7 @@ public class AppointmentService {
     private final AppointmentSlotRepository appointmentSlotRepository;
     private final DoctorRepository doctorRepository;
     private final S3Service s3Service;
+    private final NotificationRepository notificationRepository;
 
 
     public void addAppointmentSlots(AddAppointmentSlotRequest data, Principal connectedUser) {
@@ -97,11 +101,13 @@ public class AppointmentService {
             responseDto.setEndTime(slot.getEndTime());
             responseDto.setAvailabilityStatus(slot.getAvailabilityStatus());
             responseDto.setProfileUrl(profileUrl);
+            Appointment appointment = appointmentRepository.findBySlotId(slot.getId());
             if(user.getRole().equals(Role.DOCTOR)
+                    && appointment != null
                     && (slot.getAvailabilityStatus().equals(AppointmentStatus.SCHEDULED)
                     || slot.getAvailabilityStatus().equals(AppointmentStatus.CANCELLED)
                     || slot.getAvailabilityStatus().equals(AppointmentStatus.COMPLETED))) {
-                Appointment appointment = appointmentRepository.findBySlotId(slot.getId());
+
                 if(appointment.getPatient().getUser().getProfile() != null) {
                     profileUrl = s3Service.generatePresignedUrl(appointment.getPatient().getUser().getProfile());
                 }
@@ -139,8 +145,38 @@ public class AppointmentService {
         );
     }
 
-    public void changeStatus(ChangeStatusRequest data) {
-        
+    public void changeStatus(ChangeStatusRequest data, User user) {
+        AppointmentSlot slot = appointmentSlotRepository.findById(data.getSlotId()).orElseThrow(() -> new RuntimeException("Slot Not Found"));
+        if(user.getRole().equals(Role.DOCTOR)) {
+            if(slot.getAvailabilityStatus() == AVAILABLE || (data.status == COMPLETED && slot.getAvailabilityStatus() == SCHEDULED)) {
+                slot.setAvailabilityStatus(data.status);
+                appointmentSlotRepository.save(slot);
+            }
+            else {
+                Appointment appointment = appointmentRepository.findBySlotId(data.slotId);
+//                appointmentRepository.delete(appointment);
+                slot.setAvailabilityStatus(CANCELLED);
+                appointmentSlotRepository.save(slot);
+                notificationRepository.save(Notification.builder()
+                                .createdAt(new Date())
+                                .message("Doctor cancelled your appointment")
+                                .title("Doctor cancelled your appointment")
+                                .user(appointment.getPatient().getUser())
+                        .build());
+            }
+        }
+        else {
+            Appointment appointment = appointmentRepository.findBySlotId(data.slotId);
+            appointmentRepository.delete(appointment);
+            slot.setAvailabilityStatus(AVAILABLE);
+            appointmentSlotRepository.save(slot);
+            notificationRepository.save(Notification.builder()
+                    .createdAt(new Date())
+                    .message("Patient cancelled the appointment, the slot is available now")
+                    .title("Doctor cancelled your appointment")
+                    .user(appointment.getDoctor().getUser())
+                    .build());
+        }
     }
 
     public List<GetPatientAppointmentsResponse> getPatientAppointments(Principal connectedUser) {

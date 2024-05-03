@@ -1,5 +1,7 @@
 package com.hadproject.dhanvantari.abdm;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.ec.CustomNamedCurves;
@@ -17,6 +19,7 @@ import org.bouncycastle.jce.spec.ECPrivateKeySpec;
 import org.bouncycastle.jce.spec.ECPublicKeySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.KeyAgreement;
 import java.math.BigInteger;
@@ -25,6 +28,9 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.HashMap;
 
+@Getter
+@Service
+@RequiredArgsConstructor
 public class DataEncryptionDecryption {
     static Logger logger = LoggerFactory.getLogger(DataEncryptionDecryption.class);
     public static final String ALGORITHM = "ECDH";

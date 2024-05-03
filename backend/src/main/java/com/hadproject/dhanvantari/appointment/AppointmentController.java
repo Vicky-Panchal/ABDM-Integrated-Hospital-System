@@ -1,9 +1,11 @@
 package com.hadproject.dhanvantari.appointment;
 
 import com.hadproject.dhanvantari.appointment.dto.*;
+import com.hadproject.dhanvantari.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -38,8 +40,9 @@ public class AppointmentController {
     }
 
     @PostMapping("/changeStatus")
-    public String changeStatus(ChangeStatusRequest data) {
-        appointmentService.changeStatus(data);
+    public String changeStatus(@RequestBody ChangeStatusRequest data, Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+        appointmentService.changeStatus(data, user);
         return "Status changed successfully";
     }
 
@@ -48,71 +51,7 @@ public class AppointmentController {
     public List<GetPatientAppointmentsResponse> getPatientAppointments(Principal connectedUser) {
         return appointmentService.getPatientAppointments(connectedUser);
     }
-//    @GetMapping("/appointmentsCount")
-//public ResponseEntity<List<Integer>> getAppointmentsCount(@RequestParam("range") String range) {
-//    LocalDate startDate, endDate;
-//
-//    switch (range) {
-//        case "week":
-//            endDate = LocalDate.now();
-//            startDate = endDate.minusDays(6); // Last 7 days
-//            break;
-//        case "month":
-//            endDate = LocalDate.now();
-//            startDate = endDate.minusDays(29); // Last 30 days including today
-//            break;
-//        case "year":
-//            endDate = LocalDate.now();
-//            startDate = endDate.minusYears(1).plusDays(1); // Last 12 months starting from the first day of the current month 12 months ago
-//            break;
-//        default:
-//            // Handle invalid range parameter
-//            return ResponseEntity.badRequest().body(null);
-//    }
-//
-//    List<Integer> appointmentsCountList = new ArrayList<>();
-//    LocalDate currentDate = startDate;
-//    while (!currentDate.isAfter(endDate)) {
-//        int count = appointmentService.countAppointmentsByDateRange(currentDate, currentDate.plusDays(1));
-//        appointmentsCountList.add(count);
-//        currentDate = currentDate.plusDays(1);
-//    }
-//
-//    return ResponseEntity.ok(appointmentsCountList);
-//}
 
-//@GetMapping("/appointmentsCount")
-//public ResponseEntity<List<Integer>> getAppointmentsCount(@RequestParam("range") String range) {
-//    LocalDate startDate, endDate;
-//
-//    switch (range) {
-//        case "week":
-//            endDate = LocalDate.now();
-//            startDate = endDate.minusDays(6); // Last 7 days
-//            break;
-//        case "month":
-//            endDate = LocalDate.now();
-//            startDate = endDate.minusDays(29); // Last 30 days including today
-//            break;
-//        case "year":
-//            endDate = LocalDate.now();
-//            startDate = endDate.minusYears(1).plusDays(1); // Last 12 months starting from the first day of the current month 12 months ago
-//            break;
-//        default:
-//            // Handle invalid range parameter
-//            return ResponseEntity.badRequest().body(null);
-//    }
-//
-//    List<Integer> appointmentsCountList = new ArrayList<>();
-//    LocalDate currentDate = startDate;
-//    while (!currentDate.isAfter(endDate)) {
-//        int count = appointmentService.countAppointmentsByDateRange(currentDate, currentDate.plusDays(1));
-//        appointmentsCountList.add(count);
-//        currentDate = currentDate.plusDays(1);
-//    }
-//
-//    return ResponseEntity.ok(appointmentsCountList);
-//}
 @GetMapping("/appointmentsCount")
 public ResponseEntity<List<Integer>> getAppointmentsCount(@RequestParam("range") String range) {
     List<Integer> appointmentsCountList = new ArrayList<>();

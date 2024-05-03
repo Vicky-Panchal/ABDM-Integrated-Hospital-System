@@ -1,17 +1,12 @@
 package com.hadproject.dhanvantari.Notification;
 import com.hadproject.dhanvantari.Notification.dto.GetNotificationResponse;
 import com.hadproject.dhanvantari.user.User;
-import com.hadproject.dhanvantari.user.UserRepository;
-import com.hadproject.dhanvantari.user.UserService;
+//import com.hadproject.dhanvantari.user.UserRepository;
+//import com.hadproject.dhanvantari.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
-
 import java.security.Principal;
 
 
@@ -22,8 +17,8 @@ public class NotificationController  {
 
     private final NotificationService notificationService;
 
-    private final UserService userService;
-    private final UserRepository userRepository;
+//    private final UserService userService;
+//    private final UserRepository userRepository;
 
     @GetMapping()
     public List <GetNotificationResponse> showUserNotificationList(Principal connectedUser) {

@@ -19,6 +19,7 @@ const AddVisit = () => {
     },
   ];
 
+  const [patient, setPatient] = useState("");
   const [otp, setotp] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [prescription, setPrescription] = useState("");
@@ -75,7 +76,7 @@ const AddVisit = () => {
       <hr />
       <div className="patient-specific">
         <label>Select Patient : </label>
-        <select className="dropdown-select" value={1} onChange={1}>
+        <select className="dropdown-select" value={patient} onChange={(e) => setPatient(e.target.value)}>
           {dummyPatients.map((item) => (
             <option id={item.id} value={item.name}>
               {item.name}

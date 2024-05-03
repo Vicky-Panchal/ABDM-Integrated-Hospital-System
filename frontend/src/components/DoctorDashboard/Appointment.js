@@ -4,13 +4,37 @@ import "../../Styles/DoctorDashboard/appointment.css";
 import Navbar from "../navbar";
 import axios from "axios";
 
-const DeleteSlotPopup = ({ onClose }) => {
+const DeleteSlotPopup = ({ onClose, slotId}) => {
+  const handleCancelConfirmation = async () => {
+    try {
+      const access_token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/appointment/changeStatus",
+        {
+          slotId,
+          status: "CANCELLED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data); // Log the success message
+      onClose(); // Close the delete slot popup
+       // Fetch updated slot data
+    } catch (error) {
+      console.error("Error cancelling slot:", error.message);
+    }
+  };
+
   return (
     <div className="popup-overlay">
       <div className="popup">
         <h2>Confirmation</h2>
         <p>Are you sure you want to cancel this slot?</p>
-        <button className="close-button" onClick={onClose}>
+        <button className="close-button" onClick={handleCancelConfirmation}>
           Yes
         </button>
         <button className="close-button" onClick={onClose}>
@@ -20,6 +44,7 @@ const DeleteSlotPopup = ({ onClose }) => {
     </div>
   );
 };
+
 
 const AddSlotPopup = ({ onClose }) => {
   const [addDate, setAddDate] = useState([""]);
@@ -142,7 +167,8 @@ const Appointment = () => {
   const [filterDate, setFilterDate] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [slotid , setslotid] = useState(null);
+  
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -179,9 +205,9 @@ const Appointment = () => {
     fetchData();
   }, [navigate]);
 
-  const handleCancelSlot = (id) => {
-    setShowDeleteSlotPopup(true);
-  };
+  // const handleCancelSlot = (id) => {
+  //   setShowDeleteSlotPopup(true);
+  // };
 
   const handleFilterChange = (event) => {
     setFilterValue(event.target.value);
@@ -243,7 +269,10 @@ const Appointment = () => {
       setLoading(false);
     }
   };
-
+  const handleCancelSlot = (slotId) => {
+    setslotid(slotId);
+    setShowDeleteSlotPopup(true);
+  };
   const [showDetails, setShowDetails] = useState({});
 
   const toggleDetails = (id) => {
@@ -412,7 +441,8 @@ const Appointment = () => {
         </div>
 
         {showDeleteSlotPopup && (
-          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} />
+          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} slotId={slotid}
+          />
         )}
         {showAddSlotPopup && (
           <AddSlotPopup onClose={() => setShowAddSlotPopup(false)} />

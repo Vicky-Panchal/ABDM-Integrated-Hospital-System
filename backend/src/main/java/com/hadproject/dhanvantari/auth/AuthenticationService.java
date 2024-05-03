@@ -93,6 +93,19 @@ public class AuthenticationService {
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
 
+    Long patientId = null;
+    Long doctorId = null;
+
+    if(user.getRole().equals(Role.PATIENT)) {
+      Patient patient = patientRepository.findPatientByUser(user).orElseThrow(() -> new RuntimeException("Patient not found"));
+      patientId = patient.getPatientId();
+    }
+
+    if(user.getRole().equals(Role.DOCTOR)) {
+      Doctor doctor = doctorRepository.findDoctorByUser(user).orElseThrow(() -> new RuntimeException("Doctor not found"));
+      doctorId = doctor.getDoctorId();
+    }
+
     return AuthenticationResponse.builder()
         .accessToken(jwtToken)
             .refreshToken(refreshToken)
@@ -100,6 +113,8 @@ public class AuthenticationService {
             .lastName(user.getLastname())
             .userId(user.getUserId())
             .role(user.getRole())
+            .patientId(patientId)
+            .doctorId(doctorId)
         .build();
   }
 

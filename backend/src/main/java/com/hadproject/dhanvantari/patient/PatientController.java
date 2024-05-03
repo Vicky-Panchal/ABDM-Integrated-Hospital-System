@@ -9,11 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
@@ -150,5 +153,14 @@ public class PatientController {
         logger.info("Entering Fetch Modes with data: {}", response);
     }
 
+//    @PostMapping("/create")
+//    public ResponseEntity<?> createPatient(@RequestBody PatientCreateRequest request) {
+//        return ResponseEntity.ok(patientService.createPatient(request));
+//    }
 
+    @GetMapping("/getAllPatients")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<GetAllPatient>> getAllPatients() {
+        return ResponseEntity.ok(patientService.getAllPatients());
+    }
 }

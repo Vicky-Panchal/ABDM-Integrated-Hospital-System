@@ -27,6 +27,12 @@ public class AuthenticationResponse {
   @JsonProperty("user_id")
   private Long userId;
 
+  @JsonProperty("doctor_id")
+  private Long doctorId;
+
+  @JsonProperty("patient_id")
+  private Long patientId;
+
   @JsonProperty("role")
   private Role role;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../Styles/DoctorDashboard/consentRequestForm.css";
 import axios from "axios";
 
@@ -9,15 +9,15 @@ const ConsentRequestForm = () => {
   // State variables for form fields
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("");
-  const [patientIdentifier, setPatientIdentifier] = useState("");
-  const [suffix, setSuffix] = useState("@sbx");
+  //const [patientIdentifier, setPatientIdentifier] = useState("");
+  //const [suffix, setSuffix] = useState("@sbx");
   const [purposeOfRequest, setPurposeOfRequest] = useState("");
   const [healthInfoFrom, setHealthInfoFrom] = useState("");
   const [healthInfoTo, setHealthInfoTo] = useState("");
   const [healthInfoType, setHealthInfoType] = useState([]);
   const [consentExpiry, setConsentExpiry] = useState("");
   const [error, setError] = useState("");
-
+  
   // Fetch list of patients from the API
   useEffect(() => {
     const accessToken = JSON.parse(
@@ -39,26 +39,31 @@ const ConsentRequestForm = () => {
   }, []);
 
   // Function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate dates
+    console.log(consentExpiry);
     const currentDate = new Date();
     const from = new Date(healthInfoFrom);
     const to = new Date(healthInfoTo);
+    const expiry = new Date(consentExpiry);
     console.log(from);
-    console.log(to)
+    console.log(to);
 
     if (from > currentDate) {
       setError("Health Information From date cannot be in the future.");
       return;
     }
 
-    if (to < currentDate) {
+    if (to > currentDate) {
       setError("Health Information To date cannot be in the past.");
       return;
     }
-
+    if (expiry < to) {
+      setError("Health Information expiry date cannot be lass than to.");
+      return;
+    }
     if (from > to) {
       setError(
         "Health Information From date cannot be after Health Information To date."
@@ -69,19 +74,56 @@ const ConsentRequestForm = () => {
     // Convert dates to UTC format
     const fromUTC = from.toISOString();
     const toUTC = to.toISOString();
+    const expiryUTC = expiry.toISOString();
 
     // Process form data...
 
-    console.log("Form submitted:", {
-      patientIdentifier,
-      suffix,
-      purposeOfRequest,
-      healthInfoFrom: fromUTC,
-      healthInfoTo: toUTC,
-      healthInfoType,
-      consentExpiry,
-    });
-    navigate("/ConsentList");
+    // Create the request body
+    try {
+      const accessToken = JSON.parse(
+        localStorage.getItem("loggedInUser")
+      ).access_token;
+      const doctorId = JSON.parse(localStorage.getItem("loggedInUser")).doctor_id;
+      console.log(doctorId);
+
+      const hiTypesString = healthInfoType.map(item => `"${item}"`).join(",");
+
+      console.log(hiTypesString);
+      const requestBody = {
+        purpose: purposeOfRequest,
+        dateFrom: fromUTC,
+        dateTo: toUTC,
+        dateEraseAt: expiryUTC,
+        hiTypes: hiTypesString,
+        patientId: selectedPatient,
+        doctorId: doctorId, // Replace YOUR_DOCTOR_ID with the actual doctor ID
+        visitId: 1, // Assuming visit ID is always 1, you may need to change this
+      };
+
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/consent/create-consent-request",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data);
+      // console.log("Form submitted:", {
+      //   patientIdentifier,
+      //   suffix,
+      //   purposeOfRequest,
+      //   healthInfoFrom: fromUTC,
+      //   healthInfoTo: toUTC,
+      //   healthInfoType,
+      //   consentExpiry: expiryUTC,
+      // });
+      navigate("/ConsentList");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleCheckboxChange = (value) => {
@@ -95,13 +137,13 @@ const ConsentRequestForm = () => {
   };
 
   const checkboxes = [
-    { value: "OP Consultation", label: "OP Consultation" },
-    { value: "Diagnostic Reports", label: "Diagnostic Reports" },
-    { value: "Discharge Summary", label: "Discharge Summary" },
+    { value: "OPConsultation", label: "OPConsultation" },
+    { value: "DiagnosticReport", label: "DiagnosticReports" },
+    { value: "DischargeSummary", label: "DischargeSummary" },
     { value: "Prescription", label: "Prescription" },
-    { value: "Immunization Record", label: "Immunization Record" },
-    { value: "Health Document Record", label: "Health Document Record" },
-    { value: "Wellness Record", label: "Wellness Record" },
+    { value: "ImmunizationRecord", label: "ImmunizationRecord" },
+    { value: "HealthDocumentRecord", label: "HealthDocumentRecord" },
+    { value: "WellnessRecord", label: "WellnessRecord" },
 
     // Add more checkboxes here if needed
   ];
@@ -186,6 +228,23 @@ const ConsentRequestForm = () => {
             {/* Other form fields */}
             <div className="grid-item">
               <div className="title">
+                <label>Purpose of Request : </label>
+              </div>
+            </div>
+            <div className="grid-item">
+              <div className="fields">
+                <input
+                  type="text"
+                  value={purposeOfRequest}
+                  onChange={(e) => setPurposeOfRequest(e.target.value)}
+                  placeholder="Enter Purpose"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid-item">
+              <div className="title">
                 <label>Health Information From : </label>
               </div>
             </div>
@@ -223,6 +282,21 @@ const ConsentRequestForm = () => {
             </div>
             <div className="grid-item">
               <div className="fields">{renderCheckboxes()}</div>
+            </div>
+            <div className="grid-item">
+              <div className="title">
+                <label>Consent Expiry : </label>
+              </div>
+            </div>
+            <div className="grid-item">
+              <div className="fields">
+                <input
+                  type="date"
+                  value={consentExpiry}
+                  onChange={(e) => setConsentExpiry(e.target.value)}
+                  required
+                />
+              </div>
             </div>
             {error && <div className="error">{error}</div>}
           </div>

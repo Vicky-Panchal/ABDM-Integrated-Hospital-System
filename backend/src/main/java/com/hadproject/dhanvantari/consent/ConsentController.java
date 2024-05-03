@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.consent;
 
+import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -47,29 +48,14 @@ public class ConsentController {
 
     //--------------------------------------------- Consent Request APIs -----------------------------------------
 
-    @GetMapping("/create-consent-request")
-    public SseEmitter consentRequestInit(@RequestParam("purpose") String purpose,
-                                         @RequestParam("dateFrom") String dateFrom,
-                                         @RequestParam("dateTo") String dateTo,
-                                         @RequestParam("dateEraseAt") String dateEraseAt,
-                                         @RequestParam("hiTypes") String hiTypes,
-                                         @RequestParam("patientId") String patientId,
-                                         @RequestParam("doctorId") String doctorId,
-                                         @RequestParam("visitId") String visitId) throws Exception {
+    @PostMapping("/create-consent-request")
+    public SseEmitter consentRequestInit(@RequestBody CreateConsentRequest req) throws Exception {
 
         logger.info("Entering /create-consent-request with requestBody: ");
         logger.info("currently emitter map is {}", map);
-        JSONObject req = new JSONObject();
-        req.put("purpose", purpose);
-        req.put("dateFrom", dateFrom);
-        req.put("dateTo", dateTo);
-        req.put("dateEraseAt", dateEraseAt);
-        req.put("hiTypes", "[" + hiTypes + "]");
-        req.put("patientId", patientId);
-        req.put("doctorId", doctorId);
-        req.put("visitId", visitId);
+        req.setHiTypes("[" + req.getHiTypes() + "]");
 
-        ConsentRequest consentRequest = consentService.prepareConsentRequest(req.toString());
+        ConsentRequest consentRequest = consentService.prepareConsentRequest(req);
         logger.info("Prepared consent");
         if (consentRequest == null) throw new RuntimeException();
         String requestId = consentService.fireABDMConsentRequestInit(consentRequest);

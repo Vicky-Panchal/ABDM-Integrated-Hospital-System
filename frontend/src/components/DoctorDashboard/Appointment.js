@@ -44,8 +44,12 @@ const AddSlotPopup = ({ onClose }) => {
     setLoading(true);
     setError(null);
     try {
-      const access_token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
-      const formattedDates = addDate.map(date => new Date(date).toISOString().split('T')[0]);
+      const access_token = JSON.parse(
+        localStorage.getItem("loggedInUser")
+      ).access_token;
+      const formattedDates = addDate.map(
+        (date) => new Date(date).toISOString().split("T")[0]
+      );
       const body = {
         date: formattedDates,
         startTime,
@@ -138,7 +142,7 @@ const Appointment = () => {
   const [filterDate, setFilterDate] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -164,7 +168,7 @@ const Appointment = () => {
         );
         const data = await response.data;
         setSlots(data);
-         // Save original slots for filtering
+        // Save original slots for filtering
       } catch (error) {
         setError(error.message);
       } finally {
@@ -209,16 +213,24 @@ const Appointment = () => {
       // Filter based on selected filter value
       switch (filterValue) {
         case "scheduled":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "SCHEDULED");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "SCHEDULED"
+          );
           break;
         case "completed":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "COMPLETED");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "COMPLETED"
+          );
           break;
         case "canceled":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "CANCELED");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "CANCELED"
+          );
           break;
         case "available":
-          filteredSlots = filteredSlots.filter(slot => slot.availabilityStatus === "AVAILABLE");
+          filteredSlots = filteredSlots.filter(
+            (slot) => slot.availabilityStatus === "AVAILABLE"
+          );
           break;
         default:
           break;
@@ -323,7 +335,8 @@ const Appointment = () => {
                             </p>
                           </div>
                         </div>
-                        {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
+                        {(item.availabilityStatus === "SCHEDULED" ||
+                          item.availabilityStatus === "AVAILABLE") && (
                           <div className="delete-slot">
                             <button onClick={() => handleCancelSlot(item.id)}>
                               Cancel
@@ -370,7 +383,8 @@ const Appointment = () => {
                             {item.endTime}
                           </p>
                         </div>
-                        {(item.availabilityStatus === "SCHEDULED" || item.availabilityStatus === "AVAILABLE") && (
+                        {(item.availabilityStatus === "SCHEDULED" ||
+                          item.availabilityStatus === "AVAILABLE") && (
                           <div className="delete-slot">
                             <button onClick={() => handleCancelSlot(item.id)}>
                               Cancel
@@ -381,7 +395,10 @@ const Appointment = () => {
                     )}
 
                     {item.patientName !== null && (
-                      <p className="show-hide" onClick={() => toggleDetails(item.id)}>
+                      <p
+                        className="show-hide"
+                        onClick={() => toggleDetails(item.id)}
+                      >
                         {showDetails[item.id] ? "Hide Details" : "Show More"}
                       </p>
                     )}

@@ -1,7 +1,7 @@
 package com.hadproject.dhanvantari.visit;
 
-import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.patient.PatientRepository;
+import com.hadproject.dhanvantari.visit.dto.CreateVisitRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,13 +22,13 @@ public class VisitController {
 
     private static final HashMap<String, SseEmitter> map = new HashMap<>();
 
-    @GetMapping("/add-visit")
-    public SseEmitter addNewVisit(@RequestParam("patientId") String patient_id, @RequestParam("accessToken") String patientAuthToken) throws Exception {
-        logger.info("Entering addNewVisitClass with data: patientId - {} authToken: {}", patient_id, patientAuthToken);
+    @PostMapping("/add-visit")
+    public SseEmitter addNewVisit(@RequestBody CreateVisitRequest data) throws Exception {
+        logger.info("Entering addNewVisitClass with data: patientId - {} authToken: {}", data.getPatientId(), data.getPatientAuthToken());
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 
-        Patient patient = patientRepository.findPatientByPatientId(Long.parseLong(patient_id));
-        String requestId = visitService.addCareContext(patient, patientAuthToken);
+//        Patient patient = patientRepository.findPatientByPatientId(Long.parseLong(data.patientId));
+        String requestId = visitService.addCareContext(data);
 
         if (requestId == null)    throw new RuntimeException("unable to send request");
 

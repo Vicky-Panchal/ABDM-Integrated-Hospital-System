@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,10 @@ public class ConsentRequest {
     List<Consent> consentList = new ArrayList<>();
     @Column
     private String requestId;
-
+    @Column(nullable = false)
+    private LocalDateTime created_at;
+    @Column()
+    private LocalDateTime granted_at;
     public void addConsent(Consent consent) {
         this.consentList.add(consent);
     }

@@ -34,6 +34,9 @@ public class Visit {
     private LocalDate visitDate;
     @Column
     private String referenceNumber;
+    @Lob
+    @Column(name = "health_record",length=16777214)
+    public byte[] healthRecord;
     @Column
     private String display;
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)

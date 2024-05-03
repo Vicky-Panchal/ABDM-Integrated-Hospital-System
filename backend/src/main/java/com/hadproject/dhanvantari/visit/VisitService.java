@@ -8,6 +8,7 @@ import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.doctor.DoctorRepository;
 import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.patient.PatientRepository;
+import com.hadproject.dhanvantari.visit.dto.CreateVisitRequest;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,12 +40,18 @@ public class VisitService {
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
 
-    public Visit createNewVisit(Patient patient) {
+    public Visit createNewVisit(Patient patient, CreateVisitRequest data) {
         logger.info("entering create new visit with data:{}", patient.getPatientJSONObject());
 
         List<Visit> list = visitRepository.findVisitByPatient(patient);
 
-        Visit visit = new Visit(LocalDate.now(), "Visit-" + patient.getPatientId() + "-" + (list.size() + 1), "Consultation on : " + LocalDate.now());
+//        Visit visit = new Visit(LocalDate.now(), "Visit-" + patient.getPatientId() + "-" + (list.size() + 1), "Consultation on : " + LocalDate.now());
+        Visit visit = new Visit();
+        visit.setVisitDate(LocalDate.now());
+        visit.setDiagnosis(data.getDiagnosis());
+        visit.setDisplay("Consultation on : " + LocalDate.now());
+        visit.setReferenceNumber("Visit-" + patient.getPatientId() + "-" + (list.size() + 1));
+
         visit.setPatient(patient);
 
         logger.info("created a visit with data: {}", visit);
@@ -59,17 +66,17 @@ public class VisitService {
         return visit;
     }
 
-    public String addCareContext(Patient patient, String patientAuthToken) throws Exception {
-        logger.info("entering add care context with data: {} and patient = {}", patientAuthToken, patient);
-
+    public String addCareContext(CreateVisitRequest data) throws Exception {
+        logger.info("entering add care context with data: {} and patient = {}", data.getPatientAuthToken(), data.getPatientId());
+        Patient patient = patientRepository.findPatientByPatientId(Long.parseLong(data.patientId));
         abdmService.setToken();
         String authToken = abdmService.getToken();
         if (authToken.equals("-1")) return null;
 
-        Visit visit = createNewVisit(patient);
+        Visit visit = createNewVisit(patient, data);
 
         // Prepare requestBody to send to ABDM.
-        JSONObject request = prepareAddContextRequest(patientAuthToken, visit, "" + patient.getPatientId(), patient.getUser().getFirstname());
+        JSONObject request = prepareAddContextRequest(data.getPatientAuthToken(), visit, "" + patient.getPatientId(), patient.getUser().getFirstname());
         visit.setRequestId(request.get("requestId").toString());
         visit.setVisitDate(LocalDate.now());
         visitRepository.save(visit);

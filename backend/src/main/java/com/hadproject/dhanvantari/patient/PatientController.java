@@ -27,6 +27,7 @@ public class PatientController {
     Logger logger = LoggerFactory.getLogger(PatientController.class);
     private final PatientService patientService;
     private final ABDMService abdmService;
+    private final PatientRepository patientRepository;
 
     private static final HashMap<String, SseEmitter> emittersMap = new HashMap<>();
 
@@ -64,12 +65,13 @@ public class PatientController {
 
     @Operation(summary = "Abha Verification Using Mobile")
     @GetMapping("/verifyAbhaUsingMobile")
-    SseEmitter generateOTP(@RequestParam("abha_id") String abhaId) throws Exception {
-        logger.info("Entering generateOTP with request param abhaId as {}", abhaId);
+    SseEmitter generateOTP(@RequestParam("patient_id") String patient_id) throws Exception {
+        logger.info("Entering generateOTP with request param abhaId as {}", patient_id);
         logger.info("currently map is {}", emittersMap);
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
 
-        String reqId = abdmService.patientInitUsingMobile(abhaId);
+        Patient patient = patientRepository.findPatientByPatientId(Long.valueOf(patient_id));
+        String reqId = abdmService.patientInitUsingMobile(patient.getUser().getHealthId());
 
         if (reqId == null) {
             throw new RuntimeException("Please try again");

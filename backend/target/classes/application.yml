@@ -4,8 +4,8 @@ spring:
 #    username: root
 #    password: 3370136
     url: jdbc:mysql://localhost:3306/abdm_app?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: swarnim
-    password: Swarnim10
+    username: vicky
+    password: 7701ATMmmp@
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -17,10 +17,10 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
 
-logging:
-  file:
-    path: .
-    name: spring-boot-logging.log
+# logging:
+#   file:
+#     path: .
+#     name: spring-boot-logging.log
 
 application:
   security:

@@ -1,89 +1,109 @@
 // ViewAllDoctors.js
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios";
 import "../../Styles/AdminDashboard/viewAllDoctors.css";
 
 const ViewAllDoctors = () => {
-  const DummySlotList = [
-    {
-      doctorId: "1",
-      firstName: "Adarsh",
-      middleName: "Ramesh",
-      lastName: "Tripathi",
-      profile: "logo192.png",
-      email: "adarsh@gmail.com",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      specialization: "Orthopedics",
-      qualification: "MBBS, MS",
-      hospitalName: "City Hospital, 123 Main Street, Kolkata, West Bengal, 700001",
-    },
-    {
-      doctorId: "2",
-      firstName: "Swarnim",
-      middleName: "Ramesh",
-      lastName: "Kukreti",
-      profile: "logo192.png",
-      email: "swarnim@gmail.com",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      specialization: "Cardiology",
-      qualification: "MD",
-      hospitalName: "Sunrise Hospital, 456 Park Avenue, Mumbai, Maharashtra, 400001",
-    },
-    {
-      doctorId: "3",
-      firstName: "Vicky",
-      middleName: "Dutt",
-      lastName: "Panchal",
-      profile: "logo192.png",
-      email: "vmp@gmail.com",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      specialization: "Pediatrics",
-      qualification: "MBBS, DCH",
-      hospitalName: "Rainbow Clinic, 789 MG Road, Bangalore, Karnataka, 560001",
-    },
-    {
-      doctorId: "4",
-      firstName: "Keshav",
-      middleName: "Dutt",
-      lastName: "Agarwal",
-      profile: "logo192.png",
-      email: "keshav@gmail.com",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      specialization: "Dermatology",
-      qualification: "MD, DDVL",
-      hospitalName: "Global Medical Center, 321 Gandhi Nagar, New Delhi, Delhi, 110001",
-    },
-    {
-      doctorId: "5",
-      firstName: "Parag",
-      middleName: "Dutt",
-      lastName: "Sharma",
-      profile: "logo192.png",
-      email: "parag@gmail.com",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      specialization: "Neurology",
-      qualification: "DM",
-      hospitalName: "Evergreen Hospital, 654 Rajaji Street, Chennai, Tamil Nadu, 600001",
-    },
-    {
-      doctorId: "6",
-      firstName: "Parag",
-      middleName: "Dutt",
-      lastName: "Sharma",
-      profile: "logo192.png",
-      email: "paragdutt@gmail.com",
-      gender: "Male",
-      dob: "2023-12-12T00:00:00.000+00:00",
-      specialization: "Gynecology",
-      qualification: "MBBS, DGO",
-      hospitalName: "Lotus Medical Center, 987 MG Road, Hyderabad, Telangana, 500001",
-    },
-  ];
+  const [doctors, setDoctors] = useState([]);
+  const [showDetails, setShowDetails] = useState({});
+  const [accessToken, setAccessToken] = useState(""); // Assuming you have the access token stored in your application state
+
+  // const DummySlotList = [
+  //   {
+  //     doctorId: "1",
+  //     firstName: "Adarsh",
+  //     middleName: "Ramesh",
+  //     lastName: "Tripathi",
+  //     profile: "logo192.png",
+  //     email: "adarsh@gmail.com",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     specialization: "Orthopedics",
+  //     qualification: "MBBS, MS",
+  //     hospitalName: "City Hospital, 123 Main Street, Kolkata, West Bengal, 700001",
+  //   },
+  //   {
+  //     doctorId: "2",
+  //     firstName: "Swarnim",
+  //     middleName: "Ramesh",
+  //     lastName: "Kukreti",
+  //     profile: "logo192.png",
+  //     email: "swarnim@gmail.com",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     specialization: "Cardiology",
+  //     qualification: "MD",
+  //     hospitalName: "Sunrise Hospital, 456 Park Avenue, Mumbai, Maharashtra, 400001",
+  //   },
+  //   {
+  //     doctorId: "3",
+  //     firstName: "Vicky",
+  //     middleName: "Dutt",
+  //     lastName: "Panchal",
+  //     profile: "logo192.png",
+  //     email: "vmp@gmail.com",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     specialization: "Pediatrics",
+  //     qualification: "MBBS, DCH",
+  //     hospitalName: "Rainbow Clinic, 789 MG Road, Bangalore, Karnataka, 560001",
+  //   },
+  //   {
+  //     doctorId: "4",
+  //     firstName: "Keshav",
+  //     middleName: "Dutt",
+  //     lastName: "Agarwal",
+  //     profile: "logo192.png",
+  //     email: "keshav@gmail.com",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     specialization: "Dermatology",
+  //     qualification: "MD, DDVL",
+  //     hospitalName: "Global Medical Center, 321 Gandhi Nagar, New Delhi, Delhi, 110001",
+  //   },
+  //   {
+  //     doctorId: "5",
+  //     firstName: "Parag",
+  //     middleName: "Dutt",
+  //     lastName: "Sharma",
+  //     profile: "logo192.png",
+  //     email: "parag@gmail.com",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     specialization: "Neurology",
+  //     qualification: "DM",
+  //     hospitalName: "Evergreen Hospital, 654 Rajaji Street, Chennai, Tamil Nadu, 600001",
+  //   },
+  //   {
+  //     doctorId: "6",
+  //     firstName: "Parag",
+  //     middleName: "Dutt",
+  //     lastName: "Sharma",
+  //     profile: "logo192.png",
+  //     email: "paragdutt@gmail.com",
+  //     gender: "Male",
+  //     dob: "2023-12-12T00:00:00.000+00:00",
+  //     specialization: "Gynecology",
+  //     qualification: "MBBS, DGO",
+  //     hospitalName: "Lotus Medical Center, 987 MG Road, Hyderabad, Telangana, 500001",
+  //   },
+  // ];
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("token")
+    axios.get("http://localhost:8081/api/v1/doctor/getAllDoctors", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        setDoctors(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching doctors:", error);
+      });
+  });
 
   const formattedDate = (date) => {
     date = new Date(date);
@@ -95,14 +115,12 @@ const ViewAllDoctors = () => {
     return `${day}-${month}-${year}`;
   };
 
-  const [showDetails, setShowDetails] = useState({});
+  // const [showDetails, setShowDetails] = useState({});
 
   const toggleDetails = (doctorId) => {
     setShowDetails((prevState) => ({
-      //   ...prevState,
-      //   [patientId]: !prevState[patientId],
       ...Object.fromEntries(
-        DummySlotList.map((item) => [
+        doctors.map((item) => [
           item.doctorId,
           item.doctorId === doctorId ? !prevState[doctorId] : false,
         ])
@@ -112,7 +130,7 @@ const ViewAllDoctors = () => {
 
   return (
     <div className="doctor-list">
-      {DummySlotList.map((item) => (
+      {doctors.map((item) => (
         <div
           key={item.doctorId}
           className={`doctor-item ${

@@ -1,5 +1,6 @@
 package com.hadproject.dhanvantari.consent;
 
+import com.hadproject.dhanvantari.consent.dto.ChangeConsentStatusRequest;
 import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
 import com.hadproject.dhanvantari.consent.dto.GetConsentRequestPatient;
 import com.hadproject.dhanvantari.consent.dto.GetConsentRequestResponse;
@@ -135,5 +136,12 @@ public class ConsentController {
     @GetMapping("/getConsentRequestsPatient")
     public List<GetConsentRequestPatient> getConsentRequestsPatient(Principal connectedUser) {
         return consentService.getConsentRequestsPatient(connectedUser);
+    }
+
+    @PostMapping("/changeConsentStatus")
+    public String changeConsentStatus(@RequestBody ChangeConsentStatusRequest data) {
+        consentService.changeConsentStatus(data);
+
+        return "Status Changes Successfully";
     }
 }

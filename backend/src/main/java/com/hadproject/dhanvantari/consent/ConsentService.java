@@ -4,6 +4,7 @@ import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.abdm.DataEncryptionDecryption;
 import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.care_context.CareContextRepository;
+import com.hadproject.dhanvantari.consent.dto.ChangeConsentStatusRequest;
 import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
 import com.hadproject.dhanvantari.consent.dto.GetConsentRequestPatient;
 import com.hadproject.dhanvantari.consent.dto.GetConsentRequestResponse;
@@ -697,5 +698,15 @@ public class ConsentService {
         }
 
         return responses;
+    }
+
+    public void changeConsentStatus(ChangeConsentStatusRequest data) {
+        ConsentRequest consentRequest = consentRequestRepository.findConsentRequestByConsentRequestId(data.getConsentRequestId());
+        if(consentRequest == null) throw new RuntimeException("Consent Request Not Found");
+        consentRequest.setStatus(data.getConsentStatus());
+        if(Objects.equals(data.getConsentStatus(), "GRANTED")) {
+            consentRequest.setGranted_at(LocalDateTime.now());
+        }
+        consentRequestRepository.save(consentRequest);
     }
 }

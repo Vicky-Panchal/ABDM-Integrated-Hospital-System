@@ -1,8 +1,10 @@
 // ConsentRequests.js
-import React, { useState } from "react";
+import React, { useEffect , useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../Styles/PatientDashboard/consentRequests.css";
 import Navbar from "../navbar";
+import axios from "axios";
+import ConsentInfo from "./ConsentInfo";
 
 const GrantConsentPopup = ({ onClose }) => {
   const [pin, setPin] = useState("");
@@ -51,60 +53,91 @@ const DenyConsentPopup = ({ onClose }) => {
   );
 };
 
+// const ConsentRequests = () => {
+//   const [notifications, setNotifications] = useState([
+//     {
+//       consentRequestId: 1,
+//       doctorName: "Johny Sins",
+//       dateFrom: "05-01-2024",
+//       dateTo: "10-01-2024",
+//       dateEraseAt: "20-01-2024",
+//       purpose: "Consultation",
+//       hiTypes: [
+//         "OP Consultation",
+//         "Discharge Summary",
+//         "Immunization Record",
+//         "Wellness Record",
+//         "Diagnostics",
+//       ],
+//       status: "REQUESTED",
+//       createdAt: "2024-02-25T10:30:00Z",
+//     },
+//     {
+//       consentRequestId: 2,
+//       doctorName: "Johny Sins",
+//       dateFrom: "05-01-2024",
+//       dateTo: "10-01-2024",
+//       dateEraseAt: "20-01-2024",
+//       purpose: "Consultation",
+//       hiTypes: [
+//         "OP Consultation",
+//         "Discharge Summary",
+//         "Immunization Record",
+//         "Wellness Record",
+//         "Diagnostics",
+//       ],
+//       status: "GRANTED",
+//       createdAt: "2024-02-25T11:45:00Z",
+//     },
+//     {
+//       consentRequestId: 3,
+//       doctorName: "Johny Sins",
+//       dateFrom: "05-01-2024",
+//       dateTo: "10-01-2024",
+//       dateEraseAt: "20-01-2024",
+//       purpose: "Consultation",
+//       hiTypes: [
+//         "OP Consultation",
+//         "Discharge Summary",
+//         "Immunization Record",
+//         "Wellness Record",
+//         "Diagnostics",
+//       ],
+//       status: "REVOKED",
+//       createdAt: "2024-02-25T13:15:00Z",
+//     },
+//   ]);
+  
 const ConsentRequests = () => {
-  const [notifications, setNotifications] = useState([
-    {
-      consentRequestId: 1,
-      doctorName: "Johny Sins",
-      dateFrom: "05-01-2024",
-      dateTo: "10-01-2024",
-      dateEraseAt: "20-01-2024",
-      purpose: "Consultation",
-      hiTypes: [
-        "OP Consultation",
-        "Discharge Summary",
-        "Immunization Record",
-        "Wellness Record",
-        "Diagnostics",
-      ],
-      status: "REQUESTED",
-      createdAt: "2024-02-25T10:30:00Z",
-    },
-    {
-      consentRequestId: 2,
-      doctorName: "Johny Sins",
-      dateFrom: "05-01-2024",
-      dateTo: "10-01-2024",
-      dateEraseAt: "20-01-2024",
-      purpose: "Consultation",
-      hiTypes: [
-        "OP Consultation",
-        "Discharge Summary",
-        "Immunization Record",
-        "Wellness Record",
-        "Diagnostics",
-      ],
-      status: "GRANTED",
-      createdAt: "2024-02-25T11:45:00Z",
-    },
-    {
-      consentRequestId: 3,
-      doctorName: "Johny Sins",
-      dateFrom: "05-01-2024",
-      dateTo: "10-01-2024",
-      dateEraseAt: "20-01-2024",
-      purpose: "Consultation",
-      hiTypes: [
-        "OP Consultation",
-        "Discharge Summary",
-        "Immunization Record",
-        "Wellness Record",
-        "Diagnostics",
-      ],
-      status: "REVOKED",
-      createdAt: "2024-02-25T13:15:00Z",
-    },
-  ]);
+  
+
+  const [notifications, setNotifications] = useState([]);
+  const fetchConsentInfo = async () => {
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      const token = loggedInUser.access_token;
+      const response = await axios.get("http://localhost:8081/api/v1/consent/getConsentRequestsPatient", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      const data = await response.data;
+      console.log(data);
+      setNotifications(data);
+      
+      
+    } catch (error) {
+      // Handle error
+      console.error("Error fetching consent information:", error);
+    }
+  };
+
+  useEffect(() => {
+    
+
+    fetchConsentInfo();
+  }, []);  
 
   const [showGrantConsentPopup, setShowGrantConsentPopup] = useState(false);
   const [showDenyConsentPopup, setShowDenyConsentPopup] = useState(false);
@@ -121,8 +154,9 @@ const ConsentRequests = () => {
     // Remove the corresponding notification from the list
   };
 
-  const handleViewMore = (consentId) => {
-    navigate(`/ConsentInfo?consentId=${consentId}`);
+  const handleViewMore = (notification) => {
+    console.log(notification);
+    navigate("/ConsentInfo", { state: { notification } });
   };
 
   const getTimeAgo = (creationTime) => {
@@ -168,7 +202,7 @@ const ConsentRequests = () => {
         <h2>Consent Requests</h2>
         <div className="notification-list">
           {notifications.map((notification) => (
-            <div key={notification.id} className="notification-item">
+            <div key={notification.consentRequestId} className="notification-item">
               <div className="notification-info">
                 <p>
                   <strong>{notification.doctorName}</strong>{" "}
@@ -199,7 +233,7 @@ const ConsentRequests = () => {
                   <div className="view-more">
                     <p
                       onClick={() => {
-                        handleViewMore(notification.consentRequestId);
+                        handleViewMore(notification);
                       }}
                     >
                       View More

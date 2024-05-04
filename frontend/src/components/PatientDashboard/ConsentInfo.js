@@ -1,6 +1,6 @@
 // ConsentInfo.js
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "../../Styles/PatientDashboard/consentInfo.css";
 // import Navbar from "../navbar";
 
@@ -52,58 +52,41 @@ const DenyConsentPopup = ({ onClose }) => {
 };
 
 const ConsentInfo = () => {
-  const navigate = useNavigate();
-
-  const [dummy_info, setdummy_info] = [
-    {
-      consentRequestId: 1,
-      doctorName: "Johny Sins",
-      dateFrom: "05-01-2024",
-      dateTo: "10-01-2024",
-      dateEraseAt: "20-01-2024",
-      purpose: "Consultation",
-      hiTypes: [
-        "OP Consultation",
-        "Discharge Summary",
-        "Immunization Record",
-        "Wellness Record",
-        "Diagnostics"
-      ],
-      status: "REQUESTED"
-    }
-  ];
-
-  const [info, setInfo] = useState([]);
-  const [healthType, setHealthType] = useState([]);
+  const location = useLocation();
+  const [info, setInfo] = useState(null);
   const [showGrantConsentPopup, setShowGrantConsentPopup] = useState(false);
   const [showDenyConsentPopup, setShowDenyConsentPopup] = useState(false);
 
-  // useEffect hook to set dummy data when the component mounts
   useEffect(() => {
-    setInfo(dummy_info);
-    setHealthType(dummy_info.hiTypes);
-  }, []);
+    const consentData = location.state?.notification;
+    console.log(consentData);
+    if (consentData) {
+      setInfo(consentData);
+    }
+  }, [location]);
 
   const renderHealthType = () => {
-    const rows = [];
-    for (let i = 0; i < healthType.length; i += 2) {
-      rows.push(
-        <div className="healthType-container">
-          <div className="healthType-row" key={i}>
-            <div className="healthType-item1">
-              <label>{healthType[i]}</label>
-            </div>
-            {i + 1 < healthType.length && (
-              <div className="healthType-item2">
-                <label>{healthType[i + 1]}</label>
-              </div>
-            )}
+    if (!info || !info.hiTypes) return null;
+  
+    let hiTypesArray = [];
+    try {
+      hiTypesArray = JSON.parse(info.hiTypes);
+    } catch (error) {
+      console.error("Error parsing hiTypes:", error);
+      return null;
+    }
+  
+    return hiTypesArray.map((type, index) => (
+      <div key={index} className="healthType-container">
+        <div className="healthType-row">
+          <div className="healthType-item1">
+            <label>{type}</label>
           </div>
         </div>
-      );
-    }
-    return rows;
+      </div>
+    ));
   };
+  
 
   return (
     <div className="request-container">
@@ -113,7 +96,9 @@ const ConsentInfo = () => {
         </div>
       </div>
       <hr />
-      <div className="form-container">
+      {
+        info && (
+          <div className="form-container">
         <div className="form-info-grid">
           <div className="grid-item">
             <div className="title">
@@ -144,7 +129,7 @@ const ConsentInfo = () => {
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.dateFrom}</label>
+              <label>{info.dateFrom.split("T")[0]}</label>
             </div>
           </div>
 
@@ -155,7 +140,7 @@ const ConsentInfo = () => {
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.dateTo}</label>
+              <label>{info.dateTo.split("T")[0]}</label>
             </div>
           </div>
 
@@ -175,7 +160,7 @@ const ConsentInfo = () => {
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.dateEraseAt}</label>
+              <label>{info.dateEraseAt.split("T")[0]}</label>
             </div>
           </div>
 
@@ -190,7 +175,6 @@ const ConsentInfo = () => {
             </div>
           </div>
         </div>
-
         {info.status === "REQUESTED" && (
         <div className="form-submit">
           <div className="grant">
@@ -217,6 +201,10 @@ const ConsentInfo = () => {
         )}
 
       </div>
+        )}
+      
+
+        
       {showGrantConsentPopup && (
         <GrantConsentPopup onClose={() => setShowGrantConsentPopup(false)} />
       )}

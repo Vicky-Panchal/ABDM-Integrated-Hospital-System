@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/DoctorDashboard/appointment.css";
-import Navbar from "../navbar";
 import axios from "axios";
 
 const DeleteSlotPopup = ({ onClose, slotId}) => {
@@ -283,14 +282,12 @@ const Appointment = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="appointment-container">
-        <div className="filter-slots">
-          <div className="dropdown-container">
+      <div className="doctor-appointment-container">
+        <div className="doctor-filter-slots">
+          <div className="doctor-dropdown-container">
             <label>Filter : </label>
             <select
-              className="dropdown-select"
+              className="doctor-dropdown-select"
               value={filterValue}
               onChange={handleFilterChange}
             >
@@ -304,17 +301,17 @@ const Appointment = () => {
           <div>
             <label>Date : </label>
             <input
-              className="filter-date"
+              className="doctor-filter-date"
               type="date"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
               required
             />
           </div>
-          <div className="filter-button">
+          <div className="doctor-filter-button">
             <button
               type="submit"
-              className="filter-search"
+              className="doctor-filter-search"
               onClick={handleFilterSearch}
             >
               Search
@@ -322,7 +319,7 @@ const Appointment = () => {
           </div>
           <div>
             <button
-              className="add-slot-btn"
+              className="doctor-add-slot-btn"
               onClick={() => setShowAddSlotPopup(true)}
             >
               Add Slot
@@ -330,7 +327,7 @@ const Appointment = () => {
           </div>
         </div>
 
-        <div className="slot-list">
+        <div className="doctor-slot-list">
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -339,11 +336,11 @@ const Appointment = () => {
             <>
               {Array.isArray(slots) && slots.length > 0 ? (
                 slots.map((item) => (
-                  <div key={item.id} className="slot-item">
+                  <div key={item.id} className="doctor-slot-item">
                     {!showDetails[item.id] && (
-                      <div className="short-list-item">
-                        <div className="slot-col">
-                          <div className="slot-info">
+                      <div className="doctor-short-list-item">
+                        <div className="doctor-slot-col">
+                          <div className="doctor-slot-info">
                             <p>
                               <strong>Status : </strong>
                               {item.availabilityStatus}
@@ -353,7 +350,7 @@ const Appointment = () => {
                               {item.date}
                             </p>
                           </div>
-                          <div className="slot-time">
+                          <div className="doctor-slot-time">
                             <p>
                               <strong>From : </strong>
                               {item.startTime}
@@ -366,7 +363,7 @@ const Appointment = () => {
                         </div>
                         {(item.availabilityStatus === "SCHEDULED" ||
                           item.availabilityStatus === "AVAILABLE") && (
-                          <div className="delete-slot">
+                          <div className="doctor-delete-slot">
                             <button onClick={() => handleCancelSlot(item.id)}>
                               Cancel
                             </button>
@@ -376,9 +373,9 @@ const Appointment = () => {
                     )}
 
                     {showDetails[item.id] && (
-                      <div className="detail-list-item">
-                        <div className="patient-info">
-                          <div className="image">
+                      <div className="doctor-detail-list-item">
+                        <div className="doctor-patient-info">
+                          <div className="doctor-image">
                             <img alt="ProfilePic" src={item.profileUrl}></img>
                           </div>
                           <div className="info>">
@@ -392,7 +389,7 @@ const Appointment = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="slot-info">
+                        <div className="doctor-slot-info">
                           <p>
                             <strong>Status : </strong>
                             {item.availabilityStatus}
@@ -402,7 +399,7 @@ const Appointment = () => {
                             {item.date}
                           </p>
                         </div>
-                        <div className="slot-time">
+                        <div className="doctor-slot-time">
                           <p>
                             <strong>From : </strong>
                             {item.startTime}
@@ -414,7 +411,7 @@ const Appointment = () => {
                         </div>
                         {(item.availabilityStatus === "SCHEDULED" ||
                           item.availabilityStatus === "AVAILABLE") && (
-                          <div className="delete-slot">
+                          <div className="doctor-delete-slot">
                             <button onClick={() => handleCancelSlot(item.id)}>
                               Cancel
                             </button>
@@ -425,7 +422,7 @@ const Appointment = () => {
 
                     {item.patientName !== null && (
                       <p
-                        className="show-hide"
+                        className="doctor-show-hide"
                         onClick={() => toggleDetails(item.id)}
                       >
                         {showDetails[item.id] ? "Hide Details" : "Show More"}
@@ -448,7 +445,6 @@ const Appointment = () => {
           <AddSlotPopup onClose={() => setShowAddSlotPopup(false)} />
         )}
       </div>
-    </div>
   );
 };
 

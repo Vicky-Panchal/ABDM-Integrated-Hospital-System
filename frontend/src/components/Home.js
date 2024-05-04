@@ -94,7 +94,7 @@ const Home = () => {
         {faqs.map((faq) => (
           <div className={`faq-list ${showAnswer[faq.id] ? 'ans-show-list' : 'ans-hide-list'}`} key={faq.id}>
             <div className={`faq-head ${showAnswer[faq.id] ? 'ans-show-head' : 'ans-hide-head'}`}>
-              <div className="faq-que">
+              <div className={`faq-que ${showAnswer[faq.id] ? 'ans-show-que' : 'ans-hide-que'}`}>
                 <p>{faq.que}</p>
               </div>
               <div className="angle">

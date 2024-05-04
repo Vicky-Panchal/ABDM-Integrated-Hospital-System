@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../Styles/DoctorDashboard/addVisit.css";
-import Navbar from "../navbar";
 
 const AddVisit = () => {
   const dummyPatients = [

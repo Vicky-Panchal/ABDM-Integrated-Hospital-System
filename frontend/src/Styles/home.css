@@ -3,15 +3,12 @@
 .home-container {
   position: absolute;
   top: 0;
-  left: 100px;
-}
-
-.home-container {
-  padding: 20px;
+  left: 9%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding: 20px;
   max-width: 80%; 
   margin: 0 auto; /* Center horizontally */
 }
@@ -29,7 +26,6 @@
   align-items: center;
   margin-bottom: 40px;
   width: 100%;
-  /* background-color: #111; */
 }
 
 .paragraph {
@@ -43,10 +39,11 @@
   font-family: "Times New Roman", Times, serif;
 }
 
-.benefits-container p {
+.paragraph p {
   font-size: 16px; /* Adjust font size */
-  color: #666; /* Lighter font color */
+  color: #444; /* Lighter font color */
   margin-bottom: 20px;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .benefits-blocks {
@@ -65,6 +62,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
+/* .block:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transform: translateY(-5px);
+} */
+
 .block img {
   width: 50px;
   height: 50px;
@@ -79,6 +81,9 @@
 
 .block p {
   font-size: 15px;
+  color: #666; /* Lighter font color */
+  margin-bottom: 20px;
+  font-family: serif;
 }
 
 .faq-container {
@@ -103,6 +108,7 @@
   border-radius: 10px; /* Rounded corners */
   overflow: hidden; /* Hide overflow */
   background-color: #f9f9f9;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .ans-show-list {
@@ -119,7 +125,7 @@
 }
 
 .ans-show-head {
-  background-color: #ccc; /* Lighter background color */
+  background-color: #0bf; 
 }
 
 .faq-que, .faq-ans {
@@ -128,12 +134,19 @@
 }
 
 .faq-que {
-  margin-left: 15px;
-  color: #333;
+  margin-left: 20px;
+  color: #005;
 }
 
 .faq-ans {
   margin: 20px;
+}
+
+.faq-ans p {
+  font-family: serif;
+  font-size: medium;
+  color: #333;
+
 }
 
 .angle button {

@@ -120,7 +120,7 @@ const ConsentRequestForm = () => {
       //   healthInfoType,
       //   consentExpiry: expiryUTC,
       // });
-      navigate("/ConsentList");
+      navigate("/DoctorDashboard");
     } catch (error) {
       setError(error.message);
     }

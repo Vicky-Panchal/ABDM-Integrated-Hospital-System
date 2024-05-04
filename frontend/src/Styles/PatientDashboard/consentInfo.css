@@ -1,61 +1,61 @@
+.request-container {
+  position: absolute;
+  top: 8%;
+  left: 18%;
+  /* margin-top: 120px;
+    height: 100%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #0099ff;
+  border-radius: 8px;
+}
 
+.head {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: -10px;
+}
 
-  .request-container {
-    margin-top: 60px;
-    height: 100%;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    width: 100%;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px #0099ff;
-    border-radius: 8px;
-  }
+.heading {
+  width: 100%;
+  justify-content: left;
+  margin-bottom: -18px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: larger;
+}
 
-  .head {
-    display: flex;
-    flex-direction: row; 
-    justify-content: center;
-    width: 100%;
-    margin-bottom: -10px;
-    
-  }
+hr {
+  border: none; /* Remove default border */
+  border-top: 1px solid #000; /* Add a solid border on top */
+  margin: 20px 0; /* Add some margin above and below the line */
+}
 
-  .heading {
-    width: 100%;
-    justify-content: left;
-    margin-bottom: -18px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: larger;
-  }
+.form-info-grid {
+  display: grid;
+  grid-template-rows: repeat(8, auto); /* Defines 6 rows */
+  grid-template-columns: repeat(2, 1fr); /* Defines 2 columns */
+  grid-gap: 10px; /* Gap between grid items */
+}
 
-  hr {
-    border: none; /* Remove default border */
-    border-top: 1px solid #000; /* Add a solid border on top */
-    margin: 20px 0; /* Add some margin above and below the line */
-  }
+/* Example styling for grid items */
+.grid-item {
+  width: 100%;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+}
 
-  .form-info-grid {
-    display: grid;
-    grid-template-rows: repeat(6, auto); /* Defines 6 rows */
-    grid-template-columns: repeat(2, 1fr); /* Defines 2 columns */
-    grid-gap: 10px; /* Gap between grid items */
-  }
-  
-  /* Example styling for grid items */
-  .grid-item {
-    width: 100%;
-    padding: 10px;
-    /* border: 1px solid #ccc; */
-  }
+.title label {
+  font-size: 1.3em;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
 
-  .title label{
-    font-size: 1.3em;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-  }
-  
-  /* Style for inputs and selects
+/* Style for inputs and selects
   /*
   .fields input[type="text"],
   .fields input[type="date"],
@@ -65,75 +65,76 @@
     border: 1px solid #777;
     border-radius: 4px;
   } */
-  
-  /* Style for checkbox container */
-  .healthType-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: -5px;
-  }
-  
-  /* Style for checkbox rows */
-  .healthType-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 5px;
-    margin-top: 10px;
-  }
-  
-  /* Style for individual checkbox items */
-  .healthType-item1, .healthType-item2 {
-    width: auto;
-    margin-right: 10px;
-    align-items: left;
-    background-color: #ccffff;
-    padding: 10px;
-    border-radius: 10px;
-  }
 
-  .form-submit {
-    display: flex;
-    justify-content: center;
-    margin: 10px;
-    margin-top: 20px;
-  }
+/* Style for checkbox container */
+.healthType-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -5px;
+}
 
-  button {
-    width: max-content;
-    height: fit-content;
-    margin: 10px;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    font-size: medium;
-    font-family: 'Times New Roman', Times, serif;
-  }
+/* Style for checkbox rows */
+.healthType-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
 
-  .grant button {
-    background-color: #00f;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #00f;
-    color: #fff;
-  }
+/* Style for individual checkbox items */
+.healthType-item1,
+.healthType-item2 {
+  width: auto;
+  margin-right: 10px;
+  align-items: left;
+  background-color: #ccffff;
+  padding: 10px;
+  border-radius: 10px;
+}
 
-  .deny button {
-    background-color: #fff;
-    color: red;
-    border-style: solid;
-    border-width: 1px;
-    border-color: red;
-  }
+.form-submit {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  margin-top: 20px;
+}
 
-  .grant button:hover {
-    box-shadow: 0 0 8px #000000;
-  }
+button {
+  width: max-content;
+  height: fit-content;
+  margin: 10px;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: medium;
+  font-family: "Times New Roman", Times, serif;
+}
 
-  .deny button:hover {
-    box-shadow: 0 0 8px #999;
-    color: #fff;
-    background-color: red;
-  }
+.grant button {
+  background-color: #00f;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #00f;
+  color: #fff;
+}
+
+.deny button {
+  background-color: #fff;
+  color: red;
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
+}
+
+.grant button:hover {
+  box-shadow: 0 0 8px #000000;
+}
+
+.deny button:hover {
+  box-shadow: 0 0 8px #999;
+  color: #fff;
+  background-color: red;
+}

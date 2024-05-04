@@ -56,40 +56,33 @@ const ConsentInfo = () => {
 
   const [dummy_info, setdummy_info] = [
     {
-      patientIdentifier: "Johny Sins (DOC123)",
-      suffix: "@sbx",
-      purposeOfRequest: "Consultation",
-      healthInfoFrom: "05-01-2024",
-      healthInfoTo: "10-01-2024",
-      healthInfoType: [
+      consentRequestId: 1,
+      doctorName: "Johny Sins",
+      dateFrom: "05-01-2024",
+      dateTo: "10-01-2024",
+      dateEraseAt: "20-01-2024",
+      purpose: "Consultation",
+      hiTypes: [
         "OP Consultation",
         "Discharge Summary",
         "Immunization Record",
         "Wellness Record",
         "Diagnostics"
       ],
-      consentExpiry: "20-01-2024",
-    },
+      status: "REQUESTED"
+    }
   ];
 
   const [info, setInfo] = useState([]);
+  const [healthType, setHealthType] = useState([]);
   const [showGrantConsentPopup, setShowGrantConsentPopup] = useState(false);
   const [showDenyConsentPopup, setShowDenyConsentPopup] = useState(false);
 
   // useEffect hook to set dummy data when the component mounts
   useEffect(() => {
     setInfo(dummy_info);
+    setHealthType(dummy_info.hiTypes);
   }, []);
-
-  const healthType = [
-    "OP Consultation",
-    "Discharge Summary",
-    "Immunization Record",
-    "Wellness Record",
-    "Diagnostics" 
-
-    // Add more checkboxes here if needed
-  ];
 
   const renderHealthType = () => {
     const rows = [];
@@ -124,12 +117,12 @@ const ConsentInfo = () => {
         <div className="form-info-grid">
           <div className="grid-item">
             <div className="title">
-              <label>Patient Identifier : </label>
+              <label>Doctor Name : </label>
             </div>
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.patientIdentifier}</label>
+              <label>{info.doctorName}</label>
             </div>
           </div>
 
@@ -140,7 +133,7 @@ const ConsentInfo = () => {
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.purposeOfRequest}</label>
+              <label>{info.purpose}</label>
             </div>
           </div>
 
@@ -151,7 +144,7 @@ const ConsentInfo = () => {
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.healthInfoFrom}</label>
+              <label>{info.dateFrom}</label>
             </div>
           </div>
 
@@ -162,7 +155,7 @@ const ConsentInfo = () => {
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.healthInfoTo}</label>
+              <label>{info.dateTo}</label>
             </div>
           </div>
 
@@ -182,11 +175,23 @@ const ConsentInfo = () => {
           </div>
           <div className="grid-item">
             <div className="fields">
-              <label>{info.consentExpiry}</label>
+              <label>{info.dateEraseAt}</label>
+            </div>
+          </div>
+
+          <div className="grid-item">
+            <div className="title">
+              <label>Status : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">
+              <label>{info.status}</label>
             </div>
           </div>
         </div>
 
+        {info.status === "REQUESTED" && (
         <div className="form-submit">
           <div className="grant">
             <button onClick={() => setShowGrantConsentPopup(true)}>
@@ -199,6 +204,18 @@ const ConsentInfo = () => {
             </button>
           </div>
         </div>
+        )}
+
+        {info.status === "GRANTED" && (
+        <div className="form-submit">
+          <div className="deny">
+            <button onClick={() => setShowDenyConsentPopup(true)}>
+              Revoke
+            </button>
+          </div>
+        </div>
+        )}
+
       </div>
       {showGrantConsentPopup && (
         <GrantConsentPopup onClose={() => setShowGrantConsentPopup(false)} />

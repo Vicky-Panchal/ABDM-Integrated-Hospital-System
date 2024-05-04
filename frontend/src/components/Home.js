@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 
 const Home = () => {
-
   const faqs = [
     {
       id: 1,
@@ -31,13 +30,8 @@ const Home = () => {
 
   const toggleAnswer = (id) => {
     setShowAnswer((prevState) => ({
-        // ...prevState,
-        // [id]: !prevState[id],
       ...Object.fromEntries(
-        faqs.map((item) => [
-          item.id,
-          item.id === id ? !prevState[id] : false,
-        ])
+        faqs.map((item) => [item.id, item.id === id ? !prevState[id] : false])
       ),
     }));
   };
@@ -49,14 +43,16 @@ const Home = () => {
       </Link>
       <div className="benefits-container">
         <h1>Benefits of Dhanvantri</h1>
-        <p>
-          ABHA number is a 14 digit number that will uniquely identify you as a
-          participant in India's digital healthcare ecosystem. ABHA number will
-          establish a strong and trustable identity for you that will be
-          accepted by healthcare providers across the country. Seamless sign up
-          for PHR (Personal Health Records) applications such as ABDM ABHA
-          application for Health data sharing.
-        </p>
+        <div className="paragraph">
+          <p>
+            ABHA number is a 14 digit number that will uniquely identify you as a
+            participant in India's digital healthcare ecosystem. ABHA number will
+            establish a strong and trustable identity for you that will be
+            accepted by healthcare providers across the country. Seamless sign up
+            for PHR (Personal Health Records) applications such as ABDM ABHA
+            application for Health data sharing.
+          </p>
+        </div>
         <div className="benefits-blocks">
           <div className="block">
             <img alt="Block_Image" src="logo192.png"></img>
@@ -79,7 +75,7 @@ const Home = () => {
             <h5>Hassle-free Access</h5>
             <p>
               Avoid long lines for registration in healthcare facilities across
-              the country
+              the country.
             </p>
           </div>
           <div className="block">
@@ -87,7 +83,7 @@ const Home = () => {
             <h5>Easy PHR Sign Up</h5>
             <p>
               Seamless sign up for PHR (Personal Health Records) applications
-              such as ABDM application for health data sharing
+              such as ABDM application for health data sharing.
             </p>
           </div>
         </div>
@@ -96,9 +92,9 @@ const Home = () => {
         <h1>FAQ's</h1>
 
         {faqs.map((faq) => (
-          <div className="faq-list" key={faq.id}>
-            <div className="faq-head">
-              <div className="faq-que">
+          <div className={`faq-list ${showAnswer[faq.id] ? 'ans-show-list' : 'ans-hide-list'}`} key={faq.id}>
+            <div className={`faq-head ${showAnswer[faq.id] ? 'ans-show-head' : 'ans-hide-head'}`}>
+              <div className={`faq-que ${showAnswer[faq.id] ? 'ans-show-que' : 'ans-hide-que'}`}>
                 <p>{faq.que}</p>
               </div>
               <div className="angle">
@@ -114,11 +110,9 @@ const Home = () => {
                 )}
               </div>
             </div>
-            {!showAnswer && (
+            {showAnswer[faq.id] && (
               <div className="faq-ans">
-                <p>
-                  {faq.ans}
-                </p>
+                <p>{faq.ans}</p>
               </div>
             )}
           </div>

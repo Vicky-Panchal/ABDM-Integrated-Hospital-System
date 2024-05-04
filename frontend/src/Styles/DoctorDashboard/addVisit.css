@@ -1,23 +1,8 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #ddffff;
-}
 .add-visit-container {
-  position: absolute;
-  top: 7%;
-  left: 10%;
+  max-height: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80%;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px #0099ff;
-  border-radius: 8px;
 }
 
 .visit-heading {
@@ -91,7 +76,6 @@ body {
 .visit-grid-item:nth-child(even) {
   margin-right: 300px;
   /* background-color: aqua; */
-  /* order: 1; Moves even-indexed items (column 2 content) to the left */
 }
 
 .visit-grid-item {

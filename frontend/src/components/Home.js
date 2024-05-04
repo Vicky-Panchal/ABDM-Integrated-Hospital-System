@@ -76,7 +76,7 @@ const Home = () => {
           </div>
           <div className="benefits-blocks">
             <div className="block">
-              <img alt="Block_Image" src="logo192.png"></img>
+              <img alt="Block_Image" src="home_block_1.svg"></img>
               <h5>Unique & Trustable Identity</h5>
               <p>
                 Establish unique identity across different healthcare providers
@@ -84,7 +84,7 @@ const Home = () => {
               </p>
             </div>
             <div className="block">
-              <img alt="Block_Image" src="logo192.png"></img>
+              <img alt="Block_Image" src="home_block_2.svg"></img>
               <h5>Unified Benefits</h5>
               <p>
                 Link all healthcare benefits ranging from public health
@@ -92,7 +92,7 @@ const Home = () => {
               </p>
             </div>
             <div className="block">
-              <img alt="Block_Image" src="logo192.png"></img>
+              <img alt="Block_Image" src="home_block_3.svg"></img>
               <h5>Hassle-free Access</h5>
               <p>
                 Avoid long lines for registration in healthcare facilities
@@ -100,7 +100,7 @@ const Home = () => {
               </p>
             </div>
             <div className="block">
-              <img alt="Block_Image" src="logo192.png"></img>
+              <img alt="Block_Image" src="home_block_4.svg"></img>
               <h5>Easy PHR Sign Up</h5>
               <p>
                 Seamless sign up for PHR (Personal Health Records) applications

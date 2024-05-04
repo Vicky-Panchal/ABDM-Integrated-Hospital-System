@@ -1,6 +1,7 @@
 package com.hadproject.dhanvantari.consent;
 
 import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
+import com.hadproject.dhanvantari.consent.dto.GetConsentRequestPatient;
 import com.hadproject.dhanvantari.consent.dto.GetConsentRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -129,5 +130,10 @@ public class ConsentController {
     @GetMapping("/getConsentRequests")
     public List<GetConsentRequestResponse> getConsentRequests(Principal connectedUser) {
         return consentService.getConsentRequests(connectedUser);
+    }
+
+    @GetMapping("/getConsentRequestsPatient")
+    public List<GetConsentRequestPatient> getConsentRequestsPatient(Principal connectedUser) {
+        return consentService.getConsentRequestsPatient(connectedUser);
     }
 }

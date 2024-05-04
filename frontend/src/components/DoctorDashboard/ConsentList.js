@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../Styles/DoctorDashboard/consentList.css";
-import Navbar from "../navbar";
 
 const ConsentList = () => {
   const navigate = useNavigate();
@@ -38,10 +37,9 @@ const ConsentList = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
+    <div className="consentlist-container">
       <button className="request-button" onClick={() => {navigate("/ConsentRequestForm");}}>Create Consent Request</button>
-      <div className="consentlist-container">
+      <div className="consent-list">
         <h2>Consent List</h2>
         <table>
           <thead>

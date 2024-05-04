@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class Consent {
     @Column
     private String patientReferenceWhenSendingData;
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime created_at;
     @Column()
     private LocalDateTime granted_at;

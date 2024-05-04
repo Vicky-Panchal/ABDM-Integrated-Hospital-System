@@ -5,9 +5,11 @@ import com.hadproject.dhanvantari.abdm.DataEncryptionDecryption;
 import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.care_context.CareContextRepository;
 import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
+import com.hadproject.dhanvantari.consent.dto.GetConsentRequestPatient;
 import com.hadproject.dhanvantari.consent.dto.GetConsentRequestResponse;
 import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.doctor.DoctorRepository;
+import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.patient.PatientRepository;
 import com.hadproject.dhanvantari.user.User;
 import com.hadproject.dhanvantari.visit.Visit;
@@ -650,6 +652,7 @@ public class ConsentService {
 
         List<GetConsentRequestResponse> responses = new ArrayList<>();
         for(ConsentRequest consentRequest : consentRequests) {
+            if(consentRequest.getStatus() == null) consentRequest.setStatus("REQUESTED");
             responses.add(
                     GetConsentRequestResponse.builder()
                             .consentId(String.valueOf(consentRequest.getId()))
@@ -661,6 +664,36 @@ public class ConsentService {
                             .patientName(consentRequest.getPatient().getUser().getFirstname() + " " + consentRequest.getPatient().getUser().getLastname())
                             .build()
             );
+        }
+
+        return responses;
+    }
+
+    public List<GetConsentRequestPatient> getConsentRequestsPatient(Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+//        System.out.println(user);
+        Patient patient = patientRepository.findPatientByUser(user).orElseThrow(() -> new RuntimeException("Patient not found"));
+        List<ConsentRequest> consentRequests = consentRequestRepository.findConsentRequestByPatient(patient);
+
+        List<GetConsentRequestPatient> responses = new ArrayList<>();
+
+        for(ConsentRequest consentRequest : consentRequests) {
+            if(consentRequest.getStatus() == null) consentRequest.setStatus("REQUESTED");
+            if(consentRequest.getConsentRequestId() != null) {
+                responses.add(
+                        GetConsentRequestPatient.builder()
+                                .consentRequestId(consentRequest.getConsentRequestId())
+                                .dateEraseAt(consentRequest.getDataEraseAt())
+                                .dateFrom(consentRequest.getDateFrom())
+                                .dateTo(consentRequest.getDateTo())
+                                .doctorName(consentRequest.getDoctor().getUser().getFirstname() + " " + consentRequest.getDoctor().getUser().getLastname())
+                                .hiTypes(consentRequest.getHiTypes())
+                                .status(consentRequest.getStatus())
+                                .purpose(consentRequest.getPurpose())
+                                .createdAt(consentRequest.getCreated_at())
+                                .build()
+                );
+            }
         }
 
         return responses;

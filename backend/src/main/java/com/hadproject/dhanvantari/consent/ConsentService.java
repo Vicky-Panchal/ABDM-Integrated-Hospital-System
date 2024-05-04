@@ -5,8 +5,11 @@ import com.hadproject.dhanvantari.abdm.DataEncryptionDecryption;
 import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.care_context.CareContextRepository;
 import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
+import com.hadproject.dhanvantari.consent.dto.GetConsentRequestResponse;
+import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.doctor.DoctorRepository;
 import com.hadproject.dhanvantari.patient.PatientRepository;
+import com.hadproject.dhanvantari.user.User;
 import com.hadproject.dhanvantari.visit.Visit;
 import com.hadproject.dhanvantari.visit.VisitRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +20,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static com.hadproject.dhanvantari.abdm.ABDMServiceHelper.prepareHeader;
 import static com.hadproject.dhanvantari.abdm.DataEncryptionDecryption.encryptFHIRData;
@@ -461,6 +465,9 @@ public class ConsentService {
         logger.info("Entering updateConsentRequestAfterOnFetch with data:{}", requestObj);
         Consent consent = consentRepository.findConsentByRequestId(requestObj.getJSONObject("resp").get("requestId").toString());
         requestObj = requestObj.getJSONObject("consent");
+        if(Objects.equals(requestObj.getString("status"), "GRANTED")) {
+            consent.setGranted_at(LocalDateTime.now());
+        }
         consent.setStatus(requestObj.getString("status"));
         consent.setSignature(requestObj.getString("signature"));
         requestObj = requestObj.getJSONObject("consentDetail");
@@ -634,5 +641,29 @@ public class ConsentService {
         map.put("patientId", patientId);
         logger.info("Exiting readFHIRDataAndUpdateCareContext with data: {}", map);
         return map;
+    }
+
+    public List<GetConsentRequestResponse> getConsentRequests(Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+        Doctor doctor = doctorRepository.findDoctorByUser(user).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        List<ConsentRequest> consentRequests = consentRequestRepository.findConsentRequestByDoctor(doctor);
+
+        List<GetConsentRequestResponse> responses = new ArrayList<>();
+        for(ConsentRequest consentRequest : consentRequests) {
+            if(consentRequest.getStatus() == null) consentRequest.setStatus("PENDING");
+            responses.add(
+                    GetConsentRequestResponse.builder()
+                            .consentId(String.valueOf(consentRequest.getId()))
+                            .consentStatus(consentRequest.getStatus())
+                            .abhaId(consentRequest.getPatient().getUser().getHealthId())
+                            .consentCreationDate(consentRequest.getCreated_at())
+                            .consentExpiryDate(consentRequest.getDataEraseAt())
+                            .consentGrantDate(consentRequest.getGranted_at())
+                            .patientName(consentRequest.getPatient().getUser().getFirstname() + " " + consentRequest.getPatient().getUser().getLastname())
+                            .build()
+            );
+        }
+
+        return responses;
     }
 }

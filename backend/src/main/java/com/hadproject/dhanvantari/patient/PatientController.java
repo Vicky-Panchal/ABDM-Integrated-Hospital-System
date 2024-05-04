@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -27,6 +26,7 @@ public class PatientController {
     Logger logger = LoggerFactory.getLogger(PatientController.class);
     private final PatientService patientService;
     private final ABDMService abdmService;
+    private final PatientRepository patientRepository;
 
     private static final HashMap<String, SseEmitter> emittersMap = new HashMap<>();
 
@@ -64,12 +64,13 @@ public class PatientController {
 
     @Operation(summary = "Abha Verification Using Mobile")
     @GetMapping("/verifyAbhaUsingMobile")
-    SseEmitter generateOTP(@RequestParam("abha_id") String abhaId) throws Exception {
-        logger.info("Entering generateOTP with request param abhaId as {}", abhaId);
+    SseEmitter generateOTP(@RequestParam("patient_id") String patient_id) throws Exception {
+        logger.info("Entering generateOTP with request param abhaId as {}", patient_id);
         logger.info("currently map is {}", emittersMap);
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
 
-        String reqId = abdmService.patientInitUsingMobile(abhaId);
+        Patient patient = patientRepository.findPatientByPatientId(Long.valueOf(patient_id));
+        String reqId = abdmService.patientInitUsingMobile(patient.getUser().getHealthId());
 
         if (reqId == null) {
             throw new RuntimeException("Please try again");
@@ -110,7 +111,7 @@ public class PatientController {
 
     @GetMapping("/confirm-otp")
     public SseEmitter confirmOTP(@RequestParam("transactionId") String transactionId, @RequestParam("otp") String otp) throws Exception {
-        logger.info("Entering confirmOTP with transactionId: " + transactionId + " otp: " + otp);
+        logger.info("Entering confirmOTP with transactionId: {} otp: {}", transactionId, otp);
 
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
@@ -159,7 +160,6 @@ public class PatientController {
 //    }
 
     @GetMapping("/getAllPatients")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<GetAllPatient>> getAllPatients() {
         return ResponseEntity.ok(patientService.getAllPatients());
     }

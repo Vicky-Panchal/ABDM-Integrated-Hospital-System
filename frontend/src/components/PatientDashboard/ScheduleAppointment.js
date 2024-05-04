@@ -334,14 +334,37 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
   );
 };
 
-const DeleteSlotPopup = ({ onClose }) => {
+const DeleteSlotPopup = ({ onClose ,slotId}) => {
+  const handleCancelConfirmation = async () => {
+    try {
+      const access_token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/appointment/changeStatus",
+        {
+          slotId,
+          status: "CANCELLED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data); // Log the success message
+      onClose(); // Close the delete slot popup
+       // Fetch updated slot data
+    } catch (error) {
+      console.error("Error cancelling slot:", error.message);
+    }
+  };
   return (
     <div className="popup-overlay">
       <div className="popup">
         <h2>Confirmation</h2>
         <p>Are you sure you want to cancel this slot?</p>
         {/* Add Deny Consent confirmation message and buttons here */}
-        <button className="close-button" onClick={onClose}>
+        <button className="close-button" onClick={handleCancelConfirmation}>
           Yes
         </button>
         <button className="close-button" onClick={onClose}>
@@ -352,12 +375,16 @@ const DeleteSlotPopup = ({ onClose }) => {
   );
 };
 
+
 const ScheduleAppointment = () => {
   const [showDeleteSlotPopup, setShowDeleteSlotPopup] = useState(false);
   const [appointments, setAppointments] = useState([]);
-  const [filterappointment, setfilterAppointment] = useState([]);
+  const [filterappointment, setFilterAppointment] = useState([]);
   const [originalAppointments, setOriginalAppointments] = useState([]);
   const [doctorOptions, setDoctorOptions] = useState([]);
+  const [slotid, setSlotId] = useState(null);
+  const [filterValue, setFilterValue] = useState("");
+  const [showAddSlotPopup, setShowAddSlotPopup] = useState(false);
 
   const handleDoctorSubmit = async () => {
     try {
@@ -372,21 +399,15 @@ const ScheduleAppointment = () => {
         }
       );
       const data = response.data;
-      console.log("this is before setting doctor options");
-      console.log(data);
       setDoctorOptions(data);
-      console.log("this is after setting doctor options");
-      console.log(doctorOptions);
     } catch (error) {
       console.error("Error fetching doctor options:", error);
     }
   };
 
-  // Define fetchAppointments function
   const fetchAppointments = async () => {
     try {
       const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-      //const userId = loggedInUser.user_id;
       const token = loggedInUser.access_token;
       const response = await axios.get(
         "http://localhost:8081/api/v1/appointment/getPatientAppointments",
@@ -398,9 +419,8 @@ const ScheduleAppointment = () => {
       );
 
       const data = await response.data;
-      console.log(data);
       setAppointments(data);
-      setfilterAppointment(data);
+      setFilterAppointment(data);
       setOriginalAppointments(data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
@@ -408,23 +428,20 @@ const ScheduleAppointment = () => {
   };
 
   useEffect(() => {
-    // Call fetchAppointments inside useEffect
     fetchAppointments();
   }, []);
-  const handleCancelSlot = (id) => {
+
+  const handleCancelSlot = (slotId) => {
+    setSlotId(slotId);
     setShowDeleteSlotPopup(true);
   };
-
-  const [showAddSlotPopup, setShowAddSlotPopup] = useState(false);
-
-  const [filterValue, setFilterValue] = useState("");
 
   const handleFilterChange = (event) => {
     setFilterValue(event.target.value);
   };
 
   const handleFilterSearch = () => {
-    let filteredAppointments = [];
+    let filteredAppointments = originalAppointments;
 
     switch (filterValue) {
       case "completed":
@@ -438,10 +455,10 @@ const ScheduleAppointment = () => {
         );
         break;
       default:
-        filteredAppointments = originalAppointments;
+        break;
     }
 
-    setfilterAppointment(filteredAppointments);
+    setFilterAppointment(filteredAppointments);
   };
 
   const [showDetails, setShowDetails] = useState({});
@@ -457,6 +474,7 @@ const ScheduleAppointment = () => {
     <div>
       <Navbar />
       <div className="appointment-container">
+        {/* Your existing code */}
         <div className="scheduled-container">
           {Array.isArray(appointments) && appointments.length > 0 ? (
             appointments.map((item) => (
@@ -487,7 +505,7 @@ const ScheduleAppointment = () => {
                     </div>
                     <div className="delete-slot">
                       <button
-                        onClick={() => handleCancelSlot(item.appointmentId)}
+                        onClick={() => handleCancelSlot(item.slotId)}
                       >
                         Cancel
                       </button>
@@ -534,7 +552,7 @@ const ScheduleAppointment = () => {
                     </div>
                     <div className="delete-slot">
                       <button
-                        onClick={() => handleCancelSlot(item.appointmentId)}
+                        onClick={() => handleCancelSlot(item.slotId)}
                       >
                         Cancel
                       </button>
@@ -569,7 +587,6 @@ const ScheduleAppointment = () => {
         </div>
 
         <hr />
-
         <div className="filter-slots">
           <div className="dropdown-container">
             <label>Filter : </label>
@@ -578,14 +595,14 @@ const ScheduleAppointment = () => {
               value={filterValue}
               onChange={handleFilterChange}
             >
-              <option value="all">Completed or Canceled appointments</option>
+              <option value="">All appointments</option>
               <option value="completed">Completed appointments</option>
               <option value="canceled">Canceled appointments</option>
             </select>
           </div>
           <div className="filter-button">
             <button
-              type="submit"
+              type="button"
               className="filter-app"
               onClick={handleFilterSearch}
             >
@@ -593,11 +610,14 @@ const ScheduleAppointment = () => {
             </button>
           </div>
         </div>
+        {/* End of your existing code */}
 
+        {/* Updated slot-list rendering based on filtered appointments */}
         <div className="slot-list">
           {filterappointment.length > 0 ? (
             filterappointment.map((item) => (
               <div key={item.appointmentId} className="slot-item">
+                {/* Your existing code for displaying appointments */}
                 {!showDetails[item.appointmentId] && (
                   <div className="short-list-item">
                     <div className="slot-col">
@@ -680,9 +700,11 @@ const ScheduleAppointment = () => {
           )}
         </div>
 
+        {/* Your existing code for showing popups */}
         {showDeleteSlotPopup && (
-          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} />
+          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} slotId={slotid} />
         )}
+        {/* Your existing code for adding slots */}
         {showAddSlotPopup && (
           <AddSlotPopup
             onCloseAdd={() => setShowAddSlotPopup(false)}

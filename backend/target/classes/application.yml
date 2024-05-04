@@ -17,10 +17,10 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
 
-logging:
-  file:
-    path: .
-    name: spring-boot-logging.log
+# logging:
+#   file:
+#     path: .
+#     name: spring-boot-logging.log
 
 application:
   security:

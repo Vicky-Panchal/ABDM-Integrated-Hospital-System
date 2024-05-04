@@ -1,6 +1,7 @@
 package com.hadproject.dhanvantari.consent;
 
 import com.hadproject.dhanvantari.consent.dto.CreateConsentRequest;
+import com.hadproject.dhanvantari.consent.dto.GetConsentRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -8,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/consent")
@@ -121,5 +124,10 @@ public class ConsentController {
         logger.info("Entering /data/push with data: {}", data);
         consentService.saveData(data);
         logger.info("exiting /data/pus");
+    }
+
+    @GetMapping("/getConsentRequests")
+    public List<GetConsentRequestResponse> getConsentRequests(Principal connectedUser) {
+        return consentService.getConsentRequests(connectedUser);
     }
 }

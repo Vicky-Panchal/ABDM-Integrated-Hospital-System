@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -112,7 +111,7 @@ public class PatientController {
 
     @GetMapping("/confirm-otp")
     public SseEmitter confirmOTP(@RequestParam("transactionId") String transactionId, @RequestParam("otp") String otp) throws Exception {
-        logger.info("Entering confirmOTP with transactionId: " + transactionId + " otp: " + otp);
+        logger.info("Entering confirmOTP with transactionId: {} otp: {}", transactionId, otp);
 
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {

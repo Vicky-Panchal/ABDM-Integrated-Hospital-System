@@ -650,6 +650,7 @@ public class ConsentService {
 
         List<GetConsentRequestResponse> responses = new ArrayList<>();
         for(ConsentRequest consentRequest : consentRequests) {
+            if(consentRequest.getStatus() == null) consentRequest.setStatus("PENDING");
             responses.add(
                     GetConsentRequestResponse.builder()
                             .consentId(String.valueOf(consentRequest.getId()))

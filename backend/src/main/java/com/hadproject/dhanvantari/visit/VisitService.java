@@ -51,7 +51,11 @@ public class VisitService {
         visit.setDiagnosis(data.getDiagnosis());
         visit.setDisplay("Consultation on : " + LocalDate.now());
         visit.setReferenceNumber("Visit-" + patient.getPatientId() + "-" + (list.size() + 1));
-
+        visit.setVisitDate(LocalDate.now());
+        visit.setDiagnosis(data.getDiagnosis());
+        visit.setDosageInstruction(data.getDosageInstruction());
+        visit.setPrescription(data.getPrescription());
+        visit.setHealthRecord(data.getHealthRecord().getBytes());
         visit.setPatient(patient);
 
         logger.info("created a visit with data: {}", visit);
@@ -78,7 +82,7 @@ public class VisitService {
         // Prepare requestBody to send to ABDM.
         JSONObject request = prepareAddContextRequest(data.getPatientAuthToken(), visit, "" + patient.getPatientId(), patient.getUser().getFirstname());
         visit.setRequestId(request.get("requestId").toString());
-        visit.setVisitDate(LocalDate.now());
+
         visitRepository.save(visit);
 
         // Send request to ABDM

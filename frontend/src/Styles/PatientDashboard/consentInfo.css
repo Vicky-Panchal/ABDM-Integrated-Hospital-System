@@ -114,10 +114,10 @@ button {
 }
 
 .grant button {
-  background-color: #00f;
-  border-style: solid;
+  background-color: #007bff;
   border-width: 1px;
-  border-color: #00f;
+  border-style: solid;
+  border-color: #007bff;
   color: #fff;
 }
 
@@ -130,7 +130,9 @@ button {
 }
 
 .grant button:hover {
-  box-shadow: 0 0 8px #000000;
+  background-color: #0000ff;
+  border-color: #0000ff;
+  box-shadow: 0 0 4px #000000;
 }
 
 .deny button:hover {

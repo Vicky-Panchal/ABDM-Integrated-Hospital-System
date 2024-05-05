@@ -67,14 +67,10 @@
   margin-top: 10px;
 }
 
-button {
-  background-color: #0000ff;
-}
-
 .filter-app {
   width: fit-content;
   height: fit-content;
-  background-color: #0000ff;
+  background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
@@ -84,6 +80,7 @@ button {
 }
 
 .filter-app:hover {
+  background-color: #0000ff;
   box-shadow: 0 0 4px #000000;
 }
 

@@ -67,7 +67,7 @@
   }
 
   .home-icon-login:hover{
-    background-color: #0056b3;
+    background-color: #0000ff;
     box-shadow: 0 0 4px #000000;
   }
 
@@ -76,6 +76,6 @@
   }
 
   .home-icon-signup:hover{
-    background-color: #17b144;
+    background-color: #00dd00;
     box-shadow: 0 0 4px #000000;
   }

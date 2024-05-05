@@ -4,7 +4,12 @@ import "../../Styles/PatientDashboard/scheduleAppointment.css";
 import Navbar from "../navbar";
 import axios from "axios";
 
-const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppointments}) => {
+const AddSlotPopup = ({
+  onCloseAdd,
+  setDoctorOptions,
+  doctorOptions,
+  fetchAppointments,
+}) => {
   console.log("this is inside addslotpopup");
   console.log(doctorOptions);
   const [selectedDoctor, setSelectedDoctor] = useState("");
@@ -63,7 +68,7 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
       const token = loggedInUser.access_token;
       const user_id = selectedDoctor;
       console.log(user_id);
-      console.log(selectedDoctor)
+      console.log(selectedDoctor);
       const response = await axios.get(
         `http://localhost:8081/api/v1/appointment/getSlotsByDoctorId?userId=${user_id}&date=${selectedDate}`,
         {
@@ -76,23 +81,23 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
       // Assuming data is an array of slot objects with 'startTime' and 'endTime' properties
       // You may need to adjust this based on the actual response structure
       // Check if the response data is an array
-    if (Array.isArray(data)) {
-      // Map over the array and format the slot data
-      const formattedData = data.map((slot) => ({
-        id: slot.id,
-        startTime: slot.startTime,
-        endTime: slot.endTime,
-      }));
-      
-      // Set the formatted data as the slotValue
-      console.log(formattedData)
-      setSlotValue(formattedData);
-    } else {
-      console.error("Error: Response data is not an array");
+      if (Array.isArray(data)) {
+        // Map over the array and format the slot data
+        const formattedData = data.map((slot) => ({
+          id: slot.id,
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+        }));
+
+        // Set the formatted data as the slotValue
+        console.log(formattedData);
+        setSlotValue(formattedData);
+      } else {
+        console.error("Error: Response data is not an array");
+      }
+    } catch (error) {
+      console.error("Error fetching slots:", error);
     }
-  } catch (error) {
-    console.error("Error fetching slots:", error);
-  }
   };
 
   const handlePurposeSubmit = async () => {
@@ -114,7 +119,7 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
       // Assuming successful response contains a message indicating appointment booked successfully
       //alert(data.message);
       onCloseAdd();
-      fetchAppointments(); 
+      fetchAppointments();
     } catch (error) {
       console.error("Error booking appointment:", error);
       // Handle error
@@ -218,8 +223,8 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
                     {slotValue &&
                       slotValue.map((slot) => (
                         <option key={slot.id} value={slot.id}>
-          {slot.startTime} - {slot.endTime}
-        </option>
+                          {slot.startTime} - {slot.endTime}
+                        </option>
                       ))}
                   </select>
                 </div>
@@ -334,10 +339,12 @@ const AddSlotPopup = ({ onCloseAdd, setDoctorOptions, doctorOptions, fetchAppoin
   );
 };
 
-const DeleteSlotPopup = ({ onClose ,slotId}) => {
+const DeleteSlotPopup = ({ onClose, slotId }) => {
   const handleCancelConfirmation = async () => {
     try {
-      const access_token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
+      const access_token = JSON.parse(
+        localStorage.getItem("loggedInUser")
+      ).access_token;
       const response = await axios.post(
         "http://localhost:8081/api/v1/appointment/changeStatus",
         {
@@ -353,7 +360,7 @@ const DeleteSlotPopup = ({ onClose ,slotId}) => {
       const data = response.data;
       console.log(data); // Log the success message
       onClose(); // Close the delete slot popup
-       // Fetch updated slot data
+      // Fetch updated slot data
     } catch (error) {
       console.error("Error cancelling slot:", error.message);
     }
@@ -374,7 +381,6 @@ const DeleteSlotPopup = ({ onClose ,slotId}) => {
     </div>
   );
 };
-
 
 const ScheduleAppointment = () => {
   const [showDeleteSlotPopup, setShowDeleteSlotPopup] = useState(false);
@@ -504,9 +510,7 @@ const ScheduleAppointment = () => {
                       </div>
                     </div>
                     <div className="delete-slot">
-                      <button
-                        onClick={() => handleCancelSlot(item.slotId)}
-                      >
+                      <button onClick={() => handleCancelSlot(item.slotId)}>
                         Cancel
                       </button>
                     </div>
@@ -551,9 +555,7 @@ const ScheduleAppointment = () => {
                       </p>
                     </div>
                     <div className="delete-slot">
-                      <button
-                        onClick={() => handleCancelSlot(item.slotId)}
-                      >
+                      <button onClick={() => handleCancelSlot(item.slotId)}>
                         Cancel
                       </button>
                     </div>
@@ -702,7 +704,10 @@ const ScheduleAppointment = () => {
 
         {/* Your existing code for showing popups */}
         {showDeleteSlotPopup && (
-          <DeleteSlotPopup onClose={() => setShowDeleteSlotPopup(false)} slotId={slotid} />
+          <DeleteSlotPopup
+            onClose={() => setShowDeleteSlotPopup(false)}
+            slotId={slotid}
+          />
         )}
         {/* Your existing code for adding slots */}
         {showAddSlotPopup && (

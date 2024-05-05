@@ -1,25 +1,8 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #ddffff;
-}
-
 .appointment-container {
-  position: absolute;
-  top: 10%;
-  left: 16%;
+  max-height: 350px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 60%;
-  height: fit-content;
-  padding: 30px;
-  /* background-color: #fff;
-    box-shadow: 0 0 10px #0099ff; */
-  border-radius: 8px;
+  align-items: center;
 }
 
 .scheduled-container {
@@ -48,7 +31,7 @@ body {
   flex-direction: row;
   align-items: center;
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
   /* background-color: #007bff; */
 }
 
@@ -108,7 +91,8 @@ button {
   margin: 10px;
 }
 
-.slot-item, .scheduled-item {
+.slot-item,
+.scheduled-item {
   width: 80%;
   display: flex;
   flex-direction: column;
@@ -122,15 +106,11 @@ button {
   border-radius: 8px;
   transition: box-shadow 0.3s, transform 0.2s;
 
-  /* 
-  width: 60%;
-  padding: 10px;
-  margin: 10px;
-  */
   /* background-color: #0099ff; */
 }
 
-.slot-item:hover, .scheduled-item:hover {
+.slot-item:hover,
+.scheduled-item:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transform: translateY(-5px);
 }
@@ -164,7 +144,9 @@ button {
   height: auto;
 }
 
-.slot-info, .slot-time, .doctor-info {
+.slot-info,
+.slot-time,
+.doctor-info {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -246,11 +228,13 @@ button {
 }
 
 /* Popup content */
-.popup p, .popup label, .popup-date-time {
+.popup p,
+.popup label,
+.popup-date-time {
   margin-bottom: 10px;
 }
 
-.popup input{
+.popup input {
   width: 150px;
   justify-self: center;
 }
@@ -284,139 +268,135 @@ button {
 }
 
 hr {
-    border: none; /* Remove default border */
-    border-top: 1px solid #000; /* Add a solid border on top */
-    margin: 30px 0; /* Add some margin above and below the line */
-  }
+  border: none; /* Remove default border */
+  border-top: 1px solid #000; /* Add a solid border on top */
+  margin: 30px 0; /* Add some margin above and below the line */
+}
 
+.schedule-popup-container-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.schedule-popup-container {
+  position: fixed;
+  top: 30%;
+  width: 800px;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #0099ff;
+  border-radius: 8px;
+}
 
+.schedule-popup-container .slide {
+  display: none;
+}
 
+.schedule-popup-container .slide.active {
+  display: block;
+}
 
-  .schedule-popup-container-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.schedule-popup-container .divisions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-  .schedule-popup-container {
-    position: fixed;
-    top: 30%;
-    width: 800px;
-    padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 0 10px #0099ff;
-    border-radius: 8px;
-  }
-  
-  .schedule-popup-container .slide {
-    display: none;
-  }
-  
-  .schedule-popup-container .slide.active {
-    display: block;
-  }
-  
-  .schedule-popup-container .divisions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .schedule-popup-container .description {
-    width: 100%;
-  }
-  
-  .schedule-popup-container .description img {
-    text-align: left;
-    max-width: 170px;
-    margin-bottom: -20px;
-  }
-  
-  .schedule-popup-container .description h1 {
-    font-size: 2em;
-    color: #303030;
-    margin-bottom: -10px;
-  }
-  
-  .schedule-popup-container .description h3 {
-    font-size: 1em;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  .schedule-popup-container .form {
-    width: 100%;
-  }
-  
-  .schedule-popup-container .form-group {
-    margin-bottom: 20px;
-  }
+.schedule-popup-container .description {
+  width: 100%;
+}
 
-  /* Style for the select element */
-  .schedule-popup-container .dropdown-select {
+.schedule-popup-container .description img {
+  text-align: left;
+  max-width: 170px;
+  margin-bottom: -20px;
+}
+
+.schedule-popup-container .description h1 {
+  font-size: 2em;
+  color: #303030;
+  margin-bottom: -10px;
+}
+
+.schedule-popup-container .description h3 {
+  font-size: 1em;
+  color: #666;
   margin-bottom: 20px;
 }
-  
-  .schedule-popup-container .form-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .schedule-popup-container .buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
-    margin-left: -2%;
-  }
 
-  .schedule-popup-container .buttons {
-    margin-right: 10px; /* Adjust the margin as needed */
-  }
+.schedule-popup-container .form {
+  width: 100%;
+}
 
-  .schedule-popup-container .buttons button:last-child {
-    margin-right: 0; /* Adjust the margin as needed */
-  }
-  
-  .schedule-popup-container .abdm-button {
-    background-color: #0000ff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 10px;
-  }
-  
-  .schedule-popup-container .abdm-button:hover {
-    box-shadow: 0 0 8px #000000;
-  }
+.schedule-popup-container .form-group {
+  margin-bottom: 20px;
+}
 
-  .schedule-popup-container .cancel-button {
-    background-color: #fff;
-    color: red;
-    border-style: solid;
-    border-width: 1px;
-    border-color: red;
-  }
-  
-  .schedule-popup-container .cancel-button:hover {
-    box-shadow: 0 0 8px #999;
-    color: #fff;
-    background-color: red;
-  }
+/* Style for the select element */
+.schedule-popup-container .dropdown-select {
+  margin-bottom: 20px;
+}
 
-  .done {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: fit-content; /* Optionally, adjust the height of the container */
-  }
+.schedule-popup-container .form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.schedule-popup-container .buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: -2%;
+}
+
+.schedule-popup-container .buttons {
+  margin-right: 10px; /* Adjust the margin as needed */
+}
+
+.schedule-popup-container .buttons button:last-child {
+  margin-right: 0; /* Adjust the margin as needed */
+}
+
+.schedule-popup-container .abdm-button {
+  background-color: #0000ff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+.schedule-popup-container .abdm-button:hover {
+  box-shadow: 0 0 8px #000000;
+}
+
+.schedule-popup-container .cancel-button {
+  background-color: #fff;
+  color: red;
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
+}
+
+.schedule-popup-container .cancel-button:hover {
+  box-shadow: 0 0 8px #999;
+  color: #fff;
+  background-color: red;
+}
+
+.done {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: fit-content; /* Optionally, adjust the height of the container */
+}

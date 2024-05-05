@@ -218,7 +218,6 @@ const Navbar = () => {
         </div>
 
         <div className="right">
-          <h6>About</h6>
 
           <button onClick={handleNotificationClick} className="icon">
             <FontAwesomeIcon icon={faBell} />

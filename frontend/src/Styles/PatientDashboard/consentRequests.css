@@ -1,178 +1,172 @@
-body {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    background-color: #ddffff;
-  }
+.requests-container {
+  max-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .requests-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: auto;
-    min-width: 150%;
-    padding: 30px;
-    margin-left: -150px;
-    margin-top: 250px;
-    margin-bottom: 20px;
-    /* background-color: #ffffff;
-    box-shadow: 0 0 10px #0099ff; */
-    border-radius: 8px;
-  }
+.requests-container h2 {
+  align-self: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: xx-large;
+}
 
-  .requests-container h2 {
-    align-self: center;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: xx-large;
-  }
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  /* background-color: #0056b3; */
+}
 
-  .notification-list {
-    margin: 10px;
-  }
+.notification-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+  padding: 20px;
+  margin: 15px;
+  background-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  transition: box-shadow 0.3s, transform 0.2s;
+}
 
-  .notification-item {
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    min-width: 500px;
-    padding: 30px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    margin: 25px;
-    background-color: #ffffff;
-    box-shadow: 0 0 4px #000000;
-    border-radius: 8px;
-  }
+.notification-item:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transform: translateY(-5px);
+}
 
-  .notification-info {
-    width: 100%;
-    margin-bottom: -20px;
-  }
+.notification-info {
+  width: 100%;
+  margin-bottom: -20px;
+}
 
-  p {
-    margin: 9px;
-  }
+p {
+  margin: 9px;
+}
 
-  .date-time {
-    font-size: small;
-    margin-top: 30px;
-  }
+.date-time {
+  font-size: small;
+  margin-top: 30px;
+}
 
-  .consent-buttons {
-    display: flex;
-    flex-direction: column;
-    /* justify-content: space-between; */
-    width: auto;
-  }
+.consent-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 40%;
+}
 
-  button {
-    width: max-content;
-    height: fit-content;
-    margin: 6px;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    font-size: medium;
-    font-family: 'Times New Roman', Times, serif;
-  }
+button {
+  width: max-content;
+  height: fit-content;
+  margin: 6px;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: medium;
+  font-family: "Times New Roman", Times, serif;
+}
 
-  .grant button {
-    background-color: #00f;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #00f;
-    color: #fff;
-  }
+.grant button {
+  background-color: #007bff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #007bff;
+  color: #fff;
+}
 
-  .deny button {
-    background-color: #fff;
-    color: red;
-    border-style: solid;
-    border-width: 1px;
-    border-color: red;
-  }
+.deny button {
+  background-color: #fff;
+  color: red;
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
+}
 
-  .grant button:hover {
-    box-shadow: 0 0 8px #000000;
-  }
+.grant button:hover {
+  background-color: #0000ff;
+  border-color: #0000ff;
+  box-shadow: 0 0 4px #000000;
+}
 
-  .deny button:hover {
-    box-shadow: 0 0 8px #999;
-    color: #fff;
-    background-color: red;
-  }
+.deny button:hover {
+  box-shadow: 0 0 8px #999;
+  color: #fff;
+  background-color: red;
+}
 
-  .view-more p {
-    font-size: small;
-    color: #0000ff;
-    margin-top: -1px;
-    text-decoration-line: underline;
-  }
+.view-more p {
+  font-size: small;
+  color: #0000ff;
+  margin-top: -1px;
+  text-decoration-line: underline;
+}
 
-  .view-more p:hover {
-    cursor: pointer;
-  }
+.view-more p:hover {
+  cursor: pointer;
+}
 
-  /* Popup overlay */
+/* Popup overlay */
 .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* Popup container */
-  .popup {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Popup title */
-  .popup h2 {
-    margin-top: 0;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .popup input{
-    width: 35px;
-    justify-self: center;
-  }
+/* Popup container */
+.popup {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
 
-  .inp {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+/* Popup title */
+.popup h2 {
+  margin-top: 0;
+}
 
-  input::placeholder {
-    color: transparent;
-    text-shadow: 0 0 0 #000; /* Black color for text-shadow to make it transparent */
-  }
-  
-  /* Popup content */
-  .popup p {
-    margin-bottom: 10px;
-  }
-  
-  /* Popup buttons */
-  .popup button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px;
-  }
-  
-  .popup button:hover {
-    background-color: #0056b3;
-  }
-  
+.popup input {
+  width: 35px;
+  justify-self: center;
+}
+
+.inp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input::placeholder {
+  color: transparent;
+  text-shadow: 0 0 0 #000; /* Black color for text-shadow to make it transparent */
+}
+
+/* Popup content */
+.popup p {
+  margin-bottom: 10px;
+}
+
+/* Popup buttons */
+.popup button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
+}

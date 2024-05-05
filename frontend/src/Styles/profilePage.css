@@ -74,16 +74,17 @@ body {
 
 .download-button,
 .change-password-button {
-  background-color: #0000ff;
+  background-color: #007bff;
   color: white;
   padding: 10px 15px;
   border: none;
   cursor: pointer;
   font-size: 20px;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .download-button:hover,
 .change-password-button:hover {
-  box-shadow: 0 0 8px #000000;
+  background-color: #0000ff;
+  box-shadow: 0 0 6px #000000;
 }

@@ -59,10 +59,9 @@ const ConsentList = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
-      <button className="request-button" onClick={() => { navigate("/ConsentRequestForm"); }}>Create Consent Request</button>
-      <div className="consentlist-container">
+    <div className="consentlist-container">
+      <button className="request-button" onClick={() => {navigate("/ConsentRequestForm");}}>Create Consent Request</button>
+      <div className="consent-list">
         <h2>Consent List</h2>
         <table>
           <thead>

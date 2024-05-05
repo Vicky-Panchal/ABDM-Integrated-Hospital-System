@@ -1,106 +1,33 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #ddffff;
-}
-
-.appointment-container {
-  position: absolute;
-  top: 10%;
-  left: 16%;
+.doctor-appointment-container {
+  max-height: 350px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 60%;
-  height: fit-content;
-  padding: 30px;
-  /* background-color: #fff;
-    box-shadow: 0 0 10px #0099ff; */
-  border-radius: 8px;
+  align-items: center;
 }
 
-.slotlist-container {
-  width: 100%;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px #0099ff;
-  border-radius: 8px;
-}
-
-.slot-list-heading {
+.doctor-filter-slots {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-}
-
-/* .add-slot-btn {
-  font-size: medium;
-  background-color: #ddd;
-  border: none;
-  cursor: pointer;
-  border-radius: 10px;
-  font-family: "Times New Roman", Times, serif;
-  margin-top: -15px;
-}
-
-.add-slot-btn:hover {
-  box-shadow: 0 0 2px #000000;
-} */
-
-/* table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead th {
-  background-color: #aaffff;
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-td {
-  padding: 8px;
-  text-align: center;
-}
-
-tbody tr:hover {
-  background-color: #ddd;
-} */
-
-.filter-slots {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
+  width: 80%;
   justify-content: space-around;
   /* background-color: #007bff; */
 }
 
-.filter-slots label {
+.doctor-filter-slots label {
   font-size: 1.3em;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 /* Style for the dropdown container */
-.dropdown-container {
+.doctor-dropdown-container {
   margin: 20px;
   /* background-color: #000; */
 }
 
 /* Style for the select element */
-.dropdown-select,
-.filter-date {
+.doctor-dropdown-select,
+.doctor-filter-date {
   width: 300px;
   padding: 10px;
   font-size: 16px;
@@ -110,25 +37,25 @@ tbody tr:hover {
   outline: none; /* Remove default focus outline */
 }
 
-.filter-date {
+.doctor-filter-date {
   width: 150px;
 }
 
 /* Style for the options within the dropdown */
-.dropdown-select option {
+.doctor-dropdown-select option {
   padding: 10px;
 }
 
 /* Style for the selected option */
-.dropdown-selected-option {
+.doctor-dropdown-selected-option {
   margin-top: 10px;
 }
 
-.filter-search, .add-slot-btn {
-  margin-top: 40%;
+.doctor-filter-search, 
+.doctor-add-slot-btn {
   width: fit-content;
   height: fit-content;
-  background-color: #0000ff;
+  background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
@@ -137,57 +64,58 @@ tbody tr:hover {
   font-family: "Times New Roman", Times, serif;
 }
 
-.add-slot-btn{
-  margin-top: 35%;
+.doctor-add-slot-btn{
   width: max-content;
 }
 
-.filter-search:hover, .add-slot-btn:hover {
+.doctor-filter-search:hover, 
+.doctor-add-slot-btn:hover {
+  background-color: #0000ff;
   box-shadow: 0 0 4px #000000;
 }
 
-.slot-list {
-  margin: 10px;
+.doctor-slot-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #0056b3; */
+  width: 100%;
+  padding-top: 30px;
 }
 
-.slot-item {
+.doctor-slot-item {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: auto;
+  width: 50%;
   padding: 20px;
   padding-right: 40px;
-  margin: 25px;
+  margin: 15px;
   background-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
   border-radius: 8px;
   transition: box-shadow 0.3s, transform 0.2s; 
-  /* 
-  width: 60%;
-  padding: 10px;
-  margin: 10px;
-  */
 }
 
-.slot-item:hover {
+.doctor-slot-item:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transform: translateY(-5px);
 }
 
-.short-list-item {
+.doctor-short-list-item {
   display: flex;
   flex-direction: row;
   /* background-color: #0099ff; */
 }
 
-.slot-col {
+.doctor-slot-col {
   display: flex;
   flex-direction: column;
   width: 100%;
   /* background-color: #00ffff; */
 }
 
-.delete-slot {
+.doctor-delete-slot {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -196,16 +124,17 @@ tbody tr:hover {
 
 .image {
   width: 50%;
-  /* padding: auto; */
   /* background-color: #0056b3; */
 }
 
-.image img {
+.doctor-image img {
   max-width: 50%;
   height: auto;
 }
 
-.slot-info, .slot-time, .patient-info {
+.doctor-slot-info, 
+.doctor-slot-time, 
+.doctor-patient-info {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -214,11 +143,11 @@ tbody tr:hover {
   /* background-color: #0000ff; */
 }
 
-.patient-info {
+.doctor-patient-info {
   justify-content: space-around;
 }
 
-.show-hide {
+.doctor-show-hide {
   width: fit-content;
   margin-top: 10px;
   margin-bottom: -10px;
@@ -228,34 +157,18 @@ tbody tr:hover {
   font-family: "Times New Roman", Times, serif;
 }
 
-.show-hide:hover {
+.doctor-show-hide:hover {
   text-decoration-line: underline;
 }
 
-/* p {
-  margin: 9px;
-} */
-
-.delete-buttons {
+.doctor-delete-buttons {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: auto;
 }
 
-/* button {
-  width: max-content;
-  height: fit-content;
-  margin: 6px;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: medium;
-  font-family: "Times New Roman", Times, serif;
-} */
-
-.delete-slot button {
+.doctor-delete-slot button {
   background-color: #fff;
   color: red;
   border-style: solid;
@@ -263,7 +176,7 @@ tbody tr:hover {
   border-color: red;
 }
 
-.delete-slot button:hover {
+.doctor-delete-slot button:hover {
   box-shadow: 0 0 8px #999;
   color: #fff;
   background-color: red;

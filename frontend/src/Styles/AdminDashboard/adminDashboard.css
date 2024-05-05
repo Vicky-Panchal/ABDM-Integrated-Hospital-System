@@ -1,57 +1,56 @@
 .admin-dashboard-container {
-    position: absolute;
-    top: 10%;
-    left: 0%;
-    display: flex;
-    flex-direction: column;
-    /* background-color: #ccc; */
-    width: 96%;
-  }
-  
-  .functionalities {
-    display: flex;
-    justify-content: center;
-    flex: 0 0 20%;
-    padding: 20px;
-    /* background-color: #00f; */
-  }
-  
-  .functionalities button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 0px;
-    background-color: transparent; /* Make the background transparent */
-    border-left: 1px solid #ccc; /* Add a border to separate the buttons */
-    border-right: 1px solid #ccc; /* Add a border to separate the buttons */
-    color: #007bff; /* Change the text color */
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+  position: absolute;
+  top: 10%;
+  left: 0%;
+  display: flex;
+  flex-direction: column;
+  /* background-color: #ccc; */
+  width: 96%;
+}
 
-  .functionalities button.active {
-    background-color: #00f;
-    border-left: 1px solid #00f; 
-    border-right: 1px solid #00f;
-    color: #fff;
-    transition: background-color 1s, border-left 2s, border-right 2s;
-  }
+.functionalities {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 20%;
+  padding: 20px;
+  /* background-color: #00f; */
+}
 
-  .functionalities button.active:hover {
-    text-decoration: none;
-  }
+.functionalities button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 0px;
+  background-color: transparent; /* Make the background transparent */
+  border-left: 1px solid #ccc; /* Add a border to separate the buttons */
+  border-right: 1px solid #ccc; /* Add a border to separate the buttons */
+  color: #007bff; /* Change the text color */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .functionalities button:hover {
-    text-decoration: underline;
-  }
-  
-  .content {
-    flex: 1;
-    padding: 20px;
-    overflow: auto;
-    width: 100%;
-    /* background-color: #00f; */
-  }
-  
+.functionalities button.active {
+  background-color: #00f;
+  border-left: 1px solid #00f;
+  border-right: 1px solid #00f;
+  color: #fff;
+  transition: background-color 1s, border-left 2s, border-right 2s;
+}
+
+.functionalities button.active:hover {
+  text-decoration: none;
+}
+
+.functionalities button:hover {
+  text-decoration: underline;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+  width: 100%;
+  /* background-color: #00f; */
+}

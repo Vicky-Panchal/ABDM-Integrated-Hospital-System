@@ -40,6 +40,9 @@ public class ConsentRequest {
     private Visit visit;
 
     @Column
+    private Boolean isLocal;
+
+    @Column
     private String hiTypes;
     @Column
     private String accessMode;

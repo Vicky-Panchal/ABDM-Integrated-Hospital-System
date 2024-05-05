@@ -1,50 +1,56 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #ddffff;
-  }
+.patient-dashboard-container {
+  position: absolute;
+  top: 10%;
+  left: 0%;
+  display: flex;
+  flex-direction: column;
+  /* background-color: #ccc; */
+  width: 96%;
+}
 
-  .dashboard-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 0 10px #0099ff;
-    border-radius: 8px;
-  }
+.functionalities {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 20%;
+  padding: 20px;
+  /* background-color: #00f; */
+}
 
-  .row1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+.functionalities button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 0px;
+  background-color: transparent; /* Make the background transparent */
+  border-left: 1px solid #ccc; /* Add a border to separate the buttons */
+  border-right: 1px solid #ccc; /* Add a border to separate the buttons */
+  color: #007bff; /* Change the text color */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .row2 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+.functionalities button.active {
+  background-color: #00f;
+  border-left: 1px solid #00f;
+  border-right: 1px solid #00f;
+  color: #fff;
+  transition: background-color 1s, border-left 2s, border-right 2s;
+}
 
-  .component {
-    min-width: 150px;
-    min-height: 120px;
-    margin: 30px;
-    margin-right: 20px;
-    background-color: #0000ff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 20px;
-    font-size: 1.5em;
-    font-family: 'Times New Roman', Times, serif;
-  }
+.functionalities button.active:hover {
+  text-decoration: none;
+}
 
-  .component:hover {
-    box-shadow: 0 0 8px #000000;
-  }
+.functionalities button:hover {
+  text-decoration: underline;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+  width: 100%;
+  /* background-color: #00f; */
+}

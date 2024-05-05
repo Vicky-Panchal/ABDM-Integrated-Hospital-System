@@ -1,0 +1,11 @@
+/* footer.css */
+
+.footer-container {
+    background-color: blueviolet;
+    position:fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin-top: 10px;
+    /* padding-top: 10%; */
+}

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ConsentList from "./ConsentList";
 import Appointment from "./Appointment";
+import ViewVisit from "./ViewVisit";
 import AddVisit from "./AddVisit";
 import "../../Styles/DoctorDashboard/doctorDashboard.css";
 import Navbar from "../navbar";
@@ -55,10 +56,10 @@ const DoctorDashboard = () => {
           </div>
           <div>
             <button
-              className={selectedButton === "documents" ? "active" : ""}
-              onClick={() => handleButtonClick("documents")}
+              className={selectedButton === "viewVisit" ? "active" : ""}
+              onClick={() => handleButtonClick("viewVisit")}
             >
-              View Documents
+              View Visit
             </button>
           </div>
           <div>
@@ -81,6 +82,7 @@ const DoctorDashboard = () => {
         <div className="content">
           {selectedButton === "consentList" && <ConsentList />}
           {selectedButton === "appointment" && <Appointment />}
+          {selectedButton === "viewVisit" && <ViewVisit />}
           {selectedButton === "addVisit" && <AddVisit />}
         </div>
       </div>

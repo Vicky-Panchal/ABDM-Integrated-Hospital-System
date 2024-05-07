@@ -1,0 +1,91 @@
+/* viewVisit.css */
+
+.view-visit-container {
+  max-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.view-visit-filter-slots {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 30%;
+  justify-content: space-around;
+  /* background-color: #007bff; */
+}
+
+.view-visit-filter-slots label {
+  font-size: 1.3em;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.view-visit-filter-date {
+  width: 150px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none; /* Remove default focus outline */
+}
+
+.view-visit-filter-search {
+  width: fit-content;
+  height: fit-content;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: medium;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.view-visit-filter-search:hover {
+  background-color: #0000ff;
+  box-shadow: 0 0 4px #000000;
+}
+
+.view-visit-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #031c37; */
+  width: 100%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.view-visit-grid {
+  display: grid;
+  grid-template-rows: repeat(9, auto); /* Defines 6 rows */
+  grid-template-columns: repeat(2, 1fr); /* Defines 2 columns */
+  grid-gap: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  transition: box-shadow 0.3s, transform 0.2s; 
+  width: 70%;
+  margin: 1%;
+}
+
+.view-visit-grid:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transform: translateY(-5px);
+}
+
+.view-visit-item {
+    font-family: "Times New Roman", Times, serif;
+    margin: 3%;
+    margin-bottom: -4%;
+}
+
+.view-visit-item:nth-child(odd) {
+    width: 40%;
+}
+
+.view-visit-item:nth-child(even) {
+    margin-left: -50%;
+}

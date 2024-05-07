@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom"; // Importing useNavigate
 import axios from "axios"; // Import axios for making API requests
 import "../Styles/registerPage.css"; // Import the CSS file
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const RegisterPage = () => {
   const { option } = useParams();
   const navigate = useNavigate(); // Initializing navigate
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -211,14 +218,22 @@ const RegisterPage = () => {
             /> */}
 
             <label className="form-label">Password : </label>
+            <div className="register-pass">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               className="form-input"
               value={formData.password}
               onChange={handleFormChange}
               required
             />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="register-eye-icon"
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
             {errors.password && (
               <p className="error-message">{errors.password}</p>
             )}

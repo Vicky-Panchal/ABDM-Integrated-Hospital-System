@@ -66,6 +66,9 @@ const AddVisit = () => {
           },
         }
       );
+      console.log(patient);
+      console.log(patient.patientId);
+      console.log(response);
       setTransactionId(response.data.transactionId);
       setOtpEnabled(true);
     } catch (error) {

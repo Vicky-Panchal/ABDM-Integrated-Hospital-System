@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 50%;
 }
 
 .sch-app-btn {
@@ -85,12 +85,17 @@
 }
 
 .slot-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
   margin: 10px;
 }
 
 .slot-item,
 .scheduled-item {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

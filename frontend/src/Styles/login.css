@@ -65,6 +65,17 @@ body {
   box-sizing: border-box;
 }
 
+.login-pass{
+  display: flex;
+}
+
+.login-eye-icon{
+  background-color: #fff;
+  margin-top: 2%;
+  margin-left: -7%;
+  z-index: 1;
+}
+
 .links {
   display: flex;
   flex-direction: row;

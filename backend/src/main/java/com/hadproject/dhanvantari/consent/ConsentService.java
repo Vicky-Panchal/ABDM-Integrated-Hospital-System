@@ -679,7 +679,7 @@ public class ConsentService {
         List<GetConsentRequestPatient> responses = new ArrayList<>();
 
         for(ConsentRequest consentRequest : consentRequests) {
-            if(!consentRequest.getIsLocal()) continue;
+            if(consentRequest.getIsLocal() != null && !consentRequest.getIsLocal()) continue;
             if(consentRequest.getStatus() == null) consentRequest.setStatus("REQUESTED");
             responses.add(
                     GetConsentRequestPatient.builder()

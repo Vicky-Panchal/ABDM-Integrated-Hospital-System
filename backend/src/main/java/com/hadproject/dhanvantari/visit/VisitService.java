@@ -25,6 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -277,7 +278,7 @@ public class VisitService {
                             .diagnosis(visit.getDiagnosis())
                             .display(visit.getDisplay())
                             .dosageInstruction(visit.getDosageInstruction())
-                            .healthRecord(Arrays.toString(visit.getHealthRecord()))
+                            .healthRecord(new String(visit.getHealthRecord(), StandardCharsets.UTF_8))
                             .prescription(visit.getPrescription())
                             .patientId(String.valueOf(visit.getPatient().getPatientId()))
                             .patientName(visit.getPatient().getUser().getFirstname() + " " + visit.getPatient().getUser().getLastname())

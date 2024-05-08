@@ -17,6 +17,7 @@ const ConsentRequestForm = () => {
   const [healthInfoType, setHealthInfoType] = useState([]);
   const [consentExpiry, setConsentExpiry] = useState("");
   const [error, setError] = useState("");
+  const [requestThroughDhanvantari, setRequestThroughDhanvantari] = useState(false);
   
   // Fetch list of patients from the API
   useEffect(() => {
@@ -98,6 +99,7 @@ const ConsentRequestForm = () => {
         patientId: selectedPatient,
         doctorId: doctorId, // Replace YOUR_DOCTOR_ID with the actual doctor ID
         visitId: 1, // Assuming visit ID is always 1, you may need to change this
+        isLocal: requestThroughDhanvantari,
       };
 
       const response = await axios.post(
@@ -124,6 +126,10 @@ const ConsentRequestForm = () => {
     } catch (error) {
       setError(error.message);
     }
+  };
+
+  const handleRequestThroughDhanvantariChange = (e) => {
+    setRequestThroughDhanvantari(e.target.checked);
   };
 
   const handleCheckboxChange = (value) => {
@@ -295,6 +301,20 @@ const ConsentRequestForm = () => {
                   value={consentExpiry}
                   onChange={(e) => setConsentExpiry(e.target.value)}
                   required
+                />
+              </div>
+            </div>
+            <div className="grid-item">
+              <div className="title">
+                <label>Request Consent through Dhanvantari : </label>
+              </div>
+            </div>
+            <div className="grid-item">
+              <div className="fields">
+                <input
+                  type="checkbox"
+                  checked={requestThroughDhanvantari}
+                  onChange={handleRequestThroughDhanvantariChange}
                 />
               </div>
             </div>

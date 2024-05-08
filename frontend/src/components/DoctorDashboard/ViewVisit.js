@@ -35,6 +35,21 @@ const ViewVisit = () => {
     fetchVisits();
   }, []);
 
+  const renderPDF = (pdfData) => {
+    return (event) => {
+      event.preventDefault();
+      const byteCharacters = atob(pdfData.split(",")[1]);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    };
+  };
+
   return (
     <div className="view-visit-container">
       <div className="view-visit-list">
@@ -97,11 +112,12 @@ const ViewVisit = () => {
                     <p>{visit.visitDate}</p>
                   </div>
 
-                  {visits.healthRecord && ( // Render only if healthRecord is not null
+                  {visit.healthRecord && ( // Render only if healthRecord is not null
                     <div className="view-visit-item">
                       <p>
                         <a
-                          href={visit.healthRecord}
+                          href="#"
+                          onClick={renderPDF(visit.healthRecord)}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

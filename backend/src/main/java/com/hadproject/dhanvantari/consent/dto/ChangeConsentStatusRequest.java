@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChangeConsentStatusRequest {
-    private String consentRequestId;
+    private Long consentRequestId;
     private String consentStatus;
 }

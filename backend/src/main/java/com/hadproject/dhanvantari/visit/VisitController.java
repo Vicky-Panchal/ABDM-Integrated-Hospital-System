@@ -2,6 +2,7 @@ package com.hadproject.dhanvantari.visit;
 
 import com.hadproject.dhanvantari.patient.PatientRepository;
 import com.hadproject.dhanvantari.visit.dto.CreateVisitRequest;
+import com.hadproject.dhanvantari.visit.dto.GetVisitByDoctorResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
@@ -63,5 +66,10 @@ public class VisitController {
     @GetMapping(value = "/visit", produces = "Application/JSON")
     public String getVisit(@RequestBody String req) {
         return visitService.getVisitById(req);
+    }
+
+    @GetMapping("/get-visits")
+    public List<GetVisitByDoctorResponse> getVisitByDoctor(Principal connectedUser) {
+        return visitService.getVisitByDoctor(connectedUser);
     }
 }

@@ -4,11 +4,14 @@ import com.hadproject.dhanvantari.abdm.ABDMService;
 import com.hadproject.dhanvantari.care_context.CareContext;
 import com.hadproject.dhanvantari.consent.Consent;
 import com.hadproject.dhanvantari.consent.ConsentRequest;
+import com.hadproject.dhanvantari.consent.ConsentRequestRepository;
 import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.doctor.DoctorRepository;
 import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.patient.PatientRepository;
+import com.hadproject.dhanvantari.user.User;
 import com.hadproject.dhanvantari.visit.dto.CreateVisitRequest;
+import com.hadproject.dhanvantari.visit.dto.GetVisitByDoctorResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,13 +21,18 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static com.hadproject.dhanvantari.abdm.ABDMServiceHelper.prepareHeader;
@@ -39,6 +47,7 @@ public class VisitService {
 
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
+    private final ConsentRequestRepository consentRequestRepository;
 
     public Visit createNewVisit(Patient patient, CreateVisitRequest data) {
         logger.info("entering create new visit with data:{}", patient.getPatientJSONObject());
@@ -241,5 +250,40 @@ public class VisitService {
         careContextObj.put("doctorId", careContext.getDoctorId());
         careContextObj.put("careContextReference", careContext.getCareContextReference());
         return careContextObj;
+    }
+
+    public List<GetVisitByDoctorResponse> getVisitByDoctor(Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+        Doctor doctor = doctorRepository.findDoctorByUser(user).orElseThrow(() -> new RuntimeException("Doctor Not Found"));
+
+        List<ConsentRequest> consentRequests = consentRequestRepository.findConsentRequestByDoctor(doctor);
+        List<Visit> visits = new ArrayList<>();
+
+        for (ConsentRequest consentRequest : consentRequests) {
+            if (consentRequest.getStatus() != null && consentRequest.getStatus().equals("GRANTED") && consentRequest.getDataEraseAt().compareTo(String.valueOf(new Date())) <= 0) {
+                visits.add(
+                        consentRequest.getVisit()
+                );
+            }
+        }
+
+        List<GetVisitByDoctorResponse> responseList = new ArrayList<>();
+
+        for (Visit visit : visits) {
+            responseList.add(
+                    GetVisitByDoctorResponse.builder()
+                            .visitId(String.valueOf(visit.getId()))
+                            .visitDate(visit.getVisitDate())
+                            .diagnosis(visit.getDiagnosis())
+                            .display(visit.getDisplay())
+                            .dosageInstruction(visit.getDosageInstruction())
+                            .healthRecord(Arrays.toString(visit.getHealthRecord()))
+                            .prescription(visit.getPrescription())
+                            .patientId(String.valueOf(visit.getPatient().getPatientId()))
+                            .build()
+            );
+        }
+
+        return responseList;
     }
 }

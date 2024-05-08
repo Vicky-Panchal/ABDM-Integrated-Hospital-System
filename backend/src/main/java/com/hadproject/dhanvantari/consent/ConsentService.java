@@ -255,7 +255,7 @@ public class ConsentService {
     }
 
     public JSONObject prepareAndSendData(JSONObject requestObj) throws Exception {
-        logger.info("entering prepareAndSendData with data: " + requestObj);
+        logger.info("entering prepareAndSendData with data: {}", requestObj);
         ConsentHIP consentHIP = consentHIPRepository.findConsentHIPByConsentId(requestObj.getJSONObject("hiRequest").getJSONObject("consent").getString("id"));
         JSONObject object = prepareDataToTransfer(consentHIP, requestObj);
         String dataPushUrl = requestObj.getJSONObject("hiRequest").getString("dataPushUrl");
@@ -269,8 +269,8 @@ public class ConsentService {
     }
     public void sendDataTransferCompletedNotification(JSONObject object, JSONObject requestObj) throws Exception {
         logger.info("entering sendDataTransferCompletedNotification with data: ");
-        logger.info("object : " + object.toString());
-        logger.info("requestObj: "+ requestObj);
+        logger.info("object : {}", object.toString());
+        logger.info("requestObj: {}", requestObj);
 
         ConsentHIP consent = consentHIPRepository.findConsentHIPByConsentId(requestObj.getJSONObject("hiRequest").getJSONObject("consent").getString("id"));
         JSONObject obj = prepareDeliveredNotification(object, requestObj, consent);
@@ -302,7 +302,7 @@ public class ConsentService {
         consentRequest.setHiTypes(req.getHiTypes());
         consentRequest.setPatient(patientRepository.findPatientByPatientId(Long.parseLong(req.getPatientId())));
         consentRequest.setDoctor(doctorRepository.findByDoctorId(Long.parseLong(req.getDoctorId())).orElseThrow(() -> new RuntimeException("Doctor not found")));
-
+        consentRequest.setIsLocal(req.getIsLocal());
         Visit visit = visitRepository.findVisitById(Long.parseLong(req.getVisitId()));
 
         consentRequest.setVisit(visit);
@@ -679,29 +679,28 @@ public class ConsentService {
         List<GetConsentRequestPatient> responses = new ArrayList<>();
 
         for(ConsentRequest consentRequest : consentRequests) {
+            if(!consentRequest.getIsLocal()) continue;
             if(consentRequest.getStatus() == null) consentRequest.setStatus("REQUESTED");
-            if(consentRequest.getConsentRequestId() != null) {
-                responses.add(
-                        GetConsentRequestPatient.builder()
-                                .consentRequestId(consentRequest.getConsentRequestId())
-                                .dateEraseAt(consentRequest.getDataEraseAt())
-                                .dateFrom(consentRequest.getDateFrom())
-                                .dateTo(consentRequest.getDateTo())
-                                .doctorName(consentRequest.getDoctor().getUser().getFirstname() + " " + consentRequest.getDoctor().getUser().getLastname())
-                                .hiTypes(consentRequest.getHiTypes())
-                                .status(consentRequest.getStatus())
-                                .purpose(consentRequest.getPurpose())
-                                .createdAt(consentRequest.getCreated_at())
-                                .build()
-                );
-            }
+            responses.add(
+                    GetConsentRequestPatient.builder()
+                            .consentRequestId(consentRequest.getId())
+                            .dateEraseAt(consentRequest.getDataEraseAt())
+                            .dateFrom(consentRequest.getDateFrom())
+                            .dateTo(consentRequest.getDateTo())
+                            .doctorName(consentRequest.getDoctor().getUser().getFirstname() + " " + consentRequest.getDoctor().getUser().getLastname())
+                            .hiTypes(consentRequest.getHiTypes())
+                            .status(consentRequest.getStatus())
+                            .purpose(consentRequest.getPurpose())
+                            .createdAt(consentRequest.getCreated_at())
+                            .build()
+            );
         }
 
         return responses;
     }
 
     public void changeConsentStatus(ChangeConsentStatusRequest data) {
-        ConsentRequest consentRequest = consentRequestRepository.findConsentRequestByConsentRequestId(data.getConsentRequestId());
+        ConsentRequest consentRequest = consentRequestRepository.findConsentRequestById(data.getConsentRequestId());
         if(consentRequest == null) throw new RuntimeException("Consent Request Not Found");
         consentRequest.setStatus(data.getConsentStatus());
         if(Objects.equals(data.getConsentStatus(), "GRANTED")) {

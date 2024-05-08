@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetConsentRequestPatient {
-    private String consentRequestId;
+    private Long consentRequestId;
     private String doctorName;
     private String dateFrom;
     private String dateTo;

@@ -18,4 +18,5 @@ public class CreateConsentRequest {
     public String patientId;
     public String doctorId;
     public String visitId;
+    public Boolean isLocal;
 }

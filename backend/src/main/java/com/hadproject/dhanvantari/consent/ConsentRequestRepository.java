@@ -11,4 +11,5 @@ public interface ConsentRequestRepository extends JpaRepository<ConsentRequest, 
     ConsentRequest findConsentRequestByConsentRequestId(String consentRequestId);
     List<ConsentRequest> findConsentRequestByDoctor(Doctor doctor);
     List<ConsentRequest> findConsentRequestByPatient(Patient patient);
+    ConsentRequest findConsentRequestById(Long id);
 }

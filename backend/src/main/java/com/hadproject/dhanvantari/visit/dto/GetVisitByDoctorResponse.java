@@ -20,4 +20,5 @@ public class GetVisitByDoctorResponse {
     public String healthRecord;
     private String display;
     private String patientId;
+    private String patientName;
 }

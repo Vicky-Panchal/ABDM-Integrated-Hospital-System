@@ -280,6 +280,7 @@ public class VisitService {
                             .healthRecord(Arrays.toString(visit.getHealthRecord()))
                             .prescription(visit.getPrescription())
                             .patientId(String.valueOf(visit.getPatient().getPatientId()))
+                            .patientName(visit.getPatient().getUser().getFirstname() + " " + visit.getPatient().getUser().getLastname())
                             .build()
             );
         }

@@ -103,8 +103,23 @@ const AddVisit = () => {
       formData.append("diagnosis", diagnosis);
       formData.append("dosageInstruction", dosage);
       formData.append("prescription", prescription);
-      formData.append("healthRecord", selectedFile);
 
+      // Convert selected file to base64 string
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onload = () => {
+        formData.append("healthRecord", reader.result);
+        // Submit the form with base64 encoded file
+        console.log(formData);
+        submitForm(formData);
+      };
+    } catch (error) {
+      console.error("Error adding visit details:", error);
+    }
+  };
+
+  const submitForm = async (formData) => {
+    try {
       await axios.post(
         "http://localhost:8081/api/v1/visit/add-visit",
         formData,

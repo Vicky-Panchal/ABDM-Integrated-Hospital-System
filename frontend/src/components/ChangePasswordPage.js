@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../Styles/ChangePasswordPage.css";
 
 const ChangePasswordPage = () => {
@@ -12,6 +14,17 @@ const ChangePasswordPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const userId = JSON.parse(localStorage.getItem("loggedInUser")).user_id;
   const token = JSON.parse(localStorage.getItem("loggedInUser")).access_token;
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
+  const toggleOldPasswordVisibility = () => {
+    setShowOldPassword(!showOldPassword);
+  };
+
+  const toggleNewPasswordVisibility = () => {
+    setShowNewPassword(!showNewPassword);
+  };
+
   const navigate = useNavigate();
 
   const validatePassword = (password) => {
@@ -81,21 +94,43 @@ const ChangePasswordPage = () => {
           <div className="change-password">
             <div className="form-group">
               <label htmlFor="oldPassword">Old Password:</label>
+              <div className="change-pass">
               <input
-                type="password"
+                type={showOldPassword ? "text" : "password"}
                 id="oldPassword"
                 value={currentPassword}
                 onChange={(e) => setcurrentPassword(e.target.value)}
               />
+              
+              <FontAwesomeIcon
+                icon={showOldPassword ? faEyeSlash : faEye}
+                className="change-eye-icon"
+                onClick={toggleOldPasswordVisibility}
+                style={{ cursor: "pointer" }}
+              />
+              
+              </div>
+              
             </div>
             <div className="form-group">
               <label htmlFor="newPassword">New Password:</label>
+              <div className="change-pass">
               <input
-                type="password"
+                type={showNewPassword ? "text" : "password"}
                 id="newPassword"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
+              
+              <FontAwesomeIcon
+                icon={showNewPassword ? faEyeSlash : faEye}
+                className="change-eye-icon"
+                onClick={toggleNewPasswordVisibility}
+                style={{ cursor: "pointer" }}
+              />
+              
+              </div>
+              
               {newPasswordError && (
                 <div className="error">{newPasswordError}</div>
               )}

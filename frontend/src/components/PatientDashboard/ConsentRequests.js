@@ -113,7 +113,7 @@ const ConsentRequests = () => {
         "http://localhost:8081/api/v1/consent/changeConsentStatus",
         {
           consentRequestId,
-          consentStatus: "REQUESTED",
+          consentStatus: "REVOKED",
         },
         {
           headers: {

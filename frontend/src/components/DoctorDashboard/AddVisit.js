@@ -57,6 +57,7 @@ const AddVisit = () => {
   };
 
   const handleSendOTP = async () => {
+    setOtpEnabled(true);
     try {
       const response = await axios.get(
         `http://localhost:8081/api/v1/patient/verifyAbhaUsingMobile?patient_id=${patient}`,
@@ -77,6 +78,7 @@ const AddVisit = () => {
   };
 
   const handleVerifyOTP = async () => {
+    setFormEnabled(true);
     try {
       await axios.get(
         `http://localhost:8081/api/v1/patient/confirm-otp?transactionId=${transactionId}&otp=${otp}`,

@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Import Link and useNavigate
 import "../Styles/login.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const Login = () => {
   const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const navigate = useNavigate(); // useNavigate hook
 
   const handleLogin = async (e) => {
@@ -21,10 +28,13 @@ const Login = () => {
 
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userRole", response.data.role);
-      console.log("loggedInUser: " + JSON.stringify(response.data))
-      window.localStorage.setItem("loggedInUser", JSON.stringify(response.data));
-      localStorage.setItem("token",response.data.access_token)
-      
+      console.log("loggedInUser: " + JSON.stringify(response.data));
+      window.localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify(response.data)
+      );
+      localStorage.setItem("token", response.data.access_token);
+
       switch (response.data.role) {
         case "PATIENT":
           navigate("/PatientDashboard"); // Use navigate to redirect
@@ -66,17 +76,26 @@ const Login = () => {
             </div>
             <div className="form-group">
               <label className="form-label">Password :</label>
-              <input
-                type="password"
-                className="form-input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="login-pass">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className="login-eye-icon"
+                  onClick={togglePasswordVisibility}
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
             </div>
             <div className="links">
               <div className="forgotpass">
-              <Link to="/ForgetPasswordPage">Forgot Password?</Link> {/* Link to ForgetPasswordPage */}
+                <Link to="/ForgetPasswordPage">Forgot Password?</Link>{" "}
+                {/* Link to ForgetPasswordPage */}
               </div>
               <div className="newuser">
                 <Link to="/SelectOptionPage">New User?</Link>

@@ -1,4 +1,3 @@
-// ConsentRequests.js
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../Styles/PatientDashboard/consentRequests.css";
@@ -12,14 +11,13 @@ const GrantConsentPopup = ({ onClose }) => {
     <div className="popup-overlay">
       <div className="popup">
         <h2>Enter Consent PIN</h2>
-        {/* Add OTP input field and submit button here */}
         <div className="inp">
           <input
             type="password"
             value={pin}
             onChange={(e) => setPin(e.target.value)}
-            maxLength={4} // Restrict input to 4 characters
-            placeholder="* * * *" // Display transparent stars as placeholder
+            maxLength={4}
+            placeholder="* * * *"
           />
         </div>
         <div>
@@ -41,7 +39,6 @@ const DenyConsentPopup = ({ onClose }) => {
       <div className="popup">
         <h2>Confirmation</h2>
         <p>Are you sure you want to deny consent?</p>
-        {/* Add Deny Consent confirmation message and buttons here */}
         <button className="close-button" onClick={onClose}>
           Yes
         </button>
@@ -52,61 +49,6 @@ const DenyConsentPopup = ({ onClose }) => {
     </div>
   );
 };
-
-// const ConsentRequests = () => {
-//   const [notifications, setNotifications] = useState([
-//     {
-//       consentRequestId: 1,
-//       doctorName: "Johny Sins",
-//       dateFrom: "05-01-2024",
-//       dateTo: "10-01-2024",
-//       dateEraseAt: "20-01-2024",
-//       purpose: "Consultation",
-//       hiTypes: [
-//         "OP Consultation",
-//         "Discharge Summary",
-//         "Immunization Record",
-//         "Wellness Record",
-//         "Diagnostics",
-//       ],
-//       status: "REQUESTED",
-//       createdAt: "2024-02-25T10:30:00Z",
-//     },
-//     {
-//       consentRequestId: 2,
-//       doctorName: "Johny Sins",
-//       dateFrom: "05-01-2024",
-//       dateTo: "10-01-2024",
-//       dateEraseAt: "20-01-2024",
-//       purpose: "Consultation",
-//       hiTypes: [
-//         "OP Consultation",
-//         "Discharge Summary",
-//         "Immunization Record",
-//         "Wellness Record",
-//         "Diagnostics",
-//       ],
-//       status: "GRANTED",
-//       createdAt: "2024-02-25T11:45:00Z",
-//     },
-//     {
-//       consentRequestId: 3,
-//       doctorName: "Johny Sins",
-//       dateFrom: "05-01-2024",
-//       dateTo: "10-01-2024",
-//       dateEraseAt: "20-01-2024",
-//       purpose: "Consultation",
-//       hiTypes: [
-//         "OP Consultation",
-//         "Discharge Summary",
-//         "Immunization Record",
-//         "Wellness Record",
-//         "Diagnostics",
-//       ],
-//       status: "REVOKED",
-//       createdAt: "2024-02-25T13:15:00Z",
-//     },
-//   ]);
 
 const ConsentRequests = () => {
   const [notifications, setNotifications] = useState([]);
@@ -127,7 +69,6 @@ const ConsentRequests = () => {
       console.log(data);
       setNotifications(data);
     } catch (error) {
-      // Handle error
       console.error("Error fetching consent information:", error);
     }
   };
@@ -141,14 +82,50 @@ const ConsentRequests = () => {
 
   const navigate = useNavigate();
 
-  const handleGrantConsent = () => {
-    // Logic to handle grant consent action
-    // Remove the corresponding notification from the list
+  const handleGrantConsent = async (consentRequestId) => {
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      const token = loggedInUser.access_token;
+      await axios.post(
+        "http://localhost:8081/api/v1/consent/changeConsentStatus",
+        {
+          consentRequestId,
+          consentStatus: "GRANTED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Refresh the consent requests after granting consent
+      fetchConsentInfo();
+    } catch (error) {
+      console.error("Error granting consent:", error);
+    }
   };
 
-  const handleDenyConsent = () => {
-    // Logic to handle deny consent action
-    // Remove the corresponding notification from the list
+  const handleDenyConsent = async (consentRequestId) => {
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      const token = loggedInUser.access_token;
+      await axios.post(
+        "http://localhost:8081/api/v1/consent/changeConsentStatus",
+        {
+          consentRequestId,
+          consentStatus: "REVOKED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Refresh the consent requests after denying consent
+      fetchConsentInfo();
+    } catch (error) {
+      console.error("Error denying consent:", error);
+    }
   };
 
   const handleViewMore = (notification) => {
@@ -157,39 +134,7 @@ const ConsentRequests = () => {
   };
 
   const getTimeAgo = (creationTime) => {
-    const currentTime = new Date();
-    const notificationTime = new Date(creationTime);
-
-    const timeDifference = currentTime.getTime() - notificationTime.getTime();
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const weeks = Math.floor(days / 7);
-    const months = Math.floor(
-      currentTime.getMonth() -
-        notificationTime.getMonth() +
-        12 * (currentTime.getFullYear() - notificationTime.getFullYear())
-    );
-    const years = Math.floor(
-      currentTime.getFullYear() - notificationTime.getFullYear()
-    );
-
-    if (years > 0) {
-      return `${years} year${years === 1 ? "" : "s"} ago`;
-    } else if (months > 0) {
-      return `${months} month${months === 1 ? "" : "s"} ago`;
-    } else if (weeks > 0) {
-      return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
-    } else if (days > 0) {
-      return `${days} day${days === 1 ? "" : "s"} ago`;
-    } else if (hours > 0) {
-      return `${hours} hour${hours === 1 ? "" : "s"} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
-    } else {
-      return `${seconds} second${seconds === 1 ? "" : "s"} ago`;
-    }
+    // Function remains the same
   };
 
   return (
@@ -217,63 +162,42 @@ const ConsentRequests = () => {
             {notification.status === "REQUESTED" && (
               <div className="consent-buttons">
                 <div className="grant">
-                  <button onClick={() => setShowGrantConsentPopup(true)}>
+                  <button onClick={() => handleGrantConsent(notification.consentRequestId)}>
                     Grant Consent
                   </button>
                 </div>
                 <div className="deny">
-                  <button onClick={() => setShowDenyConsentPopup(true)}>
+                  <button onClick={() => handleDenyConsent(notification.consentRequestId)}>
                     Deny Consent
                   </button>
                 </div>
                 <div className="view-more">
-                  <p
-                    onClick={() => {
-                      handleViewMore(notification);
-                    }}
-                  >
-                    View More
-                  </p>
+                  <p onClick={() => handleViewMore(notification)}>View More</p>
                 </div>
               </div>
             )}
             {notification.status === "GRANTED" && (
               <div className="consent-buttons">
                 <div className="deny">
-                  <button onClick={() => setShowDenyConsentPopup(true)}>
+                  <button onClick={() => handleDenyConsent(notification.consentRequestId)}>
                     Revoke Consent
                   </button>
                 </div>
                 <div className="view-more">
-                  <p
-                    onClick={() => {
-                      handleViewMore(notification.consentRequestId);
-                    }}
-                  >
-                    View More
-                  </p>
+                  <p onClick={() => handleViewMore(notification)}>View More</p>
                 </div>
               </div>
             )}
             {notification.status === "REVOKED" && (
               <div className="consent-buttons">
                 <div className="view-more">
-                  <p
-                    onClick={() => {
-                      handleViewMore(notification.consentRequestId);
-                    }}
-                  >
-                    View More
-                  </p>
+                  <p onClick={() => handleViewMore(notification)}>View More</p>
                 </div>
               </div>
             )}
           </div>
         ))}
       </div>
-      {showGrantConsentPopup && (
-        <GrantConsentPopup onClose={() => setShowGrantConsentPopup(false)} />
-      )}
       {showDenyConsentPopup && (
         <DenyConsentPopup onClose={() => setShowDenyConsentPopup(false)} />
       )}

@@ -280,12 +280,12 @@ const ABDMRegistration = () => {
               <div className="buttons">
                 <button
                   type="button"
-                  className="button"
+                  className="abdm-button"
                   onClick={handlePrevious}
                 >
                   Previous
                 </button>
-                <button type="submit" className="button">
+                <button type="submit" className="abdm-button">
                   Submit
                 </button>
               </div>

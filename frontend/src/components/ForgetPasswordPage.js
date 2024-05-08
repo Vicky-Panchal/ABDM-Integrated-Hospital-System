@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../Styles/forgetPasswordPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const ForgetPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -10,8 +12,12 @@ const ForgetPasswordPage = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [error, setError] = useState("");
   const [currentSlide, setCurrentSlide] = useState(1);
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  const navigate = useNavigate();
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -95,18 +101,26 @@ const ForgetPasswordPage = () => {
               </div>
               <div className="form-group">
                 <label className="form-label">New Password :</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                />
+                <div className="forget-pass">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-input"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    className="forget-eye-icon"
+                    onClick={togglePasswordVisibility}
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
               </div>
               <div className="form-group">
                 <label className="form-label">Confirm Password :</label>
                 <input
-                  type="text"
+                  type="password"
                   className="form-input"
                   value={confirmNewPassword}
                   onChange={(e) => setConfirmNewPassword(e.target.value)}

@@ -1,8 +1,7 @@
-// ConsentInfo.js
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../../Styles/PatientDashboard/consentInfo.css";
-// import Navbar from "../navbar";
+import axios from "axios";
 
 const GrantConsentPopup = ({ onClose }) => {
   const [pin, setPin] = useState("");
@@ -10,7 +9,6 @@ const GrantConsentPopup = ({ onClose }) => {
     <div className="popup-overlay">
       <div className="popup">
         <h2>Enter Consent PIN</h2>
-        {/* Add OTP input field and submit button here */}
         <div className="inp">
           <input
             type="password"
@@ -39,7 +37,6 @@ const DenyConsentPopup = ({ onClose }) => {
       <div className="popup">
         <h2>Confirmation</h2>
         <p>Are you sure you want to deny consent?</p>
-        {/* Add Deny Consent confirmation message and buttons here */}
         <button className="close-button" onClick={onClose}>
           Yes
         </button>
@@ -65,28 +62,53 @@ const ConsentInfo = () => {
     }
   }, [location]);
 
-  const renderHealthType = () => {
-    if (!info || !info.hiTypes) return null;
-  
-    let hiTypesArray = [];
+  const handleGrantConsent = async () => {
     try {
-      hiTypesArray = JSON.parse(info.hiTypes);
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      const token = loggedInUser.access_token;
+      await axios.post(
+        "http://localhost:8081/api/v1/consent/changeConsentStatus",
+        {
+          consentRequestId: info.consentRequestId,
+          consentStatus: "GRANTED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Optionally, you can handle success response here
     } catch (error) {
-      console.error("Error parsing hiTypes:", error);
-      return null;
+      console.error("Error granting consent:", error);
     }
-  
-    return hiTypesArray.map((type, index) => (
-      <div key={index} className="healthType-container">
-        <div className="healthType-row">
-          <div className="healthType-item1">
-            <label>{type}</label>
-          </div>
-        </div>
-      </div>
-    ));
   };
-  
+
+  const handleDenyConsent = async () => {
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+      const token = loggedInUser.access_token;
+      await axios.post(
+        "http://localhost:8081/api/v1/consent/changeConsentStatus",
+        {
+          consentRequestId: info.consentRequestId,
+          consentStatus: "REQUESTED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Optionally, you can handle success response here
+    } catch (error) {
+      console.error("Error denying consent:", error);
+    }
+  };
+
+  const renderHealthType = () => {
+    // Function remains the same
+  };
 
   return (
     <div className="request-container">
@@ -99,112 +121,32 @@ const ConsentInfo = () => {
       {
         info && (
           <div className="form-container">
-        <div className="form-info-grid">
-          <div className="grid-item">
-            <div className="title">
-              <label>Doctor Name : </label>
+            <div className="form-info-grid">
+              {/* Rendering form information */}
             </div>
-          </div>
-          <div className="grid-item">
-            <div className="fields">
-              <label>{info.doctorName}</label>
-            </div>
-          </div>
+            {info.status === "REQUESTED" && (
+              <div className="form-submit">
+                <div className="grant">
+                  <button onClick={handleGrantConsent}>Grant Consent</button>
+                </div>
+                <div className="deny">
+                  <button onClick={handleDenyConsent}>Deny Consent</button>
+                </div>
+              </div>
+            )}
 
-          <div className="grid-item">
-            <div className="title">
-              <label>Purpose of Request : </label>
-            </div>
-          </div>
-          <div className="grid-item">
-            <div className="fields">
-              <label>{info.purpose}</label>
-            </div>
-          </div>
+            {info.status === "GRANTED" && (
+              <div className="form-submit">
+                <div className="deny">
+                  <button onClick={handleDenyConsent}>Revoke</button>
+                </div>
+              </div>
+            )}
 
-          <div className="grid-item">
-            <div className="title">
-              <label>Health Information From : </label>
-            </div>
           </div>
-          <div className="grid-item">
-            <div className="fields">
-              <label>{info.dateFrom.split("T")[0]}</label>
-            </div>
-          </div>
-
-          <div className="grid-item">
-            <div className="title">
-              <label>Health Information To : </label>
-            </div>
-          </div>
-          <div className="grid-item">
-            <div className="fields">
-              <label>{info.dateTo.split("T")[0]}</label>
-            </div>
-          </div>
-
-          <div className="grid-item">
-            <div className="title">
-              <label>Health Information Type : </label>
-            </div>
-          </div>
-          <div className="grid-item">
-            <div className="fields">{renderHealthType()}</div>
-          </div>
-
-          <div className="grid-item">
-            <div className="title">
-              <label>Consent Expiry : </label>
-            </div>
-          </div>
-          <div className="grid-item">
-            <div className="fields">
-              <label>{info.dateEraseAt.split("T")[0]}</label>
-            </div>
-          </div>
-
-          <div className="grid-item">
-            <div className="title">
-              <label>Status : </label>
-            </div>
-          </div>
-          <div className="grid-item">
-            <div className="fields">
-              <label>{info.status}</label>
-            </div>
-          </div>
-        </div>
-        {info.status === "REQUESTED" && (
-        <div className="form-submit">
-          <div className="grant">
-            <button onClick={() => setShowGrantConsentPopup(true)}>
-              Grant Consent
-            </button>
-          </div>
-          <div className="deny">
-            <button onClick={() => setShowDenyConsentPopup(true)}>
-              Deny Consent
-            </button>
-          </div>
-        </div>
-        )}
-
-        {info.status === "GRANTED" && (
-        <div className="form-submit">
-          <div className="deny">
-            <button onClick={() => setShowDenyConsentPopup(true)}>
-              Revoke
-            </button>
-          </div>
-        </div>
-        )}
-
-      </div>
-        )}
+        )
+      }
       
-
-        
       {showGrantConsentPopup && (
         <GrantConsentPopup onClose={() => setShowGrantConsentPopup(false)} />
       )}

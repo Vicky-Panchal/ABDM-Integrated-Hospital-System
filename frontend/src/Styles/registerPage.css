@@ -15,7 +15,7 @@ body {
 }
 
 .register-container {
-  width: 800px;
+  width: 900px;
   padding: 30px;
   background-color: #fff;
   box-shadow: 0 0 10px #0099ff;
@@ -49,6 +49,17 @@ body {
   padding: 8px;
   box-sizing: border-box;
   margin-bottom: 10px;
+}
+
+.register-pass{
+  display: flex;
+}
+
+.register-eye-icon{
+  background-color: #fff;
+  margin-top: 2%;
+  margin-left: -6%;
+  z-index: 1;
 }
 
 .gender-info {

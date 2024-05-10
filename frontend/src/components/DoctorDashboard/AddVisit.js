@@ -95,7 +95,9 @@ const AddVisit = () => {
   };
 
   const handleFileSubmit = async (e) => {
+    
     e.preventDefault();
+   
     try {
       const formData = new FormData();
       formData.append("patientId", patient);
@@ -111,6 +113,7 @@ const AddVisit = () => {
         formData.append("healthRecord", reader.result);
         // Submit the form with base64 encoded file
         console.log(formData);
+        
         submitForm(formData);
       };
     } catch (error) {
@@ -119,6 +122,7 @@ const AddVisit = () => {
   };
 
   const submitForm = async (formData) => {
+    //navigate("/DoctorDashboard");
     try {
       await axios.post(
         "http://localhost:8081/api/v1/visit/add-visit",
@@ -141,11 +145,13 @@ const AddVisit = () => {
       setOtpEnabled(false);
       setFormEnabled(false);
       // Redirect or show success message
+      
       // navigate("/success"); // Redirect to success page
       alert("Visit details added successfully!");
     } catch (error) {
       console.error("Error adding visit details:", error);
     }
+    
   };
 
   return (

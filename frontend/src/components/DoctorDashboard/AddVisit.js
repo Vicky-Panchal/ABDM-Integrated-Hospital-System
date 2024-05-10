@@ -68,9 +68,10 @@ const AddVisit = () => {
         }
       );
       console.log(patient);
-      console.log(patient.patientId);
-      console.log(response);
-      setTransactionId(response.data.transactionId);
+      const dataObject = JSON.parse(response.data.split('\n').find(line => line.startsWith('data:')).substr(5));
+      console.log("Transaction id is " + dataObject.data.transactionId);
+      console.log(dataObject)
+      setTransactionId(dataObject.data.transactionId);
       setOtpEnabled(true);
     } catch (error) {
       console.error("Error sending OTP:", error);
@@ -95,7 +96,9 @@ const AddVisit = () => {
   };
 
   const handleFileSubmit = async (e) => {
+    console.log("**************************")
     e.preventDefault();
+    console.log("----------------------------")
     try {
       const formData = new FormData();
       formData.append("patientId", patient);
@@ -103,14 +106,14 @@ const AddVisit = () => {
       formData.append("diagnosis", diagnosis);
       formData.append("dosageInstruction", dosage);
       formData.append("prescription", prescription);
-
+      console.log("patientAuthToken is "+ accessToken)
       // Convert selected file to base64 string
       const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
       reader.onload = () => {
         formData.append("healthRecord", reader.result);
         // Submit the form with base64 encoded file
-        console.log(formData);
+        console.log("form data is " + formData);
         submitForm(formData);
       };
     } catch (error) {
@@ -119,7 +122,9 @@ const AddVisit = () => {
   };
 
   const submitForm = async (formData) => {
+    console.log("form data is " + formData)
     try {
+      
       await axios.post(
         "http://localhost:8081/api/v1/visit/add-visit",
         formData,
@@ -185,7 +190,7 @@ const AddVisit = () => {
       )}
       {formEnabled && (
         <div className="form-specific">
-          <form onSubmit={handleFileSubmit}>
+          <form onSubmit={submitForm}>
             <div className="visit-form-grid">
               <div className="visit-grid-item">
                 <label>Prescription : </label>

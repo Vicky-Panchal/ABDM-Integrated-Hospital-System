@@ -9,6 +9,8 @@ import com.hadproject.dhanvantari.doctor.Doctor;
 import com.hadproject.dhanvantari.doctor.DoctorRepository;
 import com.hadproject.dhanvantari.patient.Patient;
 import com.hadproject.dhanvantari.patient.PatientRepository;
+import com.hadproject.dhanvantari.postmark.PostmarkService;
+import com.hadproject.dhanvantari.user.OtpRepository;
 import com.hadproject.dhanvantari.user.User;
 import com.hadproject.dhanvantari.visit.dto.CreateVisitRequest;
 import com.hadproject.dhanvantari.visit.dto.GetVisitByDoctorResponse;
@@ -32,7 +34,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class VisitService {
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
     private final ConsentRequestRepository consentRequestRepository;
+    private final PostmarkService postmarkService;
+    private final OtpRepository otpRepository;
 
     public Visit createNewVisit(Patient patient, CreateVisitRequest data) {
         logger.info("entering create new visit with data:{}", patient.getPatientJSONObject());
@@ -88,7 +91,20 @@ public class VisitService {
         if (authToken.equals("-1")) return null;
 
         Visit visit = createNewVisit(patient, data);
-
+//        Random random = new Random();
+//
+//        // Generate a random integer between 100000 (inclusive) and 999999 (exclusive)
+//        String randomId = String.valueOf(random.nextInt(900000) + 100000);
+//
+//        Otp otp = otpRepository.findByUser(patient.getUser()).orElse(new Otp()); // Create new OTP entity if none exists
+//
+//        // Update OTP value and associate it with the user
+//        otp.setOtp(randomId);
+//        otp.setUser(patient.getUser());
+//
+//        // Save the updated or new OTP entity
+//        otpRepository.save(otp);
+//        postmarkService.sendMail(patient.getUser().getEmail(), "OTP for adding Doctor Visit", "Your otp for adding doctor visit is " + otp.getOtp());
         // Prepare requestBody to send to ABDM.
         JSONObject request = prepareAddContextRequest(data.getPatientAuthToken(), visit, "" + patient.getPatientId(), patient.getUser().getFirstname());
         visit.setRequestId(request.get("requestId").toString());
@@ -271,6 +287,8 @@ public class VisitService {
         List<GetVisitByDoctorResponse> responseList = new ArrayList<>();
 
         for (Visit visit : visits) {
+            String healthRecord = "";
+            if(visit.getHealthRecord() != null) healthRecord = new String(visit.getHealthRecord(), StandardCharsets.UTF_8);
             responseList.add(
                     GetVisitByDoctorResponse.builder()
                             .visitId(String.valueOf(visit.getId()))
@@ -278,7 +296,7 @@ public class VisitService {
                             .diagnosis(visit.getDiagnosis())
                             .display(visit.getDisplay())
                             .dosageInstruction(visit.getDosageInstruction())
-                            .healthRecord(new String(visit.getHealthRecord(), StandardCharsets.UTF_8))
+                            .healthRecord(healthRecord)
                             .prescription(visit.getPrescription())
                             .patientId(String.valueOf(visit.getPatient().getPatientId()))
                             .patientName(visit.getPatient().getUser().getFirstname() + " " + visit.getPatient().getUser().getLastname())

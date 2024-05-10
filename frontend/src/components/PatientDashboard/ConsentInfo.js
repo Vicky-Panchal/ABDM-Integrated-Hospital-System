@@ -108,6 +108,7 @@ const ConsentInfo = () => {
 
   const renderHealthType = () => {
     // Function remains the same
+    
   };
 
   return (
@@ -123,6 +124,80 @@ const ConsentInfo = () => {
           <div className="form-container">
             <div className="form-info-grid">
               {/* Rendering form information */}
+              <div className="grid-item">
+            <div className="title">
+              <label>Doctor Name : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">
+              <label>{info.doctorName}</label>
+            </div>
+          </div>
+
+          <div className="grid-item">
+            <div className="title">
+              <label>Purpose of Request : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">
+              <label>{info.purpose}</label>
+            </div>
+          </div>
+
+          <div className="grid-item">
+            <div className="title">
+              <label>Health Information From : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">
+              <label>{info.dateFrom.split("T")[0]}</label>
+            </div>
+          </div>
+
+          <div className="grid-item">
+            <div className="title">
+              <label>Health Information To : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">
+              <label>{info.dateTo.split("T")[0]}</label>
+            </div>
+          </div>
+
+          <div className="grid-item">
+            <div className="title">
+              <label>Health Information Type : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">{renderHealthType()}</div>
+          </div>
+
+          <div className="grid-item">
+            <div className="title">
+              <label>Consent Expiry : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">
+              <label>{info.dateEraseAt.split("T")[0]}</label>
+            </div>
+          </div>
+
+          <div className="grid-item">
+            <div className="title">
+              <label>Status : </label>
+            </div>
+          </div>
+          <div className="grid-item">
+            <div className="fields">
+              <label>{info.status}</label>
+            </div>
+          </div>
             </div>
             {info.status === "REQUESTED" && (
               <div className="form-submit">

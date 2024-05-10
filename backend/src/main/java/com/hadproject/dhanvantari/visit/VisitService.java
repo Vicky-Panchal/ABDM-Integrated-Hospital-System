@@ -34,7 +34,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.hadproject.dhanvantari.abdm.ABDMServiceHelper.prepareHeader;
@@ -277,7 +276,8 @@ public class VisitService {
         List<Visit> visits = new ArrayList<>();
 
         for (ConsentRequest consentRequest : consentRequests) {
-            if (consentRequest.getStatus() != null && consentRequest.getStatus().equals("GRANTED") && consentRequest.getDataEraseAt().compareTo(String.valueOf(new Date())) <= 0) {
+            if (consentRequest.getStatus() != null && consentRequest.getStatus().equals("GRANTED")) {
+                System.out.println(consentRequest.getVisit().getId());
                 visits.add(
                         consentRequest.getVisit()
                 );

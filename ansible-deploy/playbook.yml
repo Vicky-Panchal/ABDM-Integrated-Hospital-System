@@ -1,0 +1,17 @@
+# @format
+---
+- name: Deploy Kubernates cluster
+  hosts: localhost
+  remote_user: vicky
+  become: false
+
+  tasks:
+    # - name: Run the Secreats and Configurations
+    #   shell: kubectl apply -f "{{ item }}"
+    #   with_fileglob:
+    #     - ./../infra/secrets/*.yaml
+
+    - name: Run Kubernetes Deployment files files
+      shell: kubectl apply -f "{{ item }}"
+      with_fileglob:
+        - ../k8s/*.yaml

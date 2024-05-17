@@ -6,13 +6,10 @@ import com.hadproject.dhanvantari.user.User;
 import com.hadproject.dhanvantari.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.implementation.bytecode.Throw;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +63,7 @@ public class DoctorService {
                   .specialization(doctor.getSpecialization())
                   .dob(user.getDob())
                   .hospitalName(doctor.getHospitalName())
-                  .profile(user.getProfile())
+                  .profile(profileUrl)
                   .qualification(doctor.getQualifications())
                   .build());
       }

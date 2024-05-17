@@ -12,6 +12,7 @@ const AddSlotPopup = ({
 }) => {
   console.log("this is inside addslotpopup");
   console.log(doctorOptions);
+  console.log(doctorOptions[0].userId)
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -28,6 +29,11 @@ const AddSlotPopup = ({
   const handlePrevious = () => {
     setCurrentSlide(currentSlide - 1);
   };
+
+  const onChangeHandler =(event) =>{
+    event.preventDefault()
+    console.log("I am changing the value: ",event.target.value)
+  }
 
   // const [doctorValue, setDoctorValue] = useState("");
   // const handleDoctorChange = (event) => {
@@ -67,7 +73,7 @@ const AddSlotPopup = ({
     try {
       const token = loggedInUser.access_token;
       const user_id = selectedDoctor;
-      console.log(user_id);
+      console.log("I got the seleted doctor: ",selectedDoctor);
       console.log(selectedDoctor);
       const response = await axios.get(
         `http://localhost:8081/api/v1/appointment/getSlotsByDoctorId?userId=${user_id}&date=${selectedDate}`,

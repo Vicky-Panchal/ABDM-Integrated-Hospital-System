@@ -146,11 +146,13 @@ const AddVisit = () => {
       setOtpEnabled(false);
       setFormEnabled(false);
       // Redirect or show success message
+      
       // navigate("/success"); // Redirect to success page
       alert("Visit details added successfully!");
     } catch (error) {
       console.error("Error adding visit details:", error);
     }
+    
   };
 
   return (

@@ -6,7 +6,7 @@ spring:
     # url: jdbc:mysql://localhost:3306/abdm_app?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
     # username: vicky
     # password: 7701ATMmmp@
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
